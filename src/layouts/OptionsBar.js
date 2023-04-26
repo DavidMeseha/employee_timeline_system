@@ -1,5 +1,5 @@
 import AddDropdown from "@/components/AddDropdown";
-import DaySwitch from "@/components/DaySwitch";
+import DateSwitch from "@/components/DateSwitch";
 import EmployeesDropdown from "@/components/EmployeesDropdown";
 import useDisplayManger from "@/Hooks/useDataManger";
 
@@ -10,7 +10,7 @@ const OptionsBar = () => {
         <>
             <div className="options-wrap" >
                 <EmployeesDropdown employees={employees} selected={selectedEmployees} setSelected={setSelectedEmployees} />
-                <DaySwitch date={selectedDate} />
+                <DateSwitch date={selectedDate} />
                 <div>
                     <button
                         className={`${format === 'daily' ? 'active-display' : 'inactive-display'}`}
