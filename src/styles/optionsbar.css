@@ -4,17 +4,25 @@
     background-color: var(--dark-color);
 }
 
-.display-state-button {
+.active-display,
+.inactive-display {
     box-sizing: unset;
     width: 70px;
     margin-left: 10px;
     border: 1px solid var(--light-line-color);
     border-radius: 10px;
+}
+
+.inactive-display {
     color: var(--light-font-color);
     background-color: var(--dark-color);
 }
 
+.inactive-display:hover {
+    background-color: var(--medium-dark-color);
+}
+
 .active-display {
-    background-color: var(--light-line-color);
     color: var(--dark-color);
+    background-color: var(--light-line-color);
 }

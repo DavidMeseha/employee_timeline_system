@@ -13,11 +13,11 @@ const OptionsBar = () => {
                 <DaySwitch day={selectedDay} />
                 <div>
                     <button
-                        className={`display-state-button ${format === 'daily' ? 'active-display' : ''}`}
+                        className={`${format === 'daily' ? 'active-display' : 'inactive-display'}`}
                         onClick={() => setFormat('daily')}
                     >Daily</button>
                     <button
-                        className={`display-state-button ${format === 'weekly' ? 'active-display' : ''}`}
+                        className={`${format === 'weekly' ? 'active-display' : 'inactive-display'}`}
                         onClick={() => setFormat('weekly')}
                     >weekly</button>
                 </div>
