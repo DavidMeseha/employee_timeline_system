@@ -34,9 +34,8 @@ export const DisplayManagerProvider = ({ children }) => {
 
     useEffect(() => {
         const dateDisplayFormat = () => {
-            console.log(date)
             if (format === 'weekly') {
-                let endDate = date
+                let endDate = new Date(date)
                 let endMonth = endDate.toLocaleDateString('en', { month: 'long' })
                 let endYear = endDate.toLocaleDateString('en', { year: 'numeric' })
                 let endDay = endDate.getDate()
@@ -54,7 +53,7 @@ export const DisplayManagerProvider = ({ children }) => {
 
                 }
 
-                setDisplayDate(displayDate)
+                setDisplayDate(display)
             }
 
             if (format === 'daily') setDisplayDate(date.toLocaleDateString('en', { day: 'numeric', month: 'long', weekday: 'long', year: 'numeric' }))
@@ -64,18 +63,26 @@ export const DisplayManagerProvider = ({ children }) => {
     }, [format, date])
 
     const nextDate = () => {
+        let increaseBy = 0
+        if (format === 'weekly') increaseBy = 7
+        if (format === 'daily') increaseBy = 1
 
+        setDate(new Date(date.setDate(date.getDate() + increaseBy)))
     }
 
     const prevDate = () => {
+        let decreaseBy = 0
+        if (format === 'weekly') decreaseBy = 7
+        if (format === 'daily') decreaseBy = 1
 
+        setDate(new Date(date.setDate(date.getDate() - decreaseBy)))
     }
 
     return (
         <DisplayManagerContext.Provider value={{
             employees,
             format, setFormat,
-            displayDate, setDate,
+            displayDate, setDate, nextDate, prevDate,
             selectedEmployees, setSelectedEmployees
         }}>
             {children}

@@ -6,7 +6,7 @@ import useDisplayManger from "@/Hooks/useDataManger";
 const OptionsBar = () => {
     const {
         employees,
-        displayDate, setDate,
+        displayDate, setDate, nextDate, prevDate,
         selectedEmployees, setSelectedEmployees,
         format, setFormat
     } = useDisplayManger()
@@ -15,7 +15,7 @@ const OptionsBar = () => {
         <>
             <div className="options-wrap" >
                 <EmployeesDropdown employees={employees} selected={selectedEmployees} setSelected={setSelectedEmployees} />
-                <DateSwitch date={displayDate} setDate={setDate} />
+                <DateSwitch date={displayDate} setDate={setDate} next={nextDate} prev={prevDate} />
                 <div>
                     <button
                         className={`${format === 'daily' ? 'active-display' : 'inactive-display'}`}
