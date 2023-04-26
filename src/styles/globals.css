@@ -9,6 +9,12 @@
   --negative-action-color: #fc3737;
 }
 
+.hidden {
+  width: 0;
+  height: 0;
+  border: unset;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -22,7 +28,7 @@ body {
   max-height: 100vh;
 }
 
-nav{
+nav {
   background-color: var(--dark-color);
   padding: 10px 30px;
 }
@@ -32,9 +38,23 @@ a {
   text-decoration: none;
 }
 
-button{
+button {
   cursor: pointer;
   padding: 10px;
+  z-index: 1;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  background: transparent;
+  bottom: 0;
+  color: transparent;
+  cursor: pointer;
+  height: auto;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: auto;
 }
 
 .arrow-down {
