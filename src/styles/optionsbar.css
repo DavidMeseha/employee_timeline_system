@@ -4,6 +4,21 @@
     background-color: var(--dark-color);
 }
 
+.date-nav {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+  
+  .date {
+    color: var(--dark-color);
+    background-color: var(--light-line-color);
+    padding: 10px;
+    width: 250px;
+    text-align: center;
+    border: 1px solid var(--light-font-color);
+  }
+
 .active-display,
 .inactive-display {
     box-sizing: unset;
