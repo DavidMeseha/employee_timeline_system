@@ -1,7 +1,7 @@
-import AddDropdown from "../components/AddDropdown";
-import DaySwitch from "../components/DaySwitch";
-import EmployeesDropdown from "../components/EmployeesDropdown";
-import useDisplayManger from "../Hooks/useDataManger";
+import AddDropdown from "@/components/AddDropdown";
+import DaySwitch from "@/components/DaySwitch";
+import EmployeesDropdown from "@/components/EmployeesDropdown";
+import useDisplayManger from "@/Hooks/useDataManger";
 
 const OptionsBar = () => {
     const { selectedDay, selectedEmployees, employees, setSelectedEmployees, format, setFormat } = useDisplayManger()

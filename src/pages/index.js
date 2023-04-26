@@ -1,4 +1,4 @@
-import OptionsBar from "./layouts/OptionsBar";
+import OptionsBar from "@/layouts/OptionsBar"
 
 export default function Home() {
   return (
