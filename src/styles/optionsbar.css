@@ -1,4 +1,5 @@
 .employees-option {
+    z-index: 5;
     grid-area: employees;
 }
 
@@ -12,6 +13,7 @@
 }
 
 .add-option {
+    z-index: 5;
     grid-area: add;
 }
 

@@ -13,8 +13,7 @@
     overflow-y: scroll;
     overflow-x: hidden;
     padding: 0 20px;
-    height: 92vh;
-    height: 75vh;
+    height: calc(100vh - 131px - 60px);
 }
 
 .heading-table {
@@ -62,7 +61,7 @@
 
 @media screen and (max-width:900px) {
     .timeline-container {
-        height: 66vh;
+        height: calc(100vh - 131px - 114px);
     }
 }
 
