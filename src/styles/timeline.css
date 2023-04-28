@@ -1,0 +1,70 @@
+.time-stamp,
+.live-time-stamp {
+    display: flex;
+    align-items: center;
+}
+
+.time-stamp {
+    width: 100%;
+    color: var(--strong-line-color);
+    gap: 10px;
+}
+
+.live-time-stamp {
+    position: absolute;
+    color: var(--negative-action-color);
+    width: 98%;
+    z-index: 2;
+}
+
+.hour,
+.live-hour {
+    font-size: 12px;
+    width: 35px;
+    text-align: center;
+}
+
+.hour {
+    height: 12px;
+    margin-bottom: -15px;
+}
+
+.live-hour {
+    height: 18px;
+    width: 40px;
+    border: 2px solid;
+    border-radius: 99px;
+    background-color: white;
+}
+
+.line {
+    position: relative;
+    padding-top: 15px;
+    border-left: 1px solid var(--strong-line-color);
+    border-right: 1px solid var(--strong-line-color);
+    width: 100%;
+    cursor: pointer;
+}
+
+.line-time {
+    display: none;
+    position: absolute;
+    bottom: 1px;
+    left: 2px;
+    color: var(--dark-color);
+    font-size: 12px;
+}
+
+.line:hover {
+    background-color: var(--time-hover-color);
+}
+
+.line:hover>.line-time {
+    display: block;
+}
+
+.live-line {
+    height: 2px;
+    width: 100%;
+    background-color: var(--negative-action-color);
+}

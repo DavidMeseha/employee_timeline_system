@@ -14,9 +14,13 @@ const OptionsBar = () => {
     return (
         <>
             <div className="options-wrap" >
-                <EmployeesDropdown employees={employees} selected={selectedEmployees} setSelected={setSelectedEmployees} />
-                <DateSwitch date={displayDate} setDate={setDate} next={nextDate} prev={prevDate} />
-                <div>
+                <div className='employees-option'>
+                    <EmployeesDropdown employees={employees} selected={selectedEmployees} setSelected={setSelectedEmployees} />
+                </div>
+                <div className='date-option'>
+                    <DateSwitch date={displayDate} setDate={setDate} next={nextDate} prev={prevDate} />
+                </div>
+                <div className='toggle-view-option'>
                     <button
                         className={`${format === 'daily' ? 'active-display' : 'inactive-display'}`}
                         onClick={() => setFormat('daily')}
@@ -26,7 +30,9 @@ const OptionsBar = () => {
                         onClick={() => setFormat('weekly')}
                     >weekly</button>
                 </div>
-                <AddDropdown />
+                <div className='add-option'>
+                    <AddDropdown />
+                </div>
             </div>
         </>
     )

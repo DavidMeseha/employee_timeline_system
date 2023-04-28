@@ -1,6 +1,30 @@
+.employees-option {
+    grid-area: employees;
+}
+
+.date-option {
+    grid-area: date;
+    width: 400px;
+}
+
+.toggle-view-option {
+    grid-area: view;
+}
+
+.add-option {
+    grid-area: add;
+}
+
+.employees-option,
+.date-option,
+.toggle-view-option,
+.add-option {
+    margin: auto;
+}
+
 .options-wrap {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-areas: 'employees date date view add';
     background-color: var(--dark-color);
 }
 
@@ -15,7 +39,7 @@
     background-color: var(--dark-color);
     color: var(--light-font-color);
     padding: 10px;
-    width: 250px;
+    width: 100%;
     text-align: center;
     border: 1px solid var(--light-font-color);
     cursor: pointer;
@@ -46,4 +70,24 @@
 .active-display {
     color: var(--dark-color);
     background-color: var(--light-line-color);
+}
+
+@media screen and (max-width:900px) {
+    .options-wrap {
+        grid-template-areas: 'employees add view'
+            'date date date';
+        row-gap: 15px;
+    }
+
+    .date-option {
+        width: 90%;
+    }
+}
+
+@media screen and (max-width:575px) {
+    .options-wrap {
+        grid-template-areas: 'employees add'
+            'date date'
+            'view view';
+    }
 }

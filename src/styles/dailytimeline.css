@@ -1,0 +1,71 @@
+.filler {
+    position: absolute;
+    background-color: var(--medium-dark-color);
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 131px;
+    z-index: -1;
+}
+
+.timeline-container {
+    position: relative;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding: 0 20px;
+    height: 92vh;
+    height: 75vh;
+}
+
+.heading-table {
+    color: var(--light-font-color);
+    margin: 0 37px 0 64px;
+}
+
+.table-head {
+    background-color: var(--medium-dark-color);
+}
+
+.employees-name td {
+    padding: 20px;
+    text-align: center;
+}
+
+.name-tag {
+    width: 50px;
+    height: 50px;
+    border-radius: 99px;
+    line-height: 50px;
+    background-color: var(--employee-icon-back-color);
+    text-align: center;
+    margin: 10px auto;
+}
+
+.appointments-table {
+    position: absolute;
+    top: 0;
+    left: 63px;
+    right: 19px;
+}
+
+.appointments-table tr td {
+    position: relative;
+}
+
+.appointment {
+    position: absolute;
+    width: 100%;
+    background-color: rgb(255, 99, 99);
+}
+
+@media screen and (max-width:900px) {
+    .timeline-container {
+        height: 66vh;
+    }
+}
+
+@media screen and (max-width:575px) {
+    .timeline-container {
+        height: 57vh;
+    }
+}

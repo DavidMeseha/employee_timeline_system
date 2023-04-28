@@ -13,9 +13,58 @@ export const DisplayManagerProvider = ({ children }) => {
     useEffect(() => {
         const setInitalDisplay = () => {
             let data = [
-                { id: '01', name: 'Marcos' },
-                { id: '02', name: 'David' },
-                { id: '03', name: 'Many Name so on' }
+                {
+                    id: '01', name: 'Marcos Lima',
+                    appointments: [
+                        {
+                            client: 'Marcos R.',
+                            date: '4-27-2023',
+                            start: '5:15',
+                            end: '7:30',
+                            comment: 'Some Comment ....'
+                        },
+                        {
+                            client: 'Marcos R.',
+                            date: '4-27-2023',
+                            start: '10:15',
+                            end: '14:30',
+                            comment: 'Some Comment ....'
+                        },
+                        {
+                            client: 'Marcos R.',
+                            date: '4-28-2023',
+                            start: '10:15',
+                            end: '14:30',
+                            comment: 'Some Comment ....'
+                        }
+                    ]
+                },
+                {
+                    id: '02',
+                    name: 'David Lima',
+                    appointments: [
+                        {
+                            client: 'Marcos R.',
+                            date: '4-27-2023',
+                            start: '9:15',
+                            end: '11:30',
+                            comment: 'Some Comment ....'
+                        }
+                    ]
+                },
+                {
+                    id: '03',
+                    name: 'Many Name',
+                    appointments: [
+                        {
+                            client: 'Marcos R.',
+                            date: '4-26-2023',
+                            start: '2:15',
+                            end: '4:00',
+                            comment: 'Some Comment ....'
+                        }
+                    ]
+                }
             ]
 
             setEmployees(data)
@@ -82,7 +131,7 @@ export const DisplayManagerProvider = ({ children }) => {
         <DisplayManagerContext.Provider value={{
             employees,
             format, setFormat,
-            displayDate, setDate, nextDate, prevDate,
+            displayDate, setDate, date, nextDate, prevDate,
             selectedEmployees, setSelectedEmployees
         }}>
             {children}

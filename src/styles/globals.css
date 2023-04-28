@@ -2,11 +2,15 @@
   --light-font-color: white;
   --dark-color: #222223;
   --medium-dark-color: #2e2f30;
-  --light-line-color: #cfcfcf;
+  --light-line-color: #dfdfdf;
   --strong-line-color: #9f9f9f;
   --secondry-color: #e1c41f;
   --employee-icon-back-color: #0050b1;
   --negative-action-color: #fc3737;
+  --time-hover-color: rgba(129, 129, 255, 0.334);
+
+  --medium-screen: 900px;
+  --small-screen: 500px;
 }
 
 .hidden {
@@ -26,11 +30,12 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   max-width: 100vw;
   max-height: 100vh;
+  overflow: hidden;
 }
 
 nav {
   background-color: var(--dark-color);
-  padding: 10px 30px;
+  padding: 10px 0px;
 }
 
 a {
@@ -55,6 +60,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   right: 0;
   top: 0;
   width: auto;
+}
+
+table {
+  width: -webkit-fill-available;
+  width: -moz-available;
 }
 
 .arrow-down {
@@ -91,6 +101,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .dropdown-container {
   position: relative;
   user-select: none;
+  z-index: 2;
 }
 
 .dropdown-button {
@@ -98,7 +109,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   align-items: center;
   justify-content: space-between;
   padding: 10px;
-  width: 150px;
+  width: 140px;
   background-color: var(--light-line-color);
   cursor: pointer;
 }
