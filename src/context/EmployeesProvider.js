@@ -101,6 +101,11 @@ let blockedTime = [
         start: 'April 30 2023 00:00:00',
         end: 'April 30 2023 04:00:00',
         comment: ''
+    },
+    {
+        start: 'April 30 2023 20:00:00',
+        end: 'April 30 2023 23:59:00',
+        comment: 'day End Comment.....'
     }
 ]
 

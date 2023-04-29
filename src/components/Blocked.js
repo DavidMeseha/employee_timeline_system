@@ -22,6 +22,7 @@ const Blocked = ({ startDate, endDate, comment }) => {
     let blockStart = startTotalMinutes + ((startTotalMinutes / 15) * 0.8) - 1
     let blockEnd = (endTotalMinutes - startTotalMinutes) + (((endTotalMinutes - startTotalMinutes) / 15) * 0.8)
 
+    console.log(blockEnd)
     return (
         <>
             <div style={{ position: 'absolute', top: blockStart, right: 20, left: 70, height: blockEnd }}>

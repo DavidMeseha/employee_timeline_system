@@ -91,9 +91,9 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
                         onTouchStart={(e) => bottomStartDragHandle(e.touches[0].clientY)}
                         onMouseMove={() => bottomDragHandle(window.event.clientY)}
                         onTouchMove={(e) => bottomDragHandle(e.touches[0].clientY)}
-                        onMouseUp={() => releaseHandle(window.event.clientY)}
-                        onTouchEnd={(e) => releaseHandle(e.touches[0].clientY)}
-                        onTouchCancel={(e) => releaseHandle(e.touches[0].clientY)}
+                        onMouseUp={releaseHandle}
+                        onTouchEnd={releaseHandle}
+                        onTouchCancel={releaseHandle}
                         //onMouseLeave={releaseHandle}
                         className="scale-area"
                     >
