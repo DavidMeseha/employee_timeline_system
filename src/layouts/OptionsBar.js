@@ -1,11 +1,12 @@
 import AddDropdown from "@/components/AddDropdown";
 import DateSwitch from "@/components/DateSwitch";
 import EmployeesDropdown from "@/components/EmployeesDropdown";
-import useDisplayManger from "@/Hooks/useDataManger";
+import useDisplayManger from "@/Hooks/useDisplayManger";
+import useEmployeesData from "@/Hooks/useEmployeesData";
 
 const OptionsBar = () => {
+    const { employees } = useEmployeesData()
     const {
-        employees,
         displayDate, setDate, nextDate, prevDate,
         selectedEmployees, setSelectedEmployees,
         format, setFormat

@@ -1,9 +1,10 @@
 import { createContext, useEffect, useState } from "react";
+import useEmployeesData from "@/Hooks/useEmployeesData";
 
 const DisplayManagerContext = createContext({})
 
 export const DisplayManagerProvider = ({ children }) => {
-    const [employees, setEmployees] = useState([])
+    const {employees} = useEmployeesData()
     const [displayDate, setDisplayDate] = useState()
     const [selectedEmployees, setSelectedEmployees] = useState([])
     const [format, setFormat] = useState('daily')
@@ -12,67 +13,10 @@ export const DisplayManagerProvider = ({ children }) => {
 
     useEffect(() => {
         const setInitalDisplay = () => {
-            let data = [
-                {
-                    id: '01', name: 'Marcos Lima',
-                    appointments: [
-                        {
-                            client: 'Marcos R.',
-                            date: '4-27-2023',
-                            start: '5:15',
-                            end: '7:30',
-                            comment: 'Some Comment ....'
-                        },
-                        {
-                            client: 'Marcos R.',
-                            date: '4-27-2023',
-                            start: '10:15',
-                            end: '14:30',
-                            comment: 'Some Comment ....'
-                        },
-                        {
-                            client: 'Marcos R.',
-                            date: '4-28-2023',
-                            start: '10:15',
-                            end: '14:30',
-                            comment: 'Some Comment ....'
-                        }
-                    ]
-                },
-                {
-                    id: '02',
-                    name: 'David Lima',
-                    appointments: [
-                        {
-                            client: 'Marcos R.',
-                            date: '4-27-2023',
-                            start: '9:15',
-                            end: '11:30',
-                            comment: 'Some Comment ....'
-                        }
-                    ]
-                },
-                {
-                    id: '03',
-                    name: 'Many Name',
-                    appointments: [
-                        {
-                            client: 'Marcos R.',
-                            date: '4-26-2023',
-                            start: '2:15',
-                            end: '4:00',
-                            comment: 'Some Comment ....'
-                        }
-                    ]
-                }
-            ]
-
-            setEmployees(data)
-
             setDisplayDate(new Date().toLocaleDateString('en', { day: 'numeric', month: 'long', weekday: 'long', year: 'numeric' }))
 
             let selectedTemp = []
-            data.forEach(employee => {
+            employees.forEach(employee => {
                 selectedTemp.push(employee.name)
             });
             setSelectedEmployees(selectedTemp)
@@ -129,10 +73,9 @@ export const DisplayManagerProvider = ({ children }) => {
 
     return (
         <DisplayManagerContext.Provider value={{
-            employees,
             format, setFormat,
             displayDate, setDate, date, nextDate, prevDate,
-            selectedEmployees, setSelectedEmployees
+            selectedEmployees, setSelectedEmployees,
         }}>
             {children}
         </DisplayManagerContext.Provider >

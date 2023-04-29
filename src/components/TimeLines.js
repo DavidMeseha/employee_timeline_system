@@ -14,7 +14,7 @@ const TimeLines = ({ liveIndicator }) => { //bool
             let minutes = date.getMinutes()
             let totalMinutes = minutes + (hours * 60)
 
-            setLiveTime(hours + ':' + minutes)
+            setLiveTime(date.toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: false })) //01:01 || 15:05 || 10:25
 
             //                                                      for every 15min
             //                      one pixel per minute V     V Line Hight per section V    V middle of the indecator
@@ -36,17 +36,15 @@ const TimeLines = ({ liveIndicator }) => { //bool
     const formatTime = (value) => {
         let time = ''
         let hour = ''
-        let timeInt = ~~(value / 4)
+        let hoursInt = ~~(value / 4)
 
-        if (timeInt.toString().length === 1) hour = '0' + timeInt
-        else hour = '' + timeInt
+        if (hoursInt.toString().length === 1) hour = '0' + hoursInt
+        else hour = '' + hoursInt
 
-        if ((value / 4) - timeInt === 0.25) time = hour + ':15'
-        if ((value / 4) - timeInt === 0.5) time = hour + ':30'
-        if ((value / 4) - timeInt === 0.75) time = hour + ':45'
-        if (value % 4 === 0) {
-            time = hour + ':00'
-        }
+        if ((value / 4) - hoursInt === 0.25) time = hour + ':15'
+        if ((value / 4) - hoursInt === 0.5) time = hour + ':30'
+        if ((value / 4) - hoursInt === 0.75) time = hour + ':45'
+        if (value % 4 === 0) time = hour + ':00'
 
         return time
     }
@@ -58,8 +56,6 @@ const TimeLines = ({ liveIndicator }) => { //bool
         if (value % 4 === 0) {
             isFullHour = true
         }
-
-        if (value === sections) isFullHour = false //not to display the 24h time stamp
 
         return (
             <div key={value} className="time-stamp">

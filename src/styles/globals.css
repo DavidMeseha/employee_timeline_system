@@ -4,13 +4,13 @@
   --medium-dark-color: #2e2f30;
   --light-line-color: #e5e5e5;
   --strong-line-color: #c1c1c1;
+  --disabled-color: rgb(160, 160, 160);
   --secondry-color: #e1c41f;
   --employee-icon-back-color: #0050b1;
   --negative-action-color: #fc3737;
-  --time-hover-color: rgba(129, 129, 255, 0.334);
+  --time-hover-color: rgb(129 129 255 / 53%);
 
-  --medium-screen: 900px;
-  --small-screen: 500px;
+  --cell-min-width: 200px;
 }
 
 .hidden {
@@ -21,6 +21,10 @@
 
 * {
   box-sizing: border-box;
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
   padding: 0;
   margin: 0;
 }
@@ -91,6 +95,24 @@ table {
   border-bottom: transparent solid 10px;
   border-top: transparent solid 10px;
   border-right: var(--dark-color) solid 10px;
+  border-left: transparent solid 0px;
+}
+
+.arrow-right-light {
+  height: 0;
+  width: 0;
+  border-bottom: transparent solid 10px;
+  border-top: transparent solid 10px;
+  border-left: var(--light-font-color) solid 10px;
+  border-right: transparent solid 0px;
+}
+
+.arrow-left-light {
+  height: 0;
+  width: 0;
+  border-bottom: transparent solid 10px;
+  border-top: transparent solid 10px;
+  border-right: var(--light-font-color) solid 10px;
   border-left: transparent solid 0px;
 }
 

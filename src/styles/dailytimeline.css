@@ -1,13 +1,3 @@
-.filler {
-    position: absolute;
-    background-color: var(--medium-dark-color);
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 131px;
-    z-index: 3;
-}
-
 .timeline-container {
     position: relative;
     overflow-y: scroll;
@@ -16,18 +6,49 @@
     height: calc(100vh - 131px - 60px);
 }
 
-.heading-table {
-    position: relative;
+.heading {
+    display: flex;
+    align-items: stretch;
+    background-color: var(--medium-dark-color);
     color: var(--light-font-color);
-    margin: 0 37px 0 64px;
-    z-index: 4;
+    height: 130px;
 }
 
-.table-head {
-    background-color: var(--medium-dark-color);
+.employees-wraper {
+    width: -webkit-fill-available;
+    width: -moz-avilable;
+    margin: 0 -50px 0 0;
+    overflow: hidden;
+    overflow-x: scroll;
+}
+
+.employees-wraper::-webkit-scrollbar {
+    width: none;
+    opacity: 0;
+}
+
+.scroll-arrows,
+.scroll-arrows-disabled {
+    display: flex;
+    padding: 0 30px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.scroll-arrows-disabled .arrow-left-light {
+    border-right: var(--disabled-color) solid 10px;
+}
+
+.scroll-arrows-disabled .arrow-right-light {
+    border-right: var(--disabled-color) solid 10px;
+}
+
+.scroll-arrows:hover {
+    background-color: var(--dark-color);
 }
 
 .employees-name td {
+    min-width: var(--cell-min-width);
     padding: 20px;
     text-align: center;
 }
@@ -42,21 +63,87 @@
     margin: 10px auto;
 }
 
-.appointments-table {
+.appointment-table-wraper {
     position: absolute;
+    overflow: hidden;
+    overflow-x: auto;
+    pointer-events: none;
     top: 0;
-    left: 63px;
-    right: 19px;
+    left: 70px;
+    right: 20px;
+}
+
+.appointments-table {
+    height: 1518px;
 }
 
 .appointments-table tr td {
     position: relative;
+    padding: 0 5px;
+    min-width: var(--cell-min-width);
+}
+
+.appointments-table,
+.appointments-table tr,
+.appointments-table tr td {
+    border: 1px solid var(--strong-line-color);
+    border-collapse: collapse;
 }
 
 .appointment {
     position: absolute;
-    width: 100%;
-    background-color: rgb(255, 99, 99);
+    pointer-events: auto;
+    width: calc(100% - 10px);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.appointment-red {
+    background-color: rgb(253, 150, 150);
+}
+
+.appointment-green {
+    background-color: rgb(166, 255, 168);
+}
+
+.appointment-blue {
+    background-color: rgb(170, 171, 255);
+}
+
+.appointment-contnet {
+    position: relative;
+    padding: 20px;
+    height: 100%;
+}
+
+.appointment-contnet p {
+    font-size: 0.8rem;
+}
+
+.appointment-contnet h3 {
+    margin: 5px 0;
+}
+
+.scale-area {
+    position: absolute;
+    height: 35px;
+    padding: 20px 0 0 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    cursor: s-resize;
+}
+
+.scale-area:hover {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.3) 100%);
+}
+
+
+.scale-area .icon div {
+    margin: 0 auto 3px auto;
+    height: 1px;
+    width: 50px;
+    background-color: var(--medium-dark-color);
 }
 
 @media screen and (max-width:900px) {

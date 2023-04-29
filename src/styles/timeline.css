@@ -12,26 +12,21 @@
 
 .live-time-stamp {
     position: absolute;
+    pointer-events: none;
     color: var(--negative-action-color);
-    width: 98%;
+    width: calc(100vw - 40px);
     z-index: 2;
 }
 
 .hour,
 .live-hour {
     font-size: 12px;
-    width: 35px;
+    width: 40px;
     text-align: center;
-}
-
-.hour {
-    height: 12px;
-    margin-bottom: -15px;
 }
 
 .live-hour {
     height: 18px;
-    width: 40px;
     border: 2px solid;
     border-radius: 99px;
     background-color: white;
@@ -42,7 +37,7 @@
     padding-top: 15px;
     border-left: 1px solid var(--strong-line-color);
     border-right: 1px solid var(--strong-line-color);
-    width: 100%;
+    width: calc(100% - 50px);
     cursor: pointer;
 }
 
@@ -57,6 +52,7 @@
 
 .line:hover {
     background-color: var(--time-hover-color);
+    z-index: 5;
 }
 
 .line:hover>.line-time {
