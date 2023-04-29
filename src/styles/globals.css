@@ -18,6 +18,7 @@
   height: 0;
   border: unset;
   overflow: hidden;
+  opacity: 0;
 }
 
 * {
