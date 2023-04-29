@@ -2,7 +2,7 @@
     position: relative;
     overflow-y: scroll;
     overflow-x: hidden;
-    padding: 0 20px;
+    padding: 0 10px;
     height: calc(100vh - 130px - 60px);
 }
 
@@ -30,7 +30,7 @@
 .scroll-arrows,
 .scroll-arrows-disabled {
     display: flex;
-    padding: 0 30px;
+    padding: 0 25px;
     align-items: center;
     cursor: pointer;
 }
@@ -69,8 +69,8 @@
     overflow-x: auto;
     pointer-events: none;
     top: 0;
-    left: 70px;
-    right: 20px;
+    left: 60px;
+    right: 10px;
 }
 
 .appointments-table {
