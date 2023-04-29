@@ -25,7 +25,7 @@ const Blocked = ({ startDate, endDate, comment }) => {
     console.log(blockEnd)
     return (
         <>
-            <div style={{ position: 'absolute', top: blockStart, right: 20, left: 70, height: blockEnd }}>
+            <div style={{ position: 'absolute', top: blockStart, right: 10, left: 60, height: blockEnd }}>
                 <div style={{ position: 'relative', width: '100%', height: '100%' }}>
                     <h2 style={commentStyle}>{comment}</h2>
                     <DiagonalStrip />
