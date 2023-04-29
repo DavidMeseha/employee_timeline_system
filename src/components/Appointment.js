@@ -1,9 +1,11 @@
 import useEmployeesData from "@/Hooks/useEmployeesData";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate }) => {
     const colorClasses = ['appointment-red', 'appointment-blue', 'appointment-green']
-    const {updateAppointmentEnd} = useEmployeesData()
+    const { updateAppointmentEnd } = useEmployeesData()
+
+    const [endTime, setEndTime] = useState(new Date(appointment.end).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: false }))
 
     let startHours = startDate.getHours();
     let startMinutes = startDate.getMinutes();
@@ -19,11 +21,11 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate 
     let dragStart
     let isDraging = false
     let originalPos
-    let newPos
     let newHeight
     const appointmentRef = useRef()
 
     const reCalculateNewEndDate = () => {
+        if (dragStart - originalPos) return
         let newEndTotalMinutes = ~~((newHeight * 15 / 15.8)) + startTotalMinutes
         let newEndHour = ~~(newEndTotalMinutes / 60)
         let newEndMinute = (((newEndTotalMinutes / 60) - newEndHour) * 60) //getting the reminder floot and convert into 60
@@ -32,22 +34,21 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate 
         endDate.setMinutes(newEndMinute)
 
         newHeight = (newEndTotalMinutes - startTotalMinutes) + (((newEndTotalMinutes - startTotalMinutes) / 15) * 0.8)
-        appointmentRef.current.style.height = `${newHeight}px`
-
-        //Update Data
-        updateAppointmentEnd(employee, appointment.id, endDate)
     }
 
-    const bottomStartDragHandle = () => {
+    const bottomStartDragHandle = (y) => {
         isDraging = true
-        dragStart = window.event.clientY
+        dragStart = y
         originalPos = parseFloat(appointmentRef.current.style.height.replace('px', ''))
+
+        console.log(window)
     }
 
-    const bottomDragHandle = () => {
+    const bottomDragHandle = (y) => {
         if (!isDraging) return
 
-        let change = window.event.clientY - dragStart
+        let change = y - dragStart
+
         newHeight = originalPos + change
 
         appointmentRef.current.style.height = `${newHeight}px`
@@ -55,7 +56,17 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate 
 
     const releaseHandle = () => {
         isDraging = false
+
         reCalculateNewEndDate()
+        appointmentRef.current.style.height = `${newHeight}px`
+
+        updateAppointmentEnd(employee, appointment.id, endDate)
+
+        setEndTime(new Date(appointment.end).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: false }))
+    }
+
+    const accedentalExitHandle = () => {
+        isDraging = false
     }
 
     return (
@@ -66,15 +77,20 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate 
                         {
                             new Date(appointment.start).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: false })
                             + ' - ' +
-                            new Date(appointment.end).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: false })
+                            endTime
                         }
                     </p>
                     <h3>{appointment.client}</h3>
                     <p>{appointment.service}</p>
                     <div
-                        onMouseDown={bottomStartDragHandle}
-                        onMouseMove={bottomDragHandle}
+                        onMouseDown={() => bottomStartDragHandle(window.event.clientY)}
+                        onTouchStart={(e) => bottomStartDragHandle(e.touches[0].clientY)}
+                        onMouseMove={() => bottomDragHandle(window.event.clientY)}
+                        onTouchMove={(e) => bottomDragHandle(e.touches[0].clientY)}
                         onMouseUp={releaseHandle}
+                        onTouchEnd={releaseHandle}
+                        onMouseLeave={accedentalExitHandle}
+                        onTouchCancel={accedentalExitHandle}
                         className="scale-area"
                     >
                         <div className="icon">

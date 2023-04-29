@@ -27,14 +27,6 @@ let data = [
                 end: 'April 30 2023 12:30:00',
                 comment: 'Some Comment ....'
             },
-            {
-                id: '03',
-                client: 'Marcos R.',
-                service: 'Haircut',
-                start: 'April 30 2023 05:30:00',
-                end: 'April 30 2023 8:00:00',
-                comment: 'Some Comment ....'
-            }
         ]
     },
     {
@@ -62,7 +54,7 @@ let data = [
                 client: 'Marcos R.',
                 service: 'Haircut',
                 start: 'April 30 2023 05:30:00',
-                end: 'April 30 2023 8:00:00',
+                end: 'April 30 2023 08:00:00',
                 comment: 'Some Comment ....'
             }
         ]
@@ -92,10 +84,23 @@ let data = [
                 client: 'Marcos R.',
                 service: 'Haircut',
                 start: 'April 30 2023 05:30:00',
-                end: 'April 30 2023 80:00:00',
+                end: 'April 30 2023 08:00:00',
                 comment: 'Some Comment ....'
             }
         ]
+    }
+]
+
+let blockedTime = [
+    {
+        start: 'April 29 2023 00:00:00',
+        end: 'April 29 2023 04:00:00',
+        comment: 'Some Comment.....'
+    },
+    {
+        start: 'April 30 2023 00:00:00',
+        end: 'April 30 2023 04:00:00',
+        comment: ''
     }
 ]
 
@@ -153,7 +158,7 @@ export const EmployeesProvider = ({ children }) => {
 
     return (
         <EmployeesContext.Provider value={{
-            employees,
+            employees, blockedTime,
             updateAppointmentEnd,
         }}>
             {children}
