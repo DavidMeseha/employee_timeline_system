@@ -1,6 +1,6 @@
 import Appointment from "@/components/Appointment";
 
-const AppointmentsTable = ({ employees, selectedEmployees, date }) => {
+const AppointmentsTable = ({ employees, selectedEmployees, date, containerRef }) => {
     return (
         <table className='appointments-table'>
             <tbody>
@@ -25,6 +25,7 @@ const AppointmentsTable = ({ employees, selectedEmployees, date }) => {
                                                     employee={employeeName}
                                                     startDate={appointmentDate}
                                                     endDate={appointmentEndDate}
+                                                    containerRef={containerRef}
                                                 />
                                             )
                                         })}

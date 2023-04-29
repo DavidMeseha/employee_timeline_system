@@ -10,7 +10,13 @@
   --negative-action-color: #fc3737;
   --time-hover-color: rgb(129 129 255 / 53%);
 
-  --cell-min-width: 200px;
+  --cell-min-width: 230px;
+}
+
+@media screen and (min-width:426px) {
+  :root {
+    --cell-min-width: 335px;
+  }
 }
 
 .hidden {
@@ -204,4 +210,16 @@ input[type=checkbox]:checked+.check-mark {
 
 input[type=checkbox]:checked+.check-mark:after {
   display: block;
+}
+
+@media screen and (max-width:900px) {
+  nav {
+    height: 114px;
+  }
+}
+
+@media screen and (max-width:575px) {
+  nav {
+    height: 165px;
+  }
 }

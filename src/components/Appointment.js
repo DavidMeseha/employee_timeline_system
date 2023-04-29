@@ -1,7 +1,7 @@
 import useEmployeesData from "@/Hooks/useEmployeesData";
 import { useRef, useState } from "react";
 
-const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate }) => {
+const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate, containerRef }) => {
     const colorClasses = ['appointment-red', 'appointment-blue', 'appointment-green']
     const { updateAppointmentEnd } = useEmployeesData()
 
@@ -22,6 +22,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate 
     let isDraging = false
     let originalPos
     let newHeight
+
     const appointmentRef = useRef()
 
     const reCalculateNewEndDate = () => {
@@ -40,8 +41,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate 
         isDraging = true
         dragStart = y
         originalPos = parseFloat(appointmentRef.current.style.height.replace('px', ''))
-
-        console.log(window)
+        containerRef.current.style.overflowY = 'hidden' //disable Scrolling for touch conflect
     }
 
     const bottomDragHandle = (y) => {
@@ -59,14 +59,11 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate 
 
         reCalculateNewEndDate()
         appointmentRef.current.style.height = `${newHeight}px`
+        containerRef.current.style.overflowY = 'scroll' //re-activate scrolling
 
         updateAppointmentEnd(employee, appointment.id, endDate)
 
         setEndTime(new Date(appointment.end).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: false }))
-    }
-
-    const accedentalExitHandle = () => {
-        isDraging = false
     }
 
     return (
@@ -89,8 +86,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate 
                         onTouchMove={(e) => bottomDragHandle(e.touches[0].clientY)}
                         onMouseUp={releaseHandle}
                         onTouchEnd={releaseHandle}
-                        onMouseLeave={accedentalExitHandle}
-                        onTouchCancel={accedentalExitHandle}
+                        onTouchCancel={releaseHandle}
                         className="scale-area"
                     >
                         <div className="icon">

@@ -10,7 +10,11 @@ const DailyDisplay = () => {
     const { date, selectedEmployees } = useDisplayManger()
     const contentRef = useRef()
     const headRef = useRef()
+    const timeLineRef = useRef()
     const [isToday, setIsToday] = useState(true)
+
+    let isScrolling = false
+    let touchStart, initialScroll
 
     useEffect(() => {
         if (date.getDate() === new Date().getDate()) setIsToday(true)
@@ -23,6 +27,20 @@ const DailyDisplay = () => {
 
     const scrollBy = (offset) => {
         headRef.current.scrollLeft += offset
+    }
+
+    const touchStartHandle = (e) => {
+        isScrolling = true
+        touchStart = e.touches[0].clientX
+        initialScroll = contentRef.current.scrollLeft
+    }
+
+    const touchScrollHandle = (e) => {
+        let change = initialScroll + touchStart - e.touches[0].clientX
+        if (!isScrolling || (change <= 30 && change >= -30)) return //prevent small unwanted scrolls
+
+        contentRef.current.scrollLeft = change
+        headRef.current.scrollLeft = change
     }
 
     return (
@@ -49,8 +67,9 @@ const DailyDisplay = () => {
                     </div>
                     <div className="scroll-arrows" onClick={() => scrollBy(-40)}><div className="arrow-right-light"></div></div>
                 </div>
-                <div className='timeline-container'>
+                <div onTouchStart={touchStartHandle} onTouchMove={touchScrollHandle} ref={timeLineRef} className='timeline-container'>
                     <TimeLines liveIndicator={isToday} />
+
                     {blockedTime.map((block, i) => {
                         let blockedDate = new Date(block.start)
                         if (blockedDate.getDate() !== date.getDate()) return;
@@ -60,8 +79,9 @@ const DailyDisplay = () => {
                             <Blocked key={i} startDate={blockedDate} endDate={blockedDateEnd} comment={block.comment || ''} />
                         )
                     })}
+
                     <div className='appointment-table-wraper' ref={contentRef}>
-                        <AppointmentsTable employees={employees} selectedEmployees={selectedEmployees} date={date} />
+                        <AppointmentsTable employees={employees} selectedEmployees={selectedEmployees} date={date} containerRef={timeLineRef} />
                     </div>
                 </div>
             </div >

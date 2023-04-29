@@ -37,6 +37,11 @@
     align-items: center;
 }
 
+.date-nav label {
+    display: flex;
+    flex-direction: column;
+}
+
 .date {
     background-color: var(--dark-color);
     color: var(--light-font-color);
