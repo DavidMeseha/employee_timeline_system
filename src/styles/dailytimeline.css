@@ -4,6 +4,7 @@
     overflow-x: hidden;
     margin: 0 10px;
     height: calc(100vh - 120px - 60px);
+    padding-bottom: 40px ;
 }
 
 .heading {
