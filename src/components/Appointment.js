@@ -49,13 +49,19 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         endDate.setMinutes(newEndMinute)
     }
 
-    const bottomStartDragHandle = (e) => {
-        dragStart = e.clientY || e.touches[0].clientY
+    const bottomStartTouchDragHandle = (e) => {
+        dragStart = e.touches[0].clientY
         dragTimeout = setTimeout(() => {
             isDraging = true
             originalPos = parseFloat(appointmentRef.current.style.height.replace('px', ''))
             if ('ontouchstart' in window) containerRef.current.style.overflowY = 'hidden' //disable Scrolling for touch conflect
         }, 1000)
+    }
+
+    const bottomStartmouseDragHandle = (e) => {
+        dragStart = e.clientY
+        isDraging = true
+        originalPos = parseFloat(appointmentRef.current.style.height.replace('px', ''))
     }
 
     const bottomDragHandle = (e) => {
@@ -83,7 +89,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         isDraging = false
         adjustDateHight()
         if ('ontouchstart' in window) containerRef.current.style.overflowY = 'scroll' //re-activate scrolling
-        
+
         endTime = new Date(endDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: false })
         setTime(startTime + ' - ' + endTime)
     }
@@ -96,8 +102,8 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
                     <h3>{appointment.client}</h3>
                     <p>{appointment.service}</p>
                     <div
-                        onMouseDown={bottomStartDragHandle}
-                        onTouchStart={bottomStartDragHandle}
+                        onMouseDown={bottomStartmouseDragHandle}
+                        onTouchStart={bottomStartTouchDragHandle}
                         onMouseMove={bottomDragHandle}
                         onTouchMove={bottomDragHandle}
                         onMouseUp={releaseHandle}
