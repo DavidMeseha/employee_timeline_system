@@ -19,8 +19,8 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     let endMinutes = endDate.getMinutes()
     let endTotalMinutes = (endHours * 60) + endMinutes
 
-    let appointmentStart = startTotalMinutes + ((startTotalMinutes / 15) * 0.8) - 1
-    let appointmentEnd = (endTotalMinutes - startTotalMinutes) + (((endTotalMinutes - startTotalMinutes) / 15) * 0.8)
+    let appointmentStart = startTotalMinutes + ((startTotalMinutes / 15) * 1) - 1
+    let appointmentEnd = (endTotalMinutes - startTotalMinutes) + (((endTotalMinutes - startTotalMinutes) / 15) * 1)
 
     let dragStart
     let isDraging = false
