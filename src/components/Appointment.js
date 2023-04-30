@@ -83,34 +83,32 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         isDraging = false
         adjustDateHight()
         if ('ontouchstart' in window) containerRef.current.style.overflowY = 'scroll' //re-activate scrolling
-
+        
         endTime = new Date(endDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: false })
         setTime(startTime + ' - ' + endTime)
     }
 
     return (
         <>
-            <div style={{ top: appointmentStart, height: appointmentEnd }}>
-                <div ref={appointmentRef} className={`appointment ${colorClasses[employeeOrder]}`} key={Math.floor(Math.random() * 5000)}>
-                    <div className="appointment-contnet">
-                        <p>{time}</p>
-                        <h3>{appointment.client}</h3>
-                        <p>{appointment.service}</p>
-                        <div
-                            onMouseDown={bottomStartDragHandle}
-                            onTouchStart={bottomStartDragHandle}
-                            onMouseMove={bottomDragHandle}
-                            onTouchMove={bottomDragHandle}
-                            onMouseUp={releaseHandle}
-                            onTouchEnd={releaseHandle}
-                            onTouchCancel={releaseHandle}
-                            onMouseLeave={releaseHandle}
-                            className="scale-area"
-                        >
-                            <div className="icon">
-                                <div></div>
-                                <div></div>
-                            </div>
+            <div ref={appointmentRef} style={{ top: appointmentStart, height: appointmentEnd }} className={`appointment ${colorClasses[employeeOrder]}`} key={Math.floor(Math.random() * 5000)}>
+                <div className="appointment-contnet">
+                    <p>{time}</p>
+                    <h3>{appointment.client}</h3>
+                    <p>{appointment.service}</p>
+                    <div
+                        onMouseDown={bottomStartDragHandle}
+                        onTouchStart={bottomStartDragHandle}
+                        onMouseMove={bottomDragHandle}
+                        onTouchMove={bottomDragHandle}
+                        onMouseUp={releaseHandle}
+                        onTouchEnd={releaseHandle}
+                        onTouchCancel={releaseHandle}
+                        onMouseLeave={releaseHandle}
+                        className="scale-area"
+                    >
+                        <div className="icon">
+                            <div></div>
+                            <div></div>
                         </div>
                     </div>
                 </div>
