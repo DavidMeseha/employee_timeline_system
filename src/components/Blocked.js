@@ -9,8 +9,8 @@ const Blocked = ({ startDate, endDate, comment }) => {
     let endMinutes = endDate.getMinutes()
     let endTotalMinutes = (endHours * 60) + endMinutes
 
-    let blockStart = startTotalMinutes + ((startTotalMinutes / 15) * 0.8) - 1
-    let blockEnd = (endTotalMinutes - startTotalMinutes) + (((endTotalMinutes - startTotalMinutes) / 15) * 0.8)
+    let blockStart = startTotalMinutes + (startTotalMinutes / 15) - 1
+    let blockEnd = (endTotalMinutes - startTotalMinutes) + ((endTotalMinutes - startTotalMinutes) / 15)
 
     return (
         <>

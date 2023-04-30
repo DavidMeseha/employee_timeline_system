@@ -17,8 +17,8 @@ const TimeLines = ({ liveIndicator }) => { //bool
             setLiveTime(date.toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: false })) //01:01 || 15:05 || 10:25
 
             //                                                      for every 15min
-            //                      one pixel per minute V     V Line Hight per section V    V middle of the indecator
-            liveTimeRef.current.style.top = `${totalMinutes + ((totalMinutes / 15) * 0.8) - 10}px`
+            //                 one pixel per minute-V         V-Line Hight per section V-middle of the indecator
+            liveTimeRef.current.style.top = `${totalMinutes + ((totalMinutes / 15)) - 10}px`
         }
 
         liveTimeTick()
@@ -60,8 +60,9 @@ const TimeLines = ({ liveIndicator }) => { //bool
         return (
             <div key={value} className="time-stamp">
                 <div className="hour">{isFullHour && time}</div>
-                <div className="line" style={{ borderBottom: `1px solid ${isFullHour ? '#9f9f9f' : '#dfdfdf'}` }}>
+                <div className="line">
                     <div className="line-time">{time}</div>
+                    <div style={{ height: 1, backgroundColor: `${isFullHour ? '#c1c1c1' : '#e5e5e5'}` }}></div>
                 </div>
             </div >
         )

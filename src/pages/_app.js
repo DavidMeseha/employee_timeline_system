@@ -7,10 +7,12 @@ import { EmployeesProvider } from '@/context/EmployeesProvider'
 
 export default function App({ Component, pageProps }) {
   return (
-    <EmployeesProvider>
-      <DisplayManagerProvider>
-        <Component {...pageProps} />
-      </DisplayManagerProvider>
-    </EmployeesProvider >
+    <>
+      <EmployeesProvider>
+        <DisplayManagerProvider>
+          <Component {...pageProps} />
+        </DisplayManagerProvider>
+      </EmployeesProvider >
+    </>
   )
 }
