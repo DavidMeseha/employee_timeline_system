@@ -141,6 +141,7 @@
 
 .blocked-area {
     position: absolute;
+    pointer-events: auto;
     right: 0;
     left: 0;
 }
