@@ -6,7 +6,7 @@ import useEmployeesData from "@/Hooks/useEmployeesData";
 import Blocked from "@/components/Blocked";
 
 const DailyDisplay = () => {
-    const { employees, blockedTime } = useEmployeesData()
+    const { employees } = useEmployeesData()
     const { date, selectedEmployees } = useDisplayManger()
     const contentRef = useRef()
     const headRef = useRef()
@@ -71,16 +71,6 @@ const DailyDisplay = () => {
                 </div>
                 <div onTouchStart={touchStartHandle} onTouchMove={touchScrollXHandle} ref={timeLineRef} className='timeline-container'>
                     <TimeLines liveIndicator={isToday} />
-
-                    {blockedTime.map((block, i) => {
-                        let blockedDate = new Date(block.start)
-                        if (blockedDate.getDate() !== date.getDate()) return;
-
-                        let blockedDateEnd = new Date(block.end)
-                        return (
-                            <Blocked key={i} startDate={blockedDate} endDate={blockedDateEnd} comment={block.comment || ''} />
-                        )
-                    })}
 
                     <div className='appointment-table-wraper' ref={contentRef}>
                         <AppointmentsTable employees={employees} selectedEmployees={selectedEmployees} date={date} containerRef={timeLineRef} />

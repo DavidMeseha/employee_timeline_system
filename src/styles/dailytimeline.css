@@ -142,7 +142,7 @@
 .blocked-area {
     position: absolute;
     right: 0;
-    left: var(--timetext-and-gap-width);
+    left: 0;
 }
 
 .blocked-area div {

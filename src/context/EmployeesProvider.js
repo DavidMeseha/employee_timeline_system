@@ -27,6 +27,23 @@ let data = [
                 end: 'April 30 2023 12:30:00',
                 comment: 'Some Comment ....'
             },
+        ],
+        blocks: [
+            {
+                start: 'May 1 2023 00:00:00',
+                end: 'May 1 2023 04:00:00',
+                comment: 'Some Comment.....'
+            },
+            {
+                start: 'April 30 2023 00:00:00',
+                end: 'April 30 2023 04:00:00',
+                comment: ''
+            },
+            {
+                start: 'April 30 2023 20:00:00',
+                end: 'April 30 2023 23:59:00',
+                comment: 'day End Comment.....'
+            }
         ]
     },
     {
@@ -56,6 +73,23 @@ let data = [
                 start: 'April 30 2023 05:30:00',
                 end: 'April 30 2023 08:00:00',
                 comment: 'Some Comment ....'
+            }
+        ],
+        blocks: [
+            {
+                start: 'May 1 2023 00:00:00',
+                end: 'May 1 2023 04:00:00',
+                comment: 'Some Comment.....'
+            },
+            {
+                start: 'April 30 2023 00:00:00',
+                end: 'April 30 2023 04:00:00',
+                comment: ''
+            },
+            {
+                start: 'April 30 2023 20:00:00',
+                end: 'April 30 2023 23:59:00',
+                comment: 'day End Comment.....'
             }
         ]
     },
@@ -87,25 +121,24 @@ let data = [
                 end: 'April 30 2023 08:00:00',
                 comment: 'Some Comment ....'
             }
+        ],
+        blocks: [
+            {
+                start: 'May 1 2023 00:00:00',
+                end: 'May 1 2023 04:00:00',
+                comment: 'Some Comment.....'
+            },
+            {
+                start: 'April 30 2023 00:00:00',
+                end: 'April 30 2023 04:00:00',
+                comment: ''
+            },
+            {
+                start: 'April 30 2023 20:00:00',
+                end: 'April 30 2023 23:59:00',
+                comment: 'day End Comment.....'
+            }
         ]
-    }
-]
-
-let blockedTime = [
-    {
-        start: 'May 1 2023 00:00:00',
-        end: 'May 1 2023 04:00:00',
-        comment: 'Some Comment.....'
-    },
-    {
-        start: 'April 30 2023 00:00:00',
-        end: 'April 30 2023 04:00:00',
-        comment: ''
-    },
-    {
-        start: 'April 30 2023 20:00:00',
-        end: 'April 30 2023 23:59:00',
-        comment: 'day End Comment.....'
     }
 ]
 
@@ -162,7 +195,7 @@ export const EmployeesProvider = ({ children }) => {
 
     return (
         <EmployeesContext.Provider value={{
-            employees, blockedTime,
+            employees,
             updateAppointmentEnd,
         }}>
             {children}
