@@ -23,7 +23,6 @@ const AppointmentsTable = ({ employees, selectedEmployees, date, containerRef })
                                             )
                                         })}
 
-
                                         {employee.appointments?.map((appointment, ai) => {
                                             let appointmentDate = new Date(appointment.start)
                                             if (appointmentDate.getDate() !== date.getDate()) return;
@@ -41,6 +40,7 @@ const AppointmentsTable = ({ employees, selectedEmployees, date, containerRef })
                                                 />
                                             )
                                         })}
+
                                     </td>
                                 )
                             })

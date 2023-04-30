@@ -182,7 +182,7 @@ export const EmployeesProvider = ({ children }) => {
         employeesDispatch({ type: SET_EMPLOYEES, payload: data })
     }, [])
 
-    const updateAppointmentEnd = (employee, appointmentId, newDate) => {
+    const extendAppointmentEnd = (employee, appointmentId, newDate) => {
         employeesDispatch({
             type: UPDATE_END_DATE,
             payload: {
@@ -196,7 +196,7 @@ export const EmployeesProvider = ({ children }) => {
     return (
         <EmployeesContext.Provider value={{
             employees,
-            updateAppointmentEnd,
+            extendAppointmentEnd,
         }}>
             {children}
         </EmployeesContext.Provider >
