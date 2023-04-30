@@ -40,7 +40,7 @@
     background-color: var(--dark-color);
 }
 
-.employee-name td {
+.employee-names td {
     min-width: var(--cell-min-width);
     padding: 10px;
     text-align: center;

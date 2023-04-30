@@ -43,7 +43,7 @@ const DailyDisplay = () => {
         return (
             <table>
                 <thead>
-                    <tr className="employees-name">
+                    <tr className="employee-names">
                         {selectedEmployees.map((employeeName, i) => {
                             let tag = employeeName.split(' ')[0][0]
                             return (
