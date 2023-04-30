@@ -93,8 +93,8 @@ let data = [
 
 let blockedTime = [
     {
-        start: 'April 29 2023 00:00:00',
-        end: 'April 29 2023 04:00:00',
+        start: 'May 1 2023 00:00:00',
+        end: 'May 1 2023 04:00:00',
         comment: 'Some Comment.....'
     },
     {
@@ -135,7 +135,6 @@ function employeesReducer(employees, action) {
 
         case SET_EMPLOYEES: {
             let data = action.payload
-            console.log(data)
             return data
         }
 

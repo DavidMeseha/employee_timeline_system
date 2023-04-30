@@ -2,8 +2,8 @@
     position: relative;
     overflow-y: scroll;
     overflow-x: hidden;
-    padding: 0 10px;
-    height: calc(100vh - 130px - 60px);
+    margin: 0 10px;
+    height: calc(100vh - 120px - 60px);
 }
 
 .heading {
@@ -11,13 +11,14 @@
     align-items: stretch;
     background-color: var(--medium-dark-color);
     color: var(--light-font-color);
-    height: 130px;
+    height: 120px;
 }
 
 .employees-wraper {
     width: -webkit-fill-available;
     width: -moz-avilable;
-    margin: 0 -50px 0 0;
+
+    margin: 0 -20px 0 0;
     overflow: hidden;
     overflow-x: scroll;
 }
@@ -29,7 +30,7 @@
 
 .scroll-arrows {
     display: flex;
-    padding: 0 25px;
+    padding: 0 calc((var(--timetext-and-gap-width) / 2) - 10px);
     background-color: var(--medium-dark-color);
     align-items: center;
     cursor: pointer;
@@ -39,9 +40,9 @@
     background-color: var(--dark-color);
 }
 
-.employees-name td {
+.employee-name td {
     min-width: var(--cell-min-width);
-    padding: 20px;
+    padding: 10px;
     text-align: center;
 }
 
@@ -61,8 +62,8 @@
     overflow-x: auto;
     pointer-events: none;
     top: 0;
-    left: 60px;
-    right: 10px;
+    right: 0;
+    left: var(--timetext-and-gap-width);
 }
 
 .appointments-table {
@@ -118,7 +119,7 @@
 
 .scale-area {
     position: absolute;
-    height: 35px;
+    height: 30px;
     padding: 20px 0 0 0;
     bottom: 0;
     left: 0;
@@ -138,14 +139,36 @@
     background-color: var(--medium-dark-color);
 }
 
+.blocked-area {
+    position: absolute;
+    right: 0;
+    left: var(--timetext-and-gap-width);
+}
+
+.blocked-area div {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.blocked-area div h2 {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    padding: 0 40px;
+}
+
 @media screen and (max-width:900px) {
     .timeline-container {
-        height: calc(100vh - 131px - 114px);
+        height: calc(100vh - 120px - 114px);
     }
 }
 
 @media screen and (max-width:575px) {
     .timeline-container {
-        height: calc(100vh - 131px - 165px);
+        height: calc(100vh - 120px - 165px);
     }
 }

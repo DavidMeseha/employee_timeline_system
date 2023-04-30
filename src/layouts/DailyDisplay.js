@@ -13,7 +13,6 @@ const DailyDisplay = () => {
     const timeLineRef = useRef()
     const [isToday, setIsToday] = useState(true)
 
-    let isScrolling = false
     let touchStart, initialScroll
 
     useEffect(() => {
@@ -30,17 +29,34 @@ const DailyDisplay = () => {
     }
 
     const touchStartHandle = (e) => {
-        isScrolling = true
         touchStart = e.touches[0].clientX
         initialScroll = contentRef.current.scrollLeft
     }
 
-    const touchScrollHandle = (e) => {
+    const touchScrollXHandle = (e) => {
         let change = initialScroll + touchStart - e.touches[0].clientX
-        if (!isScrolling || (change <= 30 && change >= -30)) return //prevent small unwanted scrolls
-
         contentRef.current.scrollLeft = change
         headRef.current.scrollLeft = change
+    }
+
+    const tableHeader = () => {
+        return (
+            <table>
+                <thead>
+                    <tr className="employees-name">
+                        {selectedEmployees.map((employeeName, i) => {
+                            let tag = employeeName.split(' ')[0][0]
+                            return (
+                                <td key={i} style={{ width: `${100 / selectedEmployees.length}%` }}>
+                                    <div className="name-tag">{tag}</div>
+                                    <div>{employeeName}</div>
+                                </td>
+                            )
+                        })}
+                    </tr>
+                </thead>
+            </table>
+        )
     }
 
     return (
@@ -49,25 +65,11 @@ const DailyDisplay = () => {
                 <div className='heading'>
                     <div className="scroll-arrows" onClick={() => scrollBy(40)}><div className="arrow-left-light"></div></div>
                     <div className="employees-wraper" ref={headRef} onScroll={handleScroll}>
-                        <table>
-                            <thead>
-                                <tr className="employees-name">
-                                    {selectedEmployees.map((employeeName, i) => {
-                                        let tag = employeeName.split(' ')[0][0]
-                                        return (
-                                            <td key={i} style={{ width: `${100 / selectedEmployees.length}%` }}>
-                                                <div className="name-tag">{tag}</div>
-                                                <div>{employeeName}</div>
-                                            </td>
-                                        )
-                                    })}
-                                </tr>
-                            </thead>
-                        </table>
+                        {tableHeader()}
                     </div>
                     <div className="scroll-arrows" onClick={() => scrollBy(-40)}><div className="arrow-right-light"></div></div>
                 </div>
-                <div onTouchStart={touchStartHandle} onTouchMove={touchScrollHandle} ref={timeLineRef} className='timeline-container'>
+                <div onTouchStart={touchStartHandle} onTouchMove={touchScrollXHandle} ref={timeLineRef} className='timeline-container'>
                     <TimeLines liveIndicator={isToday} />
 
                     {blockedTime.map((block, i) => {

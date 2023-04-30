@@ -16,7 +16,6 @@ const AppointmentsTable = ({ employees, selectedEmployees, date, containerRef })
                                             if (appointmentDate.getDate() !== date.getDate()) return;
 
                                             let appointmentEndDate = new Date(appointment.end)
-                                            console.log(appointmentEndDate)
                                             return (
                                                 <Appointment
                                                     key={ai}
