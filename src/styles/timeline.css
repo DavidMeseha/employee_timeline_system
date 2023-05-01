@@ -46,14 +46,13 @@
     display: none;
     position: absolute;
     bottom: 1px;
-    left: 2px;
-    color: var(--dark-color);
+    left: -41px;
+    color: var(--time-stamp-color);
     font-size: 12px;
 }
 
 .line:hover {
     background-color: var(--time-hover-color);
-    z-index: 5;
 }
 
 .line:hover>.line-time {

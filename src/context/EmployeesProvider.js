@@ -15,16 +15,32 @@ let data = [
                 id: '01',
                 client: 'Marcos R.',
                 service: 'Haircut',
-                start: 'April 29 2023 09:30:00',
-                end: 'April 29 2023 12:30:00',
+                start: 'May 1 2023 09:30:00',
+                end: 'May 1 2023 12:30:00',
                 comment: 'Some Comment ....'
             },
             {
                 id: '02',
                 client: 'Marcos R.',
                 service: 'Haircut',
-                start: 'April 30 2023 09:30:00',
-                end: 'April 30 2023 12:30:00',
+                start: 'May 1 2023 09:30:00',
+                end: 'May 1 2023 12:30:00',
+                comment: 'Some Comment ....'
+            },
+            {
+                id: '03',
+                client: 'Marcos R.',
+                service: 'Haircut',
+                start: 'May 1 2023 10:30:00',
+                end: 'May 1 2023 13:30:00',
+                comment: 'Some Comment ....'
+            },
+            {
+                id: '04',
+                client: 'Marcos R.',
+                service: 'Haircut',
+                start: 'May 1 2023 8:30:00',
+                end: 'May 1 2023 14:30:00',
                 comment: 'Some Comment ....'
             },
         ],
@@ -54,24 +70,24 @@ let data = [
                 id: '01',
                 client: 'Marcos R.',
                 service: 'Haircut',
-                start: 'April 29 2023 09:30:00',
-                end: 'April 29 2023 12:30:00',
+                start: 'May 1 2023 09:30:00',
+                end: 'May 1 2023 12:30:00',
                 comment: 'Some Comment ....'
             },
             {
                 id: '02',
                 client: 'Marcos R.',
                 service: 'Haircut',
-                start: 'April 30 2023 09:30:00',
-                end: 'April 30 2023 12:30:00',
+                start: 'May 1 2023 09:30:00',
+                end: 'May 1 2023 12:30:00',
                 comment: 'Some Comment ....'
             },
             {
                 id: '03',
                 client: 'Marcos R.',
                 service: 'Haircut',
-                start: 'April 30 2023 05:30:00',
-                end: 'April 30 2023 08:00:00',
+                start: 'May 1 2023 05:30:00',
+                end: 'May 1 2023 08:00:00',
                 comment: 'Some Comment ....'
             }
         ],
@@ -101,24 +117,24 @@ let data = [
                 id: '01',
                 client: 'Marcos R.',
                 service: 'Haircut',
-                start: 'April 29 2023 09:30:00',
-                end: 'April 29 2023 12:30:00',
+                start: 'May 1 2023 09:30:00',
+                end: 'May 1 2023 12:30:00',
                 comment: 'Some Comment ....'
             },
             {
                 id: '02',
                 client: 'Marcos R.',
                 service: 'Haircut',
-                start: 'April 30 2023 09:30:00',
-                end: 'April 30 2023 12:30:00',
+                start: 'May 1 2023 09:30:00',
+                end: 'May 1 2023 12:30:00',
                 comment: 'Some Comment ....'
             },
             {
                 id: '03',
                 client: 'Marcos R.',
                 service: 'Haircut',
-                start: 'April 30 2023 05:30:00',
-                end: 'April 30 2023 08:00:00',
+                start: 'May 1 2023 05:30:00',
+                end: 'May 1 2023 08:00:00',
                 comment: 'Some Comment ....'
             }
         ],

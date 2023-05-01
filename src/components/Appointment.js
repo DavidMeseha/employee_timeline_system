@@ -1,21 +1,14 @@
 import useEmployeesData from "@/Hooks/useEmployeesData";
-import { useEffect, useRef, useState } from "react";
+import { calculateHeightFromMinutes, calculateMinutesFromHeight } from "@/utilities/calculations";
+import { useRef } from "react";
 
-const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate, containerRef }) => {
+const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate, containerRef, updateLayout }) => {
     const colorClasses = ['appointment-red', 'appointment-blue', 'appointment-green']
     const { extendAppointmentEnd } = useEmployeesData()
 
     let startTime = new Date(startDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: false })
     let endTime = new Date(endDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: false })
-    const [time, setTime] = useState(startTime + ' - ' + endTime)
-
-    const calculateHeightFromMinutes = (endTotalMinutes) => {
-        return (endTotalMinutes - startTotalMinutes) + ((endTotalMinutes - startTotalMinutes) / 15)
-    }
-
-    const calculateMinutesFromHeight = (height) => {
-        return ((height * 15) / 16) + startTotalMinutes
-    }
+    let time = startTime + ' - ' + endTime
 
     let startHours = startDate.getHours();
     let startMinutes = startDate.getMinutes();
@@ -25,8 +18,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     let endMinutes = endDate.getMinutes()
     let endTotalMinutes = (endHours * 60) + endMinutes
 
-    let appointmentStart = startTotalMinutes + (startTotalMinutes / 15) - 1
-    let appointmentEnd = calculateHeightFromMinutes(endTotalMinutes)
+    let appointmentEnd = calculateHeightFromMinutes(endTotalMinutes, startTotalMinutes)
 
     let dragStart
     let dragTimeout
@@ -35,22 +27,29 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     let newHeight
 
     const appointmentRef = useRef()
+    const timeRef = useRef()
 
     const adjustDateHight = () => {
-        let newEndTotalMinutes = calculateMinutesFromHeight(newHeight)
+        let newEndTotalMinutes = calculateMinutesFromHeight(newHeight, startTotalMinutes)
         if ((newEndTotalMinutes / 5) % 1 !== 0) newEndTotalMinutes = ((~~(newEndTotalMinutes / 5)) + 1) * 5
-        newHeight = calculateHeightFromMinutes(newEndTotalMinutes)
+        newHeight = calculateHeightFromMinutes(newEndTotalMinutes, startTotalMinutes)
 
         let newEndHour = ~~(newEndTotalMinutes / 60)
-        //getting the reminder floot and convert into 60, +0.1 is a fix for th long disimals
+        //getting the reminder floot and convert into 60, +0.1 is a fix for the long float
         let newEndMinute = ~~((((newEndTotalMinutes / 60) - newEndHour) * 60) + 0.1)
 
         endDate.setHours(newEndHour)
         endDate.setMinutes(newEndMinute)
+
+        endTime = new Date(endDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: false })
+        time = startTime + ' - ' + endTime
+
+        timeRef.current.innerText = time
     }
 
     const bottomStartTouchDragHandle = (e) => {
-        dragStart = e.touches[0].clientY
+        e.preventDefault()
+        dragStart = e.touches[0].pageY
         dragTimeout = setTimeout(() => {
             isDraging = true
             originalPos = parseFloat(appointmentRef.current.style.height.replace('px', ''))
@@ -62,6 +61,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     }
 
     const bottomStartmouseDragHandle = (e) => {
+        e.preventDefault()
         dragStart = e.clientY
         isDraging = true
         originalPos = parseFloat(appointmentRef.current.style.height.replace('px', ''))
@@ -70,38 +70,38 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     const bottomDragHandle = (e) => {
         e.preventDefault()
         if (!isDraging) {
-            dragStart = e.clientY || e.touches[0].clientY
+            dragStart = e.clientY || e.touches[0].pageY
             return
         }
-
-        let y = e.clientY || e.touches[0].clientY
+        let y = e.clientY || e.touches[0].pageY
         let change = y - dragStart
         newHeight = originalPos + change
 
         adjustDateHight()
-        //endTime = newEndHour + ':' + (newEndMinute.toString().length === 1 ? '0' + newEndMinute : '' + newEndMinute)
-        //setTime('' + startTime + ' - ' + endTime)
-
         extendAppointmentEnd(employee, appointment.id, endDate)
         appointmentRef.current.style.height = `${newHeight}px`
     }
 
     const releaseHandle = (e) => {
+        e.preventDefault()
         if (dragTimeout) clearTimeout(dragTimeout)
-        if (dragStart === e.clientY || dragStart === 0 || !isDraging) return
+        if (dragStart === e.clientY || dragStart === e.changedTouches[0].clientY || dragStart === 0 || !isDraging) return
         isDraging = false
         adjustDateHight()
-        if ('ontouchstart' in window) containerRef.current.style.overflowY = 'scroll' //re-activate scrolling
 
-        endTime = new Date(endDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: false })
-        setTime(startTime + ' - ' + endTime)
+        if ('ontouchstart' in window) {
+            containerRef.current.style.overflowY = 'scroll' //re-activate scrolling
+            document.body.style.overflow = 'auto'
+        }
+
+        updateLayout()
     }
 
     return (
         <>
-            <div ref={appointmentRef} style={{ top: appointmentStart, height: appointmentEnd }} className={`appointment ${colorClasses[employeeOrder]}`} key={Math.floor(Math.random() * 5000)}>
+            <div ref={appointmentRef} style={{ height: appointmentEnd }} className={`appointment ${colorClasses[employeeOrder]}`} key={Math.floor(Math.random() * 5000)}>
                 <div className="appointment-contnet">
-                    <p>{time}</p>
+                    <p ref={timeRef}>{time}</p>
                     <h3>{appointment.client}</h3>
                     <p>{appointment.service}</p>
                     <div

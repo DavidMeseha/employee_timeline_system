@@ -9,18 +9,13 @@
   --employee-icon-back-color: #0050b1;
   --negative-action-color: #fc3737;
   --time-hover-color: rgb(129 129 255 / 53%);
+  --time-stamp-color: #0050b1;
 
-  --cell-min-width: 230px;
+  --cell-min-width: 700px;
   --time-text-width: 30px;
   --time-to-table-gap: 10px;
 
   --timetext-and-gap-width: calc(var(--time-text-width) + var(--time-to-table-gap));
-}
-
-@media screen and (min-width:426px) {
-  :root {
-    --cell-min-width: 335px;
-  }
 }
 
 .hidden {
@@ -51,7 +46,7 @@ body {
 body {
   position: fixed;
   inset: 0;
-  overflow: auto;
+  overflow: hidden;
 }
 
 nav {

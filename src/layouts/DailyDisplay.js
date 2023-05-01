@@ -3,7 +3,6 @@ import useDisplayManger from "@/Hooks/useDisplayManger";
 import { useEffect, useRef, useState } from "react";
 import AppointmentsTable from "./AppointmentsTable";
 import useEmployeesData from "@/Hooks/useEmployeesData";
-import Blocked from "@/components/Blocked";
 
 const DailyDisplay = () => {
     const { employees } = useEmployeesData()
