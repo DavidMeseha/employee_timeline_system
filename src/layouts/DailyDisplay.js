@@ -47,8 +47,10 @@ const DailyDisplay = () => {
                             let tag = employeeName.split(' ')[0][0]
                             return (
                                 <td key={i} style={{ width: `${100 / selectedEmployees.length}%` }}>
-                                    <div className="name-tag">{tag}</div>
-                                    <div>{employeeName}</div>
+                                    <div>
+                                        <div className="name-tag">{tag}</div>
+                                        <div>{employeeName}</div>
+                                    </div>
                                 </td>
                             )
                         })}

@@ -4,7 +4,7 @@
     overflow-x: hidden;
     margin: 0 10px;
     height: calc(100vh - 120px - 60px);
-    padding-bottom: 60px ;
+    padding-bottom: 60px;
 }
 
 .heading {
@@ -43,8 +43,11 @@
 
 .employee-names td {
     min-width: var(--cell-min-width);
-    padding: 10px;
     text-align: center;
+}
+
+.employee-names td>div {
+    padding: 10px;
 }
 
 .name-tag {
@@ -160,6 +163,14 @@
     align-items: center;
     justify-content: center;
     padding: 0 40px;
+}
+
+@media screen and (max-width:660px) {
+    .employee-names td>div {
+        width: calc(100vw - 70px);
+        position: sticky;
+        left: 0;
+    }
 }
 
 @media screen and (max-width:900px) {

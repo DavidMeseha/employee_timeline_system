@@ -1,7 +1,7 @@
 import { calculateTopFromMinutes } from "@/utilities/calculations";
 import Appointment from "../components/Appointment";
 
-const MultiApointmentLayout = ({ appointments, employeeOrder, employee, startDate, containerRef,updateLayout }) => {
+const MultiApointmentLayout = ({ appointments, employeeOrder, employee, startDate, containerRef, updateLayout }) => {
     let setStartHours = startDate.getHours();
     let setStartMinutes = startDate.getMinutes();
     let setStartTotalMinutes = (setStartHours * 60) + setStartMinutes
