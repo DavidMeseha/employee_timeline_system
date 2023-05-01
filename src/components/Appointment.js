@@ -54,7 +54,10 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         dragTimeout = setTimeout(() => {
             isDraging = true
             originalPos = parseFloat(appointmentRef.current.style.height.replace('px', ''))
-            if ('ontouchstart' in window) containerRef.current.style.overflowY = 'hidden' //disable Scrolling for touch conflect
+            if ('ontouchstart' in window) {
+                containerRef.current.style.overflowY = 'hidden' //disable Scrolling for touch conflect
+                document.body.style.overflow = 'hidden'
+            }
         }, 1000)
     }
 
