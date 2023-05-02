@@ -2,7 +2,7 @@ import useEmployeesData from "@/Hooks/useEmployeesData";
 import { calculateHeightFromMinutes, calculateMinutesFromHeight, calculateMinutesFromTop, calculateTopFromMinutes } from "@/utilities/calculations";
 import { useRef, useState } from "react";
 
-const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate, containerRef, updateLayout, appointmentsCount }) => {
+const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate, containerRef, tableRef, updateLayout, appointmentsCount }) => {
     const colorClasses = ['appointment-red', 'appointment-blue', 'appointment-green']
     const { updateAppointmentStartDate } = useEmployeesData()
     const [isEditable, setIsEditable] = useState(false)
@@ -35,6 +35,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     const disableScrollingForTouch = () => {
         if ('ontouchstart' in window) {
             containerRef.current.style.overflowY = 'hidden' //disable Scrolling for touch conflect
+            tableRef.current.style.overflowX = 'hidden'
             document.body.style.overflow = 'hidden'
         }
     }
@@ -42,6 +43,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     const enableScrolling = () => {
         if ('ontouchstart' in window) {
             containerRef.current.style.overflowY = 'scroll' //re-activate scrolling
+            tableRef.current.style.overflowX = 'scroll'
             document.body.style.overflow = 'auto'
         }
     }

@@ -2,7 +2,7 @@ import Blocked from "@/components/Blocked";
 import MultiApointmentLayout from "./MultiAppointmentLayout";
 import { useForceUpdate } from "@/Hooks/useForceUpdate";
 
-const AppointmentsTable = ({ employees, selectedEmployees, date, containerRef }) => {
+const AppointmentsTable = ({ employees, selectedEmployees, date, containerRef, tableRef }) => {
     const updateLayout = useForceUpdate()
 
     const groupingIntersectingAppointments = (appointments) => {
@@ -90,6 +90,7 @@ const AppointmentsTable = ({ employees, selectedEmployees, date, containerRef })
                                                     employee={employeeName}
                                                     startDate={group.startDate}
                                                     containerRef={containerRef}
+                                                    tableRef={tableRef}
                                                     updateLayout={updateLayout}
                                                 />
                                             )

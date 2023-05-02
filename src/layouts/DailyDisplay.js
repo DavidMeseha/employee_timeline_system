@@ -74,7 +74,7 @@ const DailyDisplay = () => {
                     <TimeLines liveIndicator={isToday} />
 
                     <div className='appointment-table-wraper' ref={contentRef}>
-                        <AppointmentsTable employees={employees} selectedEmployees={selectedEmployees} date={date} containerRef={timeLineRef} />
+                        <AppointmentsTable employees={employees} selectedEmployees={selectedEmployees} date={date} containerRef={timeLineRef} tableRef={contentRef} />
                     </div>
                 </div>
             </div >

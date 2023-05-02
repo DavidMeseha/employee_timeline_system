@@ -1,6 +1,6 @@
 import Appointment from "../components/Appointment";
 
-const MultiApointmentLayout = ({ appointments, employeeOrder, employee, containerRef, updateLayout }) => {
+const MultiApointmentLayout = ({ appointments, employeeOrder, employee, containerRef, tableRef, updateLayout }) => {
     return (
         <div style={{ position: 'absolute', width: 'calc(100% - 10px)', top: 0 }}>
             <div style={{ position: 'relative', display: "flex", gap: 10 }}>
@@ -17,6 +17,7 @@ const MultiApointmentLayout = ({ appointments, employeeOrder, employee, containe
                             startDate={appointmentDate}
                             endDate={appointmentEndDate}
                             containerRef={containerRef}
+                            tableRef={tableRef}
                             updateLayout={updateLayout}
                             appointmentsCount={appointments.length}
                         />
