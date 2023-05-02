@@ -7,6 +7,9 @@ export const calculateMinutesFromHeight = (height, startMinutes) => {
 }
 
 export const calculateTopFromMinutes = (startMinutes) => {
-    return (startMinutes + (startMinutes / 15) - 1
-    )
+    return startMinutes + (startMinutes / 15) - 1
+}
+
+export const calculateMinutesFromTop = (topPixels) => {
+    return ((topPixels - 1) * 15) / 16
 }

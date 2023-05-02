@@ -2,7 +2,7 @@ import { createContext, useEffect, useReducer } from "react";
 
 const EmployeesContext = createContext({})
 
-const UPDATE_END_DATE = 'UPDATE_END_DATE'
+const UPDATE_DATE = 'UPDATE_END_DATE'
 const UPDATE_START_DATE = 'UPDATE_START_DATE'
 const SET_EMPLOYEES = 'SET_EMPLOYEES'
 
@@ -11,22 +11,6 @@ let data = [
         id: '01',
         name: 'Marcos Lima',
         appointments: [
-            {
-                id: '01',
-                client: 'Marcos R.',
-                service: 'Haircut',
-                start: 'May 1 2023 09:30:00',
-                end: 'May 1 2023 12:30:00',
-                comment: 'Some Comment ....'
-            },
-            {
-                id: '02',
-                client: 'Marcos R.',
-                service: 'Haircut',
-                start: 'May 1 2023 09:30:00',
-                end: 'May 1 2023 12:30:00',
-                comment: 'Some Comment ....'
-            },
             {
                 id: '03',
                 client: 'Marcos R.',
@@ -160,17 +144,19 @@ let data = [
 
 function employeesReducer(employees, action) {
     switch (action.type) {
-        case UPDATE_END_DATE: {
+        case UPDATE_DATE: {
             let employee = action.payload.name
             let appointmentId = action.payload.id
-            let newDate = action.payload.newValue
+            let newEndDate = action.payload.value.endDate
+            let newStartDate = action.payload.value.startDate
             let newState = employees
 
             for (let index = 0; index < newState.length; index++) {
                 if (newState[index].name === employee) {
                     for (let appointmentIndex = 0; appointmentIndex < newState[index].appointments.length; appointmentIndex++) {
                         if (newState[index].appointments[appointmentIndex].id === appointmentId) {
-                            newState[index].appointments[appointmentIndex].end = newDate
+                            newState[index].appointments[appointmentIndex].end = newEndDate
+                            newState[index].appointments[appointmentIndex].start = newStartDate
                             break
                         }
                     }
@@ -198,13 +184,13 @@ export const EmployeesProvider = ({ children }) => {
         employeesDispatch({ type: SET_EMPLOYEES, payload: data })
     }, [])
 
-    const extendAppointmentEnd = (employee, appointmentId, newDate) => {
+    const updateAppointmentStartDate = (employee, appointmentId, newStartDate, newEndDate) => {
         employeesDispatch({
-            type: UPDATE_END_DATE,
+            type: UPDATE_DATE,
             payload: {
                 name: employee,
                 id: appointmentId,
-                newValue: newDate
+                value: { startDate: newStartDate, endDate: newEndDate }
             }
         })
     }
@@ -212,7 +198,7 @@ export const EmployeesProvider = ({ children }) => {
     return (
         <EmployeesContext.Provider value={{
             employees,
-            extendAppointmentEnd,
+            updateAppointmentStartDate,
         }}>
             {children}
         </EmployeesContext.Provider >

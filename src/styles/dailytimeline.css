@@ -18,8 +18,6 @@
 .employees-wraper {
     width: -webkit-fill-available;
     width: -moz-avilable;
-
-    margin: 0 -20px 0 0;
     overflow: hidden;
     overflow-x: scroll;
 }
@@ -35,6 +33,7 @@
     background-color: var(--medium-dark-color);
     align-items: center;
     cursor: pointer;
+    z-index: 1;
 }
 
 .scroll-arrows:hover {
@@ -87,11 +86,18 @@
     border-collapse: collapse;
 }
 
-.appointment {
+.appointment,
+.editable-appointment {
+    cursor: grab;
     pointer-events: auto;
-    width: calc(100% - 10px);
     border-radius: 5px;
     overflow: hidden;
+}
+
+.editable-appointment {
+    box-shadow: 0px 0px 33px 0px rgba(0,0,0,0.5);
+-webkit-box-shadow: 0px 0px 33px 0px rgba(0,0,0,0.5);
+-moz-box-shadow: 0px 0px 33px 0px rgba(0,0,0,0.5);
 }
 
 .appointment-red {

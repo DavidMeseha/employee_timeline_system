@@ -64,11 +64,11 @@ const DailyDisplay = () => {
         <>
             <div style={{ position: 'relative' }}>
                 <div className='heading'>
-                    <div className="scroll-arrows" onClick={() => scrollBy(40)}><div className="arrow-left-light"></div></div>
+                    <div className="scroll-arrows" onClick={() => scrollBy(200)}><div className="arrow-left-light"></div></div>
                     <div className="employees-wraper" ref={headRef} onScroll={handleScroll}>
                         {tableHeader()}
                     </div>
-                    <div className="scroll-arrows" onClick={() => scrollBy(-40)}><div className="arrow-right-light"></div></div>
+                    <div className="scroll-arrows" onClick={() => scrollBy(-200)}><div className="arrow-right-light"></div></div>
                 </div>
                 <div onTouchStart={touchStartHandle} onTouchMove={touchScrollXHandle} ref={timeLineRef} className='timeline-container'>
                     <TimeLines liveIndicator={isToday} />
