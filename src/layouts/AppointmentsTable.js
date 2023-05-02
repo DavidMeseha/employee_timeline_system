@@ -64,7 +64,7 @@ const AppointmentsTable = ({ employees, selectedEmployees, date, containerRef, s
         });
 
         console.log(max)
-        return ((max > 1 ? max : 2) * 150)
+        return ((max > 1 ? max : 2) * 200)
     }
 
     return (
