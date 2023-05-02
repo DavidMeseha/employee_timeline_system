@@ -89,7 +89,6 @@ const AppointmentsTable = ({ employees, selectedEmployees, date, containerRef })
                                                     employeeOrder={eni}
                                                     employee={employeeName}
                                                     startDate={group.startDate}
-                                                    endDate={group.endDate}
                                                     containerRef={containerRef}
                                                     updateLayout={updateLayout}
                                                 />
