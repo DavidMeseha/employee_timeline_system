@@ -196,6 +196,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
                             onMouseUp={(e) => endScale(e.clientY)}
                             onTouchEnd={(e) => endScale(e.changedTouches[0].clientY)}
                             onTouchCancel={(e) => endScale(e.changedTouches[0].clientY)}
+                            onMouseLeave={(e) => endScale(e.clientY)}
                             className="scale-area"
                         >
                             <div className="icon">
