@@ -76,7 +76,6 @@
 .appointments-table tr td {
     position: relative;
     padding: 0 5px;
-    min-width: var(--cell-min-width);
 }
 
 .appointments-table,

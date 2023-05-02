@@ -2,7 +2,7 @@ import useEmployeesData from "@/Hooks/useEmployeesData";
 import { calculateHeightFromMinutes, calculateMinutesFromHeight, calculateMinutesFromTop, calculateTopFromMinutes } from "@/utilities/calculations";
 import { useRef, useState } from "react";
 
-const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate, containerRef, tableRef, updateLayout, appointmentsCount }) => {
+const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate, containerRef, setTableScroll, updateLayout, appointmentsCount }) => {
     const colorClasses = ['appointment-red', 'appointment-blue', 'appointment-green']
     const { updateAppointmentStartDate } = useEmployeesData()
     const [isEditable, setIsEditable] = useState(false)
@@ -35,7 +35,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     const disableScrollingForTouch = () => {
         if ('ontouchstart' in window) {
             containerRef.current.style.overflowY = 'hidden' //disable Scrolling for touch conflect
-            tableRef.current.style.overflowX = 'hidden'
+            setTableScroll(false)
             document.body.style.overflow = 'hidden'
         }
     }
@@ -43,7 +43,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     const enableScrolling = () => {
         if ('ontouchstart' in window) {
             containerRef.current.style.overflowY = 'scroll' //re-activate scrolling
-            tableRef.current.style.overflowX = 'scroll'
+            setTableScroll(true)
             document.body.style.overflow = 'auto'
         }
     }
@@ -158,13 +158,12 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     }
 
     const endScale = () => {
-        if (!newHeight || !isScaling) return
+        if (!newHeight || !isScaling) return isScaling = false
         adjustDateAndHight(newHeight, startTotalMinutes)
         setIsEditable(false)
         updateLayout()
         enableScrolling()
 
-        isScaling = false
         originalHeight = null
         scaleStart = null
 
@@ -197,7 +196,6 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
                             onMouseUp={(e) => endScale(e.clientY)}
                             onTouchEnd={(e) => endScale(e.changedTouches[0].clientY)}
                             onTouchCancel={(e) => endScale(e.changedTouches[0].clientY)}
-                            onMouseLeave={(e) => endScale(e.clientY)}
                             className="scale-area"
                         >
                             <div className="icon">

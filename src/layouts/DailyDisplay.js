@@ -12,6 +12,7 @@ const DailyDisplay = () => {
     const timeLineRef = useRef()
     const [isToday, setIsToday] = useState(true)
 
+    const [tableScroll, setTableScroll] = useState(true)
     let touchStart, initialScroll
 
     useEffect(() => {
@@ -20,19 +21,27 @@ const DailyDisplay = () => {
     }, [date])
 
     const handleScroll = (e) => {
+        if (!tableScroll) return
+        console.log(tableScroll)
         contentRef.current.scrollLeft = e.target.scrollLeft
     }
 
     const scrollBy = (offset) => {
+        if (!tableScroll) return
+        console.log(tableScroll)
         headRef.current.scrollLeft += offset
     }
 
     const touchStartHandle = (e) => {
+        if (!tableScroll) return
+        console.log(tableScroll)
         touchStart = e.touches[0].clientX
         initialScroll = contentRef.current.scrollLeft
     }
 
     const touchScrollXHandle = (e) => {
+        if (!tableScroll) return
+        console.log(tableScroll)
         let change = initialScroll + touchStart - e.touches[0].clientX
         contentRef.current.scrollLeft = change
         headRef.current.scrollLeft = change
@@ -74,7 +83,7 @@ const DailyDisplay = () => {
                     <TimeLines liveIndicator={isToday} />
 
                     <div className='appointment-table-wraper' ref={contentRef}>
-                        <AppointmentsTable employees={employees} selectedEmployees={selectedEmployees} date={date} containerRef={timeLineRef} tableRef={contentRef} />
+                        <AppointmentsTable employees={employees} selectedEmployees={selectedEmployees} date={date} containerRef={timeLineRef} setTableScroll={setTableScroll} />
                     </div>
                 </div>
             </div >

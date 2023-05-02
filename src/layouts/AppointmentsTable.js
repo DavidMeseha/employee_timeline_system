@@ -2,7 +2,7 @@ import Blocked from "@/components/Blocked";
 import MultiApointmentLayout from "./MultiAppointmentLayout";
 import { useForceUpdate } from "@/Hooks/useForceUpdate";
 
-const AppointmentsTable = ({ employees, selectedEmployees, date, containerRef, tableRef }) => {
+const AppointmentsTable = ({ employees, selectedEmployees, date, containerRef, setTableScroll }) => {
     const updateLayout = useForceUpdate()
 
     const groupingIntersectingAppointments = (appointments) => {
@@ -57,6 +57,16 @@ const AppointmentsTable = ({ employees, selectedEmployees, date, containerRef, t
         return groups
     }
 
+    const minWidth = (groups) => {
+        let max = 0
+        groups.forEach(group => {
+            max = group.length > max ? group.length : max
+        });
+
+        console.log(max)
+        return ((max > 1 ? max : 2) * 150)
+    }
+
     return (
         <table className='appointments-table'>
             <tbody>
@@ -65,9 +75,9 @@ const AppointmentsTable = ({ employees, selectedEmployees, date, containerRef, t
                         return (
                             employees.map((employee, ei) => {
                                 if (employeeName !== employee.name) return
-                                let appointmentgroups = groupingIntersectingAppointments(employee.appointments)
+                                let appointmentGroups = groupingIntersectingAppointments(employee.appointments)
                                 return (
-                                    <td key={ei + eni}>
+                                    <td key={ei + eni} style={{ minWidth: minWidth(appointmentGroups) }}>
 
                                         {employee.blocks.map((block, bi) => {
                                             let blockedDate = new Date(block.start)
@@ -79,7 +89,7 @@ const AppointmentsTable = ({ employees, selectedEmployees, date, containerRef, t
                                             )
                                         })}
 
-                                        {appointmentgroups.map((group, gi) => {
+                                        {appointmentGroups.map((group, gi) => {
                                             let groupDate = new Date(group.startDate)
                                             if (groupDate.getDate() !== date.getDate()) return;
                                             return (
@@ -90,7 +100,7 @@ const AppointmentsTable = ({ employees, selectedEmployees, date, containerRef, t
                                                     employee={employeeName}
                                                     startDate={group.startDate}
                                                     containerRef={containerRef}
-                                                    tableRef={tableRef}
+                                                    setTableScroll={setTableScroll}
                                                     updateLayout={updateLayout}
                                                 />
                                             )
