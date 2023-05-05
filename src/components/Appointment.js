@@ -118,6 +118,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     const holdToEditHandle = (e) => {
         if (isScaling) return
         if (editing && editing !== id) return
+        
         if (isEditable) {
             let pos = positionRef.current.style.marginTop
             setDragStart(e.clientY || e.touches[0].clientY)
