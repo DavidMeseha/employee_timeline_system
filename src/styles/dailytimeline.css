@@ -148,6 +148,7 @@
     left: 0;
     right: 0;
     cursor: s-resize;
+    z-index: 2;
     background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.3) 100%);
 
 }

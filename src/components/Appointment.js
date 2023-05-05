@@ -41,10 +41,10 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     let appointmentStart = calculateTopFromMinutes(startTotalMinutes)
     let appointmentEnd = calculateHeightFromMinutes(endTotalMinutes, startTotalMinutes)
 
-    let scaleStart
-    let originalHeight
+    const [scaleStart, setScaleStart] = useState(null)
+    const [originalHeight, setOriginalHeight] = useState(null)
+    const [isScaling, setIsScaling] = useState(false)
     let newHeight, newPosition
-    let isScaling
 
     useEffect(() => {
         if (editing === id) return setIsEditable(true)
@@ -167,22 +167,21 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     }
 
     const bottomStartTouchDragHandle = (e) => {
-        if (!isEditable) return
-        isScaling = true
-        scaleStart = e.touches[0].clientY
-        originalHeight = parseFloat(appointmentRef.current.style.height.replace('px', ''))
+        setIsScaling(true)
+        setScaleStart(e.touches[0].clientY)
+        setOriginalHeight(parseFloat(appointmentRef.current.style.height.replace('px', '')))
 
         disableScrollingForTouch()
     }
 
     const bottomStartmouseDragHandle = (e) => {
-        if (!isEditable) return
-        isScaling = true
-        scaleStart = e.clientY
-        originalHeight = parseFloat(appointmentRef.current.style.height.replace('px', ''))
+        setIsScaling(true)
+        setScaleStart(e.clientY)
+        setOriginalHeight(parseFloat(appointmentRef.current.style.height.replace('px', '')))
     }
 
     const bottomDragHandle = (e) => {
+        console.log(!isScaling, originalHeight, scaleStart)
         if (!scaleStart || !originalHeight || !isScaling) return
         let y = e.clientY || e.touches[0].clientY
         let change = y - scaleStart
@@ -192,11 +191,12 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     }
 
     const endScale = () => {
-        if (!newHeight || !isScaling) return isScaling = false
+        if (!newHeight || !isScaling) return
         adjustDateAndHight()
         enableScrolling()
-        originalHeight = null
-        scaleStart = null
+        setOriginalHeight(null)
+        setIsScaling(true)
+        setScaleStart(null)
 
         editEmployeeDatesView(employee, appointment.id, editStartDate, editEndDate)
     }
