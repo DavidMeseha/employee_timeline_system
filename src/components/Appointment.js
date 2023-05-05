@@ -47,6 +47,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     let newHeight, newPosition
 
     useEffect(() => {
+        document.body.style.overflow = 'hidden'
         if (editing === id) return setIsEditable(true)
         setIsEditable(false)
     }, [editing, isEditable])
@@ -61,7 +62,6 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         if ('ontouchstart' in window) {
             containerRef.current.style.overflow = 'hidden' //disable Scrolling for touch conflect
             timelineRef.current.style.overflowY = 'hidden'
-            document.body.style.overflow = 'hidden'
             setTableScroll(false)
         }
     }
@@ -70,7 +70,6 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         if ('ontouchstart' in window) {
             timelineRef.current.style.overflowY = 'auto'
             containerRef.current.style.overflow = 'auto' //re-activate scrolling
-            document.body.style.overflow = 'auto'
             setTableScroll(true)
         }
     }
