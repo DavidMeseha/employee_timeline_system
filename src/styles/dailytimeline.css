@@ -1,12 +1,12 @@
 .timeline-container {
     position: relative;
-    padding-bottom: 60px;
+    padding-bottom: 90px;
     height: var(--view-height);
 }
 
 .table-wrap {
     margin: 0px 10px 0px 50px;
-    padding-bottom: 60px;
+    padding-bottom: 90px;
     overflow-x: auto;
     overflow-y: auto;
     height: var(--view-height);
@@ -67,7 +67,7 @@
     background-color: var(--medium-dark-color);
     align-items: center;
     cursor: pointer;
-    z-index: 3;
+    z-index: 4;
 }
 
 .right {
