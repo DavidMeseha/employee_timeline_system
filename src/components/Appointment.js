@@ -204,13 +204,11 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     return (
         <>
             {isEditable && <ConfirmEditMemo confirm={confirm} cancel={reset} />}
-            <div ref={positionRef} style={{ width: '100%', marginTop: appointmentStart }}>
+            <div onTouchStart={holdToEditHandle} onTouchEnd={holdEndHandle} ref={positionRef} style={{ width: '100%', marginTop: appointmentStart }}>
                 <div
                     id={id}
                     ref={appointmentRef}
-                    onTouchStart={holdToEditHandle}
                     onMouseDown={holdToEditHandle}
-                    onTouchEnd={holdEndHandle}
                     onMouseUp={holdEndHandle}
                     onTouchMove={dragAppointment}
                     onMouseMove={dragAppointment}
