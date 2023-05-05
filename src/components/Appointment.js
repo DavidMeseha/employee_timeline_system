@@ -195,7 +195,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         adjustDateAndHight()
         enableScrolling()
         setOriginalHeight(null)
-        setIsScaling(true)
+        setIsScaling(false)
         setScaleStart(null)
 
         editEmployeeDatesView(employee, appointment.id, editStartDate, editEndDate)
