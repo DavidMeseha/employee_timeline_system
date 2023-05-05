@@ -1,50 +1,77 @@
 import useEmployeesData from "@/Hooks/useEmployeesData";
 import { calculateHeightFromMinutes, calculateMinutesFromHeight, calculateMinutesFromTop, calculateTopFromMinutes } from "@/utilities/calculations";
-import { useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
+import ConfirmEdit from "./ConfirmEdit";
 
-const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate, containerRef, setTableScroll, updateLayout, appointmentsCount }) => {
+const ConfirmEditMemo = memo(({ confirm, cancel }) => {
+    return (
+        <ConfirmEdit confirm={confirm} cancel={cancel} />
+    )
+})
+
+const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate, containerRef, timelineRef, setTableScroll, editing, setEditing, editEmployeeDatesView, reset }) => {
     const colorClasses = ['appointment-red', 'appointment-blue', 'appointment-green']
-    const { updateAppointmentStartDate } = useEmployeesData()
+    const { updateAppointmentDates } = useEmployeesData()
+    const appointmentRef = useRef()
+    const positionRef = useRef()
+    const timeRef = useRef()
     const [isEditable, setIsEditable] = useState(false)
-    let activateEditTimeout
+    const [isDragging, setIsDragging] = useState(false)
+    const [dragStart, setDragStart] = useState(null)
+    const [originalPos, setOriginalPos] = useState(null)
 
-    let startTime = new Date(startDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: false })
-    let endTime = new Date(endDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: false })
+    let activateEditTimeout
+    let id = appointment.id + employee
+
+    let editStartDate = new Date(startDate)
+    let editEndDate = new Date(endDate)
+
+    let startTime = new Date(editStartDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: false })
+    let endTime = new Date(editEndDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: false })
     let time = startTime + ' - ' + endTime
 
-    let startHours = startDate.getHours();
-    let startMinutes = startDate.getMinutes();
+    let startHours = editStartDate.getHours();
+    let startMinutes = editStartDate.getMinutes();
     let startTotalMinutes = (startHours * 60) + startMinutes
 
-    let endHours = endDate.getHours()
-    let endMinutes = endDate.getMinutes()
+    let endHours = editEndDate.getHours()
+    let endMinutes = editEndDate.getMinutes()
     let endTotalMinutes = (endHours * 60) + endMinutes
 
     let appointmentStart = calculateTopFromMinutes(startTotalMinutes)
     let appointmentEnd = calculateHeightFromMinutes(endTotalMinutes, startTotalMinutes)
 
-    let scaleStart, dragStart
-    let originalPos, originalHeight
+    let scaleStart
+    let originalHeight
     let newHeight, newPosition
-    let isScaling, isDragging
+    let isScaling
 
-    const appointmentRef = useRef()
-    const positionRef = useRef()
-    const timeRef = useRef()
+    useEffect(() => {
+        if (editing === id) return setIsEditable(true)
+        setIsEditable(false)
+    }, [editing, isEditable])
+
+    const confirm = () => {
+        setIsEditable(false)
+        setEditing(null)
+        updateAppointmentDates(employee, appointment.id, editStartDate, editEndDate)
+    }
 
     const disableScrollingForTouch = () => {
         if ('ontouchstart' in window) {
-            containerRef.current.style.overflowY = 'hidden' //disable Scrolling for touch conflect
-            setTableScroll(false)
+            containerRef.current.style.overflow = 'hidden' //disable Scrolling for touch conflect
+            timelineRef.current.style.overflowY = 'hidden'
             document.body.style.overflow = 'hidden'
+            setTableScroll(false)
         }
     }
 
     const enableScrolling = () => {
         if ('ontouchstart' in window) {
-            containerRef.current.style.overflowY = 'scroll' //re-activate scrolling
-            setTableScroll(true)
+            timelineRef.current.style.overflowY = 'auto'
+            containerRef.current.style.overflow = 'auto' //re-activate scrolling
             document.body.style.overflow = 'auto'
+            setTableScroll(true)
         }
     }
 
@@ -56,10 +83,10 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         let newEndHour = ~~(newEndTotalMinutes / 60)
         let newEndMinute = ~~((((newEndTotalMinutes / 60) - newEndHour) * 60) + 0.1)//getting the reminder floot and convert into 60, +0.1 is a fix for the long float
 
-        endDate.setHours(newEndHour)
-        endDate.setMinutes(newEndMinute)
+        editEndDate.setHours(newEndHour)
+        editEndDate.setMinutes(newEndMinute)
 
-        endTime = new Date(endDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: false })
+        endTime = new Date(editEndDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: false })
         time = startTime + ' - ' + endTime
         timeRef.current.innerText = time
     }
@@ -77,34 +104,42 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         let newEndHour = ~~(newEndTotalMinutes / 60)
         let newEndMinute = ~~((((newEndTotalMinutes / 60) - newEndHour) * 60) + 0.1) //getting the reminder floot and convert into 60, +0.1 is a fix for the long float
 
-        startDate.setHours(newStartHour)
-        startDate.setMinutes(newStartMinute)
-        endDate.setHours(newEndHour)
-        endDate.setMinutes(newEndMinute)
+        editStartDate.setHours(newStartHour)
+        editStartDate.setMinutes(newStartMinute)
+        editEndDate.setHours(newEndHour)
+        editEndDate.setMinutes(newEndMinute)
 
-        endTime = new Date(endDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: false })
-        startTime = new Date(startDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: false })
+        endTime = new Date(editEndDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: false })
+        startTime = new Date(editStartDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: false })
         time = startTime + ' - ' + endTime
         timeRef.current.innerText = time
     }
 
     const holdToEditHandle = (e) => {
         if (isScaling) return
-        if (isEditable || !('ontouchstart' in window)) {
-            dragStart = e.clientY || e.touches[0].clientY
-            originalPos = positionRef.current.style.marginTop
-            originalPos = parseFloat(originalPos.replace('px', ''))
-            isDragging = true
+        if (editing && editing !== id) return
+        if (isEditable) {
+            let pos = positionRef.current.style.marginTop
+            setDragStart(e.clientY || e.touches[0].clientY)
+            setOriginalPos(parseFloat(pos.replace('px', '')))
+            setIsDragging(true)
             return
         }
+
         activateEditTimeout = setTimeout(() => {
+            if (editing) return
+            let pos = positionRef.current.style.marginTop
+            setDragStart(e.clientY || e.touches[0].clientY)
+            setOriginalPos(parseFloat(pos.replace('px', '')))
+            setIsDragging(true)
+            setEditing(id)
             setIsEditable(true)
         }, 1000)
     }
 
     const dragAppointment = (e) => {
-        if (!dragStart || !originalPos || !isDragging) return
-        if ((activateEditTimeout && !isEditable && !('ontouchstart' in window)) || isScaling) return clearTimeout(activateEditTimeout)
+        if ((activateEditTimeout && !isEditable)) clearTimeout(activateEditTimeout)
+        if (!dragStart || !originalPos || !isDragging || isScaling) return
         let y = e.clientY || e.touches[0].clientY
         let change = y - dragStart
         newPosition = originalPos + change
@@ -114,25 +149,24 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     }
 
     const holdEndHandle = () => {
-        if (activateEditTimeout && (!isEditable || !('ontouchstart' in window))) return clearTimeout(activateEditTimeout)
-        if (!newPosition || isScaling) return
+        console.log(editing, ' ', id, ' ', isEditable)
+        if (activateEditTimeout && !isEditable) clearTimeout(activateEditTimeout)
+        if (!newPosition || isScaling || !isEditable) return setIsDragging(false)
         endReposition()
     }
 
     const endReposition = () => {
         adjustNewDateAndPosition()
         enableScrolling()
-        setIsEditable(false)
-        updateLayout()
-        dragStart = null
-        originalPos = null
+        setDragStart(null)
+        setOriginalPos(null)
         newPosition = null
+        setIsDragging(false)
 
-        updateAppointmentStartDate(employee, appointment.id, startDate, endDate)
+        editEmployeeDatesView(employee, appointment.id, editStartDate, editEndDate)
     }
 
     const bottomStartTouchDragHandle = (e) => {
-        e.preventDefault()
         if (!isEditable) return
         isScaling = true
         scaleStart = e.touches[0].clientY
@@ -142,6 +176,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     }
 
     const bottomStartmouseDragHandle = (e) => {
+        if (!isEditable) return
         isScaling = true
         scaleStart = e.clientY
         originalHeight = parseFloat(appointmentRef.current.style.height.replace('px', ''))
@@ -152,28 +187,26 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         let y = e.clientY || e.touches[0].clientY
         let change = y - scaleStart
         newHeight = originalHeight + change
-
-        adjustDateAndHight(newHeight, startTotalMinutes)
+        adjustDateAndHight()
         appointmentRef.current.style.height = `${newHeight}px`
     }
 
     const endScale = () => {
         if (!newHeight || !isScaling) return isScaling = false
-        adjustDateAndHight(newHeight, startTotalMinutes)
-        setIsEditable(false)
-        updateLayout()
+        adjustDateAndHight()
         enableScrolling()
-
         originalHeight = null
         scaleStart = null
 
-        updateAppointmentStartDate(employee, appointment.id, startDate, endDate)
+        editEmployeeDatesView(employee, appointment.id, editStartDate, editEndDate)
     }
 
     return (
         <>
-            <div ref={positionRef} style={{ width: `${100 / appointmentsCount}%`, marginTop: appointmentStart }}>
+            {isEditable && <ConfirmEditMemo confirm={confirm} cancel={reset} />}
+            <div ref={positionRef} style={{ width: '100%', marginTop: appointmentStart }}>
                 <div
+                    id={id}
                     ref={appointmentRef}
                     onTouchStart={holdToEditHandle}
                     onMouseDown={holdToEditHandle}
@@ -182,29 +215,30 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
                     onTouchMove={dragAppointment}
                     onMouseMove={dragAppointment}
                     style={{ height: appointmentEnd }}
-                    className={`${isEditable && (('ontouchstart' in window)) ? 'editable-appointment' : 'appointment'} ${colorClasses[employeeOrder]}`}
+                    className={`${id === editing && isEditable ? 'editable-appointment' : 'appointment'} ${colorClasses[employeeOrder]}`}
                 >
                     <div className="appointment-contnet">
                         <p ref={timeRef}>{time}</p>
                         <h3>{appointment.client}</h3>
                         <p>{appointment.service}</p>
-                        {(isEditable || !('ontouchstart' in window)) && <div
-                            onMouseDown={bottomStartmouseDragHandle}
-                            onTouchStart={bottomStartTouchDragHandle}
-                            onMouseMove={bottomDragHandle}
-                            onTouchMove={bottomDragHandle}
-                            onMouseUp={(e) => endScale(e.clientY)}
-                            onTouchEnd={(e) => endScale(e.changedTouches[0].clientY)}
-                            onTouchCancel={(e) => endScale(e.changedTouches[0].clientY)}
-                            onMouseLeave={(e) => endScale(e.clientY)}
-                            className="scale-area"
-                        >
-                            <div className="icon">
-                                <div></div>
-                                <div></div>
-                            </div>
-                        </div>}
                     </div>
+
+                    {isEditable && <div
+                        onMouseDown={bottomStartmouseDragHandle}
+                        onTouchStart={bottomStartTouchDragHandle}
+                        onMouseMove={bottomDragHandle}
+                        onTouchMove={bottomDragHandle}
+                        onMouseUp={(e) => endScale(e.clientY)}
+                        onTouchEnd={(e) => endScale(e.changedTouches[0].clientY)}
+                        onTouchCancel={(e) => endScale(e.changedTouches[0].clientY)}
+                        onMouseLeave={(e) => endScale(e.clientY)}
+                        className="scale-area"
+                    >
+                        <div className="icon">
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>}
                 </div>
             </div>
         </>

@@ -1,0 +1,30 @@
+.confirm-edit-container {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    text-align: center;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px;
+    color: white;
+    background-color: var(--medium-dark-color);
+    z-index: 4;
+    pointer-events: auto;
+}
+
+.confirm-edit-container button {
+    width: 90px;
+    background-color: var(--light-line-color);
+    margin: 0 0 0 10px;
+    padding: 5px;
+    border-radius: 0;
+}
+
+@media screen and (max-width:500px) {
+    .confirm-edit-container{
+        flex-direction:column;
+        gap: 5px;
+    }
+}

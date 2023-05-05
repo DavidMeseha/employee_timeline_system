@@ -1,4 +1,5 @@
 import { createContext, useEffect, useReducer } from "react";
+import _ from 'lodash'
 
 const EmployeesContext = createContext({})
 
@@ -12,19 +13,27 @@ let data = [
         name: 'Marcos Lima',
         appointments: [
             {
+                id: '01',
+                client: 'Marcos R.',
+                service: 'Haircut',
+                start: 'May 5 2023 10:30:00',
+                end: 'May 5 2023 13:30:00',
+                comment: 'Some Comment ....'
+            },
+            {
                 id: '03',
                 client: 'Marcos R.',
                 service: 'Haircut',
-                start: 'May 1 2023 10:30:00',
-                end: 'May 1 2023 13:30:00',
+                start: 'May 5 2023 10:30:00',
+                end: 'May 5 2023 13:30:00',
                 comment: 'Some Comment ....'
             },
             {
                 id: '04',
                 client: 'Marcos R.',
                 service: 'Haircut',
-                start: 'May 1 2023 8:30:00',
-                end: 'May 1 2023 14:30:00',
+                start: 'May 5 2023 8:30:00',
+                end: 'May 5 2023 14:30:00',
                 comment: 'Some Comment ....'
             },
         ],
@@ -51,27 +60,27 @@ let data = [
         name: 'David Lima',
         appointments: [
             {
-                id: '01',
+                id: '05',
                 client: 'Marcos R.',
                 service: 'Haircut',
-                start: 'May 1 2023 09:30:00',
-                end: 'May 1 2023 12:30:00',
+                start: 'May 5 2023 09:30:00',
+                end: 'May 5 2023 12:30:00',
                 comment: 'Some Comment ....'
             },
             {
-                id: '02',
+                id: '06',
                 client: 'Marcos R.',
                 service: 'Haircut',
-                start: 'May 1 2023 09:30:00',
-                end: 'May 1 2023 12:30:00',
+                start: 'May 5 2023 09:30:00',
+                end: 'May 5 2023 12:30:00',
                 comment: 'Some Comment ....'
             },
             {
-                id: '03',
+                id: '07',
                 client: 'Marcos R.',
                 service: 'Haircut',
-                start: 'May 1 2023 05:30:00',
-                end: 'May 1 2023 08:00:00',
+                start: 'May 5 2023 05:30:00',
+                end: 'May 5 2023 08:00:00',
                 comment: 'Some Comment ....'
             }
         ],
@@ -98,29 +107,21 @@ let data = [
         name: 'Many Name',
         appointments: [
             {
-                id: '01',
+                id: '08',
                 client: 'Marcos R.',
                 service: 'Haircut',
-                start: 'May 1 2023 09:30:00',
-                end: 'May 1 2023 12:30:00',
+                start: 'May 5 2023 09:30:00',
+                end: 'May 5 2023 12:30:00',
                 comment: 'Some Comment ....'
             },
             {
-                id: '02',
+                id: '09',
                 client: 'Marcos R.',
                 service: 'Haircut',
-                start: 'May 1 2023 09:30:00',
-                end: 'May 1 2023 12:30:00',
+                start: 'May 5 2023 09:30:00',
+                end: 'May 5 2023 12:30:00',
                 comment: 'Some Comment ....'
             },
-            {
-                id: '03',
-                client: 'Marcos R.',
-                service: 'Haircut',
-                start: 'May 1 2023 05:30:00',
-                end: 'May 1 2023 08:00:00',
-                comment: 'Some Comment ....'
-            }
         ],
         blocks: [
             {
@@ -149,7 +150,7 @@ function employeesReducer(employees, action) {
             let appointmentId = action.payload.id
             let newEndDate = action.payload.value.endDate
             let newStartDate = action.payload.value.startDate
-            let newState = employees
+            let newState = _.cloneDeep(employees)
 
             for (let index = 0; index < newState.length; index++) {
                 if (newState[index].name === employee) {
@@ -181,10 +182,12 @@ export const EmployeesProvider = ({ children }) => {
     const [employees, employeesDispatch] = useReducer(employeesReducer, [])
 
     useEffect(() => {
+        console.log('setEmp')
         employeesDispatch({ type: SET_EMPLOYEES, payload: data })
     }, [])
 
-    const updateAppointmentStartDate = (employee, appointmentId, newStartDate, newEndDate) => {
+    const updateAppointmentDates = (employee, appointmentId, newStartDate, newEndDate) => {
+        console.log('setting')
         employeesDispatch({
             type: UPDATE_DATE,
             payload: {
@@ -198,7 +201,7 @@ export const EmployeesProvider = ({ children }) => {
     return (
         <EmployeesContext.Provider value={{
             employees,
-            updateAppointmentStartDate,
+            updateAppointmentDates,
         }}>
             {children}
         </EmployeesContext.Provider >

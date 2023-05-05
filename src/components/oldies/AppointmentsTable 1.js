@@ -60,12 +60,9 @@ const AppointmentsTable = ({ employees, selectedEmployees, date, containerRef, s
     const minWidth = (groups) => {
         let max = 0
         groups.forEach(group => {
-            console.log(group.appointments.length)
             max = (group.appointments.length > max ? group.appointments.length : max)
-            console.log(max)
         });
 
-        console.log(max)
         return ((max > 1 ? max : 2) * 200)
     }
 
@@ -77,7 +74,8 @@ const AppointmentsTable = ({ employees, selectedEmployees, date, containerRef, s
                         return (
                             employees.map((employee, ei) => {
                                 if (employeeName !== employee.name) return
-                                let appointmentGroups =  groupingIntersectingAppointments(employee.appointments)
+                                let appointmentGroups = groupingIntersectingAppointments(employee.appointments)
+
                                 return (
                                     <td key={ei + eni} style={{ minWidth: minWidth(appointmentGroups) }}>
 

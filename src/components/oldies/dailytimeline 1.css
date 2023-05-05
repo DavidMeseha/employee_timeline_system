@@ -1,85 +1,52 @@
 .timeline-container {
     position: relative;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin: 0 10px;
+    height: calc(100vh - 120px - 60px);
     padding-bottom: 60px;
-    height: var(--view-height);
-}
-
-.table-wrap {
-    margin: 0px 10px 0px 50px;
-    padding-bottom: 60px;
-    overflow-x: auto;
-    overflow-y: auto;
-    height: var(--view-height);
 }
 
 .heading {
+    display: flex;
+    align-items: stretch;
     background-color: var(--medium-dark-color);
     color: var(--light-font-color);
-    height: 110px;
+    height: 120px;
 }
 
-.timeline {
-    margin: 0 10px;
-    padding-bottom: 60px;
-    position: absolute;
-    top: 110px;
-    left: 0;
-    right: 0;
-    z-index: 0;
-    bottom: 0;
-    overflow: auto;
+.employees-wraper {
+    width: -webkit-fill-available;
+    width: -moz-avilable;
+    overflow: hidden;
+    overflow-x: scroll;
 }
 
-.timeline-table {
-    border-collapse: collapse;
-}
-
-.timeline-table td {
-    border-right: 1px solid var(--strong-line-color);
-    min-width: var(--cell-min-width);
-}
-
-.timeline-table thead {
-    position: sticky;
-    top: 0;
-    z-index: 3;
-}
-
-.timeline-table td {
-    text-align: center;
-    min-width: var(--cell-min-width);
-}
-
-.data-table tr td {
-    position: relative;
-    padding: 0 5px;
-}
-
-.data-table tr {
-    height: var(--timeline-height);
+.employees-wraper::-webkit-scrollbar {
+    width: none;
+    opacity: 0;
 }
 
 .scroll-arrows {
-    position: absolute;
     display: flex;
-    padding: 0 25px;
-    height: 110px;
+    padding: 0 calc((var(--timetext-and-gap-width) / 2) - 10px);
     background-color: var(--medium-dark-color);
     align-items: center;
     cursor: pointer;
-    z-index: 3;
-}
-
-.right {
-    right: 0;
-}
-
-.left {
-    left: 0;
+    z-index: 1;
 }
 
 .scroll-arrows:hover {
     background-color: var(--dark-color);
+}
+
+.employee-names td {
+    min-width: var(--cell-min-width);
+    text-align: center;
+}
+
+.employee-names td>div {
+    padding: 10px;
 }
 
 .name-tag {
@@ -92,23 +59,44 @@
     margin: 10px auto;
 }
 
+.appointment-table-wraper {
+    position: absolute;
+    overflow: hidden;
+    overflow-x: auto;
+    pointer-events: none;
+    top: 0;
+    right: 0;
+    left: var(--timetext-and-gap-width);
+}
+
+.appointments-table {
+    height: 1535px;
+}
+
+.appointments-table tr td {
+    position: relative;
+    padding: 0 5px;
+}
+
+.appointments-table,
+.appointments-table tr,
+.appointments-table tr td {
+    border: 1px solid var(--strong-line-color);
+    border-collapse: collapse;
+}
+
 .appointment,
 .editable-appointment {
-    position: relative;
-    z-index: 1;
     cursor: grab;
     pointer-events: auto;
     border-radius: 5px;
     overflow: hidden;
-    container-name: appointment;
-    container-type: inline-size;
 }
 
 .editable-appointment {
-    z-index: 2;
-    box-shadow: 0px 0px 33px 0px rgba(0, 0, 0, 0.5);
-    -webkit-box-shadow: 0px 0px 33px 0px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0px 0px 33px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 0px 33px 0px rgba(0,0,0,0.5);
+-webkit-box-shadow: 0px 0px 33px 0px rgba(0,0,0,0.5);
+-moz-box-shadow: 0px 0px 33px 0px rgba(0,0,0,0.5);
 }
 
 .appointment-red {
@@ -124,20 +112,17 @@
 }
 
 .appointment-contnet {
-    width: 0px;
     position: relative;
-    padding: 20px 10px;
+    padding: 20px;
     height: 100%;
 }
 
 .appointment-contnet p {
     font-size: 0.8rem;
-    width: max-content;
 }
 
 .appointment-contnet h3 {
     margin: 5px 0;
-    width: max-content;
 }
 
 .scale-area {
@@ -159,13 +144,11 @@
     margin: 0 auto 3px auto;
     height: 1px;
     width: 50px;
-    z-index: 2;
     background-color: var(--medium-dark-color);
 }
 
 .blocked-area {
     position: absolute;
-    z-index: 1;
     pointer-events: auto;
     right: 0;
     left: 0;
@@ -187,19 +170,22 @@
     padding: 0 40px;
 }
 
-@container appointment (max-width:110px) {
-    .appointment-contnet p {
-        width: unset;
-        text-align: center
-    }
-
-    .appointment-contnet h3 {
-        width: unset;
+@media screen and (max-width:660px) {
+    .employee-names td>div {
+        width: calc(100vw - 70px);
+        position: sticky;
+        left: 0;
     }
 }
 
-@container appointment (max-width:85px) {
-    .appointment-contnet h3 {
-        font-size: 0.8rem;
+@media screen and (max-width:900px) {
+    .timeline-container {
+        height: calc(100vh - 120px - 114px);
+    }
+}
+
+@media screen and (max-width:575px) {
+    .timeline-container {
+        height: calc(100vh - 120px - 165px);
     }
 }

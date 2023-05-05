@@ -1,18 +1,20 @@
 import { createContext, useEffect, useState } from "react";
 import useEmployeesData from "@/Hooks/useEmployeesData";
+import _ from 'lodash'
 
 const DisplayManagerContext = createContext({})
 
 export const DisplayManagerProvider = ({ children }) => {
-    const {employees} = useEmployeesData()
+    const { employees } = useEmployeesData()
     const [displayDate, setDisplayDate] = useState()
+    const [employeesDisplay, setEmployeesDisplay] = useState([])
     const [selectedEmployees, setSelectedEmployees] = useState([])
     const [format, setFormat] = useState('daily')
-
     const [date, setDate] = useState(new Date())
 
     useEffect(() => {
         const setInitalDisplay = () => {
+            setEmployeesDisplay(_.cloneDeep(employees))
             setDisplayDate(new Date().toLocaleDateString('en', { day: 'numeric', month: 'long', weekday: 'long', year: 'numeric' }))
 
             let selectedTemp = []
@@ -23,10 +25,11 @@ export const DisplayManagerProvider = ({ children }) => {
         }
 
         setInitalDisplay()
-    }, [])
+    }, [employees])
 
     useEffect(() => {
         const dateDisplayFormat = () => {
+            console.log(employees)
             if (format === 'weekly') {
                 let endDate = new Date(date)
                 let endMonth = endDate.toLocaleDateString('en', { month: 'long' })
@@ -75,6 +78,7 @@ export const DisplayManagerProvider = ({ children }) => {
         <DisplayManagerContext.Provider value={{
             format, setFormat,
             displayDate, setDate, date, nextDate, prevDate,
+            employeesDisplay, setEmployeesDisplay,
             selectedEmployees, setSelectedEmployees,
         }}>
             {children}

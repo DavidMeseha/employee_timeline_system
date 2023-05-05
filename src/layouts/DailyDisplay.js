@@ -1,92 +1,209 @@
 import TimeLines from "@/components/TimeLines";
 import useDisplayManger from "@/Hooks/useDisplayManger";
 import { useEffect, useRef, useState } from "react";
-import AppointmentsTable from "./AppointmentsTable";
+import Blocked from "@/components/Blocked";
+import MultiApointmentLayout from "./MultiAppointmentLayout";
+import Test from "@/components/test";
 import useEmployeesData from "@/Hooks/useEmployeesData";
 
 const DailyDisplay = () => {
     const { employees } = useEmployeesData()
-    const { date, selectedEmployees } = useDisplayManger()
-    const contentRef = useRef()
-    const headRef = useRef()
-    const timeLineRef = useRef()
+    const { date, selectedEmployees, employeesDisplay, setEmployeesDisplay } = useDisplayManger()
+    const tableRef = useRef()
+    const timelineRef = useRef()
     const [isToday, setIsToday] = useState(true)
-
     const [tableScroll, setTableScroll] = useState(true)
+    const [editing, setEditing] = useState()
+
     let touchStart, initialScroll
 
+    const resetEmployees = () => {
+        setEmployeesDisplay(employees.slice())
+        setEditing(null)
+    }
+
+    const editEmployeeDatesView = (employee, appointmentId, newStartDate, newEndDate) => {
+        console.log(employees[0].appointments[0])
+        let newState = JSON.parse(JSON.stringify(employeesDisplay))
+        for (let index = 0; index < newState.length; index++) {
+            if (newState[index].name === employee) {
+                let appointments = newState[index].appointments.slice()
+                for (let appointmentIndex = 0; appointmentIndex < appointments.length; appointmentIndex++) {
+                    if (newState[index].appointments[appointmentIndex].id === appointmentId) {
+                        newState[index].appointments[appointmentIndex].end = newEndDate.toString()
+                        newState[index].appointments[appointmentIndex].start = newStartDate.toString()
+                    }
+                }
+            }
+        }
+        console.log(newState[0].appointments[0])
+        setEmployeesDisplay(newState)
+    }
+
     useEffect(() => {
+        setEditing(null)
         if (date.getDate() === new Date().getDate()) setIsToday(true)
         else setIsToday(false)
     }, [date])
 
-    const handleScroll = (e) => {
+    const handleScrollFromTable = (e) => {
         if (!tableScroll) return
-        console.log(tableScroll)
-        contentRef.current.scrollLeft = e.target.scrollLeft
+        timelineRef.current.scrollTop = e.target.scrollTop
+    }
+
+    const handleScrollFromTimeline = (e) => {
+        if (!tableScroll) return
+        tableRef.current.scrollTop = e.target.scrollTop
     }
 
     const scrollBy = (offset) => {
         if (!tableScroll) return
-        console.log(tableScroll)
-        headRef.current.scrollLeft += offset
+        tableRef.current.scrollLeft += offset
     }
 
     const touchStartHandle = (e) => {
         if (!tableScroll) return
-        console.log(tableScroll)
         touchStart = e.touches[0].clientX
-        initialScroll = contentRef.current.scrollLeft
+        initialScroll = tableRef.current.scrollLeft
     }
 
     const touchScrollXHandle = (e) => {
         if (!tableScroll) return
-        console.log(tableScroll)
         let change = initialScroll + touchStart - e.touches[0].clientX
-        contentRef.current.scrollLeft = change
-        headRef.current.scrollLeft = change
+        tableRef.current.scrollLeft = change
     }
 
-    const tableHeader = () => {
-        return (
-            <table>
-                <thead>
-                    <tr className="employee-names">
-                        {selectedEmployees.map((employeeName, i) => {
-                            let tag = employeeName.split(' ')[0][0]
-                            return (
-                                <td key={i} style={{ width: `${100 / selectedEmployees.length}%` }}>
-                                    <div>
-                                        <div className="name-tag">{tag}</div>
-                                        <div>{employeeName}</div>
-                                    </div>
-                                </td>
-                            )
-                        })}
-                    </tr>
-                </thead>
-            </table>
-        )
+    const groupingIntersectingAppointments = (appointments) => {
+        let appointmentsTemp = appointments.slice()
+        let groupedAppointments = []; //will contain every appointment that have a group to prevent the repeat
+        let groups = []
+        let singleGroup = []
+        let groupData = {
+            startDate: '',
+            endDate: '',
+            appointments: []
+        }
+        let minStartDate, maxEndDate
+
+        for (let index = 0; index < appointmentsTemp.length; index++) {
+            if (groupedAppointments.includes(appointments[index])) continue
+
+            singleGroup.push(appointmentsTemp[index])
+            groupedAppointments.push(appointments[index])
+
+            minStartDate = new Date(appointmentsTemp[index].start)
+            maxEndDate = new Date(appointmentsTemp[index].end)
+
+            for (let repeat = 0; repeat <= appointments.length * 2; repeat++) {
+                for (let addIndex = 1; addIndex < appointments.length; addIndex++) {
+                    if (groupedAppointments.includes(appointments[addIndex]) || singleGroup.includes(appointments[addIndex])) continue
+                    let startDate = new Date(appointments[addIndex].start)
+                    let endDate = new Date(appointments[addIndex].end)
+
+                    if ((startDate >= minStartDate && startDate < maxEndDate) ||
+                        (endDate > minStartDate && startDate < minStartDate) ||
+                        (endDate <= maxEndDate && startDate > minStartDate) ||
+                        (endDate > maxEndDate && startDate < minStartDate)) {
+
+                        if (minStartDate > startDate) minStartDate = startDate
+                        if (maxEndDate < endDate) maxEndDate = endDate
+                        singleGroup.push(appointments[addIndex])
+                        groupedAppointments.push(appointments[addIndex])
+                    }
+                }
+            }
+
+            groupData = {
+                startDate: minStartDate,
+                endDate: maxEndDate,
+                appointments: singleGroup
+            }
+            groups.push(groupData)
+            singleGroup = []
+        }
+
+        return groups
     }
+
 
     return (
         <>
-            <div style={{ position: 'relative' }}>
-                <div className='heading'>
-                    <div className="scroll-arrows" onClick={() => scrollBy(200)}><div className="arrow-left-light"></div></div>
-                    <div className="employees-wraper" ref={headRef} onScroll={handleScroll}>
-                        {tableHeader()}
-                    </div>
-                    <div className="scroll-arrows" onClick={() => scrollBy(-200)}><div className="arrow-right-light"></div></div>
-                </div>
-                <div onTouchStart={touchStartHandle} onTouchMove={touchScrollXHandle} ref={timeLineRef} className='timeline-container'>
-                    <TimeLines liveIndicator={isToday} />
+            {<div className="timeline-container">
+                <div style={{ width: '100vw', background: 'black', height: 110, position: 'absolute', top: 0, zIndex: 1 }}></div>
+                <div className="scroll-arrows left" onClick={() => scrollBy(200)}><div className="arrow-left-light"></div></div>
+                <div className="scroll-arrows right" onClick={() => scrollBy(-200)}><div className="arrow-right-light"></div></div>
+                <div className="table-wrap" ref={tableRef} onScroll={handleScrollFromTable}>
+                    <table className="timeline-table">
+                        <thead>
+                            <tr className="heading">
+                                {selectedEmployees.map((employeeName, i) => {
+                                    let tag = employeeName.split(' ')[0][0]
+                                    return (
+                                        <td key={i} style={{ width: `${100 / selectedEmployees.length}%` }}>
+                                            <div>
+                                                <div className="name-tag">{tag}</div>
+                                                <div>{employeeName}</div>
+                                            </div>
+                                        </td>
 
-                    <div className='appointment-table-wraper' ref={contentRef}>
-                        <AppointmentsTable employees={employees} selectedEmployees={selectedEmployees} date={date} containerRef={timeLineRef} setTableScroll={setTableScroll} />
-                    </div>
+                                    )
+                                })}
+                            </tr>
+                        </thead>
+                        <tbody className="data-table">
+                            <tr>
+                                {selectedEmployees.map((employeeName, eni) => {
+                                    return (
+                                        employeesDisplay.map((employee, ei) => {
+                                            if (employeeName !== employee.name) return
+                                            let appointmentGroups = groupingIntersectingAppointments(employee.appointments)
+
+                                            return (
+                                                <td key={ei + eni}>
+                                                    {employee.blocks.map((block, bi) => {
+                                                        let blockedDate = new Date(block.start)
+                                                        if (blockedDate.getDate() !== date.getDate()) return;
+
+                                                        let blockedDateEnd = new Date(block.end)
+                                                        return (
+                                                            <Blocked key={bi} startDate={blockedDate} endDate={blockedDateEnd} comment={block.comment || ''} />
+                                                        )
+                                                    })}
+
+                                                    {appointmentGroups.map((group, gi) => {
+                                                        let groupDate = new Date(group.startDate)
+                                                        if (groupDate.getDate() !== date.getDate()) return;
+                                                        return (
+                                                            <MultiApointmentLayout
+                                                                key={ei + eni + gi}
+                                                                employees={employeesDisplay}
+                                                                appointments={group.appointments}
+                                                                employeeOrder={eni}
+                                                                employee={employeeName}
+                                                                startDate={group.startDate}
+                                                                containerRef={tableRef}
+                                                                timelineRef={timelineRef}
+                                                                setTableScroll={setTableScroll}
+                                                                editing={editing}
+                                                                setEditing={setEditing}
+                                                                editEmployeeDatesView={editEmployeeDatesView}
+                                                                reset={resetEmployees}
+                                                            />
+                                                        )
+                                                    })}
+                                                </td>
+                                            )
+                                        })
+                                    )
+                                })}
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-            </div >
+                <div ref={(e) => timelineRef.current = e} onScroll={handleScrollFromTimeline} onTouchStart={touchStartHandle} onTouchMove={touchScrollXHandle} className="timeline">
+                    <TimeLines liveIndicator={isToday} />
+                </div>
+            </div>}
         </>
     )
 };

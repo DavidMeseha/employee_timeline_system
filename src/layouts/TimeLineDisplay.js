@@ -5,6 +5,7 @@ import DailyDisplay from "./DailyDisplay";
 const TimeLineDisplay = () => {
     const { format } = useDisplayManger()
 
+
     return (
         <>
             <div>

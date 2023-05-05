@@ -11,11 +11,24 @@
   --time-hover-color: rgb(129 129 255 / 53%);
   --time-stamp-color: #0050b1;
 
-  --cell-min-width: 315px;
+  --cell-min-width: 400px;
   --time-text-width: 30px;
   --time-to-table-gap: 10px;
-
+  --timeline-height: 1536px;
   --timetext-and-gap-width: calc(var(--time-text-width) + var(--time-to-table-gap));
+  --view-height: calc(100vh - 60px);
+}
+
+@media screen and (max-width:900px) {
+  :root {
+    --view-height: calc(100vh - 114px);
+  }
+}
+
+@media screen and (max-width:575px) {
+  :root {
+    --view-height: calc(100vh - 165px);
+  }
 }
 
 .hidden {
@@ -60,6 +73,7 @@ a {
 }
 
 button {
+  border-radius: 0;
   cursor: pointer;
   padding: 10px;
   z-index: 1;
@@ -214,16 +228,4 @@ input[type=checkbox]:checked+.check-mark {
 
 input[type=checkbox]:checked+.check-mark:after {
   display: block;
-}
-
-@media screen and (max-width:900px) {
-  nav {
-    height: 114px;
-  }
-}
-
-@media screen and (max-width:575px) {
-  nav {
-    height: 165px;
-  }
 }
