@@ -139,7 +139,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     }
 
     const dragAppointment = (e) => {
-        if ((activateEditTimeout && !isEditable)) clearTimeout(activateEditTimeout)
+        if ((activateEditTimeout && !isEditable && !('ontouchstart' in window))) clearTimeout(activateEditTimeout)
         if (!dragStart || !originalPos || !isDragging || isScaling) return
         let y = e.clientY || e.touches[0].clientY
         let change = y - dragStart
