@@ -45,7 +45,7 @@
 .line-time {
     display: none;
     position: absolute;
-    bottom: 1px;
+    bottom: 10px;
     left: -41px;
     color: var(--time-stamp-color);
     font-size: 12px;

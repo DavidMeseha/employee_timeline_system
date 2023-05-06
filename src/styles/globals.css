@@ -14,7 +14,7 @@
   --cell-min-width: 400px;
   --time-text-width: 30px;
   --time-to-table-gap: 10px;
-  --timeline-height: 1536px;
+  --timeline-height: 2976px;
   --timetext-and-gap-width: calc(var(--time-text-width) + var(--time-to-table-gap));
   --view-height: calc(100vh - 60px);
 }

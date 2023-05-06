@@ -1,3 +1,4 @@
+import { calculateHeightFromMinutes, calculateTopFromMinutes } from "@/utilities/calculations";
 import DiagonalStrip from "./DiagonalStrip";
 
 const Blocked = ({ startDate, endDate, comment }) => {
@@ -9,8 +10,8 @@ const Blocked = ({ startDate, endDate, comment }) => {
     let endMinutes = endDate.getMinutes()
     let endTotalMinutes = (endHours * 60) + endMinutes
 
-    let blockStart = startTotalMinutes + (startTotalMinutes / 15) - 1
-    let blockEnd = (endTotalMinutes - startTotalMinutes) + ((endTotalMinutes - startTotalMinutes) / 15)
+    let blockStart = calculateTopFromMinutes(startTotalMinutes)
+    let blockEnd = calculateHeightFromMinutes(endTotalMinutes, startTotalMinutes)
 
     return (
         <>

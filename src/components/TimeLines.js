@@ -1,3 +1,4 @@
+import { calculateTopFromMinutes } from "@/utilities/calculations";
 import { useEffect, useRef, useState } from "react";
 
 const TimeLines = ({ liveIndicator }) => { //bool
@@ -18,7 +19,7 @@ const TimeLines = ({ liveIndicator }) => { //bool
 
             //                                                      for every 15min
             //                 one pixel per minute-V         V-Line Hight per section V-middle of the indecator
-            liveTimeRef.current.style.top = `${totalMinutes + ((totalMinutes / 15)) - 10}px`
+            liveTimeRef.current.style.top = `${calculateTopFromMinutes(totalMinutes) - 6}px`
         }
 
         liveTimeTick()
