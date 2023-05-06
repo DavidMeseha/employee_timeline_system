@@ -152,6 +152,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
 
     const holdEndHandle = () => {
         console.log(editing, ' ', id, ' ', isEditable)
+        enableScrolling()
         if (activateEditTimeout && !isEditable) clearTimeout(activateEditTimeout)
         if (!newPosition || isScaling || !isEditable) return setIsDragging(false)
         endReposition()
