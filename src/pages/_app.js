@@ -3,6 +3,7 @@ import '@/styles/optionsbar.css'
 import '@/styles/timeline.css'
 import '@/styles/dailytimeline.css'
 import '@/styles/confirmedit.css'
+import '@/styles/weeklytimeline.css'
 import { DisplayManagerProvider } from '@/context/DisplayManagerProvider'
 import { EmployeesProvider } from '@/context/EmployeesProvider'
 

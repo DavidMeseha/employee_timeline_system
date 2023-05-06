@@ -9,54 +9,77 @@ export const DisplayManagerProvider = ({ children }) => {
     const [displayDate, setDisplayDate] = useState()
     const [employeesDisplay, setEmployeesDisplay] = useState([])
     const [selectedEmployees, setSelectedEmployees] = useState([])
+    const [weekSelectedEmployee, setWeekSelectedEmployee] = useState('')
     const [format, setFormat] = useState('daily')
     const [date, setDate] = useState(new Date())
+
+    const selectAll = () => {
+        let selectedTemp = []
+        employees.forEach(employee => {
+            selectedTemp.push(employee.name)
+        });
+        setSelectedEmployees(selectedTemp)
+    }
+
+    const dateDisplayFormat = () => {
+        if (format === 'weekly') {
+            let endDate = new Date(date)
+            let endMonth = endDate.toLocaleDateString('en', { month: 'long' })
+            let endYear = endDate.toLocaleDateString('en', { year: 'numeric' })
+            let endDay = endDate.getDate()
+
+            let startDate = new Date(endDate.setDate(endDate.getDate() - 6))
+            let startMonth = startDate.toLocaleDateString('en', { month: 'long' })
+            let startYear = startDate.toLocaleDateString('en', { year: 'numeric' })
+            let startDay = startDate.getDate()
+
+            let display = ''
+            if (startMonth === endMonth) display = `${startDay} - ${endDay} ${endMonth} ${endYear}`
+            if (startMonth !== endMonth) {
+                if (startYear === endYear) display = `${startDay} ${startMonth} - ${endDay} ${endMonth} ${endYear}`
+                else display = `${startDay} ${startMonth} ${startYear} - ${endDay} ${endMonth} ${endYear}`
+
+            }
+
+            setDisplayDate(display)
+            setWeekSelectedEmployee(selectedEmployees[0])
+            return
+        }
+
+        if (format === 'daily') setDisplayDate(date.toLocaleDateString('en', { day: 'numeric', month: 'long', weekday: 'long', year: 'numeric' }))
+        selectAll()
+    }
 
     useEffect(() => {
         const setInitalDisplay = () => {
             setEmployeesDisplay(_.cloneDeep(employees))
-            setDisplayDate(new Date().toLocaleDateString('en', { day: 'numeric', month: 'long', weekday: 'long', year: 'numeric' }))
-
-            let selectedTemp = []
-            employees.forEach(employee => {
-                selectedTemp.push(employee.name)
-            });
-            setSelectedEmployees(selectedTemp)
+            if(employees[0]) setWeekSelectedEmployee(employees[0].name)
+            selectAll()
         }
-
         setInitalDisplay()
     }, [employees])
 
     useEffect(() => {
-        const dateDisplayFormat = () => {
-            console.log(employees)
-            if (format === 'weekly') {
-                let endDate = new Date(date)
-                let endMonth = endDate.toLocaleDateString('en', { month: 'long' })
-                let endYear = endDate.toLocaleDateString('en', { year: 'numeric' })
-                let endDay = endDate.getDate()
-
-                let startDate = new Date(endDate.setDate(endDate.getDate() - 7))
-                let startMonth = startDate.toLocaleDateString('en', { month: 'long' })
-                let startYear = startDate.toLocaleDateString('en', { year: 'numeric' })
-                let startDay = startDate.getDate()
-
-                let display = ''
-                if (startMonth === endMonth) display = `${startDay} - ${endDay} ${endMonth} ${endYear}`
-                if (startMonth !== endMonth) {
-                    if (startYear === endYear) display = `${startDay} ${startMonth} - ${endDay} ${endMonth} ${endYear}`
-                    else display = `${startDay} ${startMonth} ${startYear} - ${endDay} ${endMonth} ${endYear}`
-
+        if (format === 'weekly') {
+            let startDate = new Date()
+            let days = 0
+            while (days < 7) {
+                if (startDate.toLocaleDateString('en', { weekday: 'long' }) === 'Sunday') {
+                    console.log(startDate)
+                    console.log(startDate.toLocaleDateString('en', { weekday: 'long' }))
+                    setDate(startDate)
+                    break
                 }
-
-                setDisplayDate(display)
+                startDate = new Date(startDate.setDate(startDate.getDate() + 1))
+                days++
             }
-
-            if (format === 'daily') setDisplayDate(date.toLocaleDateString('en', { day: 'numeric', month: 'long', weekday: 'long', year: 'numeric' }))
         }
+        else setDate(new Date())
 
         dateDisplayFormat()
-    }, [format, date])
+    }, [format])
+
+    useEffect(() => { dateDisplayFormat() }, [date])
 
     const nextDate = () => {
         let increaseBy = 0
@@ -80,6 +103,7 @@ export const DisplayManagerProvider = ({ children }) => {
             displayDate, setDate, date, nextDate, prevDate,
             employeesDisplay, setEmployeesDisplay,
             selectedEmployees, setSelectedEmployees,
+            weekSelectedEmployee, setWeekSelectedEmployee
         }}>
             {children}
         </DisplayManagerContext.Provider >

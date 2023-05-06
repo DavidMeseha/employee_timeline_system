@@ -5,6 +5,7 @@
 }
 
 .table-wrap {
+    position: relative;
     margin: 0px 10px 0px 50px;
     padding-bottom: 90px;
     overflow-x: auto;
@@ -18,11 +19,11 @@
     height: 110px;
 }
 
-.timeline {
+.weekly-timeline,
+.daily-timeline {
     margin: 0 10px;
     padding-bottom: 60px;
     position: absolute;
-    top: 110px;
     left: 0;
     right: 0;
     z-index: 0;
@@ -30,15 +31,22 @@
     overflow: auto;
 }
 
+.daily-timeline {
+    top: 110px;
+}
+
+.weekly-table,
 .timeline-table {
     border-collapse: collapse;
 }
 
+.weekly-table td,
 .timeline-table td {
     border-right: 1px solid var(--strong-line-color);
     min-width: var(--cell-min-width);
 }
 
+.weekly-table thead,
 .timeline-table thead {
     position: sticky;
     top: 0;
@@ -50,6 +58,10 @@
     min-width: var(--cell-min-width);
 }
 
+.data-table {
+    position: relative;
+}
+
 .data-table tr td {
     position: relative;
     padding: 0 5px;
@@ -59,15 +71,24 @@
     height: var(--timeline-height);
 }
 
+.white-scroll-arrows,
 .scroll-arrows {
     position: absolute;
     display: flex;
     padding: 0 25px;
-    height: 110px;
-    background-color: var(--medium-dark-color);
     align-items: center;
     cursor: pointer;
     z-index: 4;
+}
+
+.white-scroll-arrows {
+    height: 70px;
+    background-color: var(--light-font-color);
+}
+
+.scroll-arrows {
+    height: 110px;
+    background-color: var(--medium-dark-color);
 }
 
 .right {
@@ -76,6 +97,10 @@
 
 .left {
     left: 0;
+}
+
+.white-scroll-arrows:hover {
+    background-color: var(--light-line-color);
 }
 
 .scroll-arrows:hover {
@@ -87,9 +112,9 @@
     height: 50px;
     border-radius: 99px;
     line-height: 50px;
-    background-color: var(--employee-icon-back-color);
     text-align: center;
     margin: 10px auto;
+    background-color: var(--employee-icon-back-color);
 }
 
 .appointment,

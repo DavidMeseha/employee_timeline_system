@@ -9,6 +9,7 @@ const OptionsBar = () => {
     const {
         displayDate, setDate, nextDate, prevDate,
         selectedEmployees, setSelectedEmployees,
+        weekSelectedEmployee, setWeekSelectedEmployee,
         format, setFormat
     } = useDisplayManger()
 
@@ -16,7 +17,12 @@ const OptionsBar = () => {
         <>
             <div className="options-wrap" >
                 <div className='employees-option'>
-                    <EmployeesDropdown employees={employees} selected={selectedEmployees} setSelected={setSelectedEmployees} />
+                    <EmployeesDropdown
+                        employees={employees}
+                        selected={format === 'daily' ? selectedEmployees : weekSelectedEmployee}
+                        format={format}
+                        setSelected={format === 'daily' ? setSelectedEmployees : setWeekSelectedEmployee}
+                    />
                 </div>
                 <div className='date-option'>
                     <DateSwitch date={displayDate} setDate={setDate} next={nextDate} prev={prevDate} />

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import CheckBox from "./CheckBox";
 
-const EmployeesDropdown = ({ employees, selected, setSelected }) => {
+const EmployeesDropdown = ({ employees, selected, setSelected, format }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const allCheckboxRef = useRef()
@@ -29,6 +29,14 @@ const EmployeesDropdown = ({ employees, selected, setSelected }) => {
         setSelected(selectedTemp)
     }
 
+    const selectOne = (value) => {
+        checkboxesRef.current.forEach(checkBox => {
+            if (checkBox.value === value) checkBox.checked = true;
+            else checkBox.checked = false;
+        })
+        setSelected(value)
+    }
+
     const unSelectAll = () => {
         checkboxesRef.current.forEach(checkBox => {
             checkBox.checked = false;
@@ -38,25 +46,37 @@ const EmployeesDropdown = ({ employees, selected, setSelected }) => {
     }
 
     useEffect(() => {
-        if (checkboxesRef.current === []) return;
+        if (!checkboxesRef.current[0]) return;
 
-        selectAll()
-        allCheckboxRef.current.checked = true
-    }, [employees])
-
-    const checkBoxChangeHandle = (e) => {
-        let selectedTemp = selected.slice() || []
-
-        if (e.target.checked) {
-            selectedTemp.push(e.target.value)
-        } else {
-            selectedTemp.splice(selectedTemp.indexOf(e.target.value), 1)
+        if (format === 'daily') {
+            selectAll()
+            allCheckboxRef.current.checked = true
         }
 
-        if (selectedTemp.length === employees.length) allCheckboxRef.current.checked = true
-        else allCheckboxRef.current.checked = false
-        
-        setSelected(selectedTemp)
+        if (format === 'weekly') {
+            selectOne(checkboxesRef.current[0].value)
+            setSelected(checkboxesRef.current[0].value)
+        }
+    }, [format])
+
+    const checkBoxChangeHandle = (e) => {
+        if (format === 'daily') {
+            let selectedTemp = selected.slice() || []
+            if (e.target.checked) {
+                selectedTemp.push(e.target.value)
+            } else {
+                selectedTemp.splice(selectedTemp.indexOf(e.target.value), 1)
+            }
+
+            if (selectedTemp.length === employees.length) allCheckboxRef.current.checked = true
+            else allCheckboxRef.current.checked = false
+
+            setSelected(selectedTemp)
+        }
+
+        if (format === 'weekly') {
+            selectOne(e.target.value)
+        }
     }
 
     return (
@@ -67,9 +87,10 @@ const EmployeesDropdown = ({ employees, selected, setSelected }) => {
             </div>
 
             <div className={`dropdown-list ${isOpen ? '' : 'dropdown-closed'}`}>
-                <div className='dropdown-item'>
+                {format === 'daily' && < div className='dropdown-item'>
                     <CheckBox onChange={toggleAll} refFn={allCheckboxRef} value={'All Employees'} name={'All Employees'} />
-                </div>
+                </div>}
+
                 {employees?.map((employee, i) => {
                     return (
                         <div key={i} className='dropdown-item'>
@@ -78,7 +99,7 @@ const EmployeesDropdown = ({ employees, selected, setSelected }) => {
                     )
                 })}
             </div>
-        </div>
+        </div >
     )
 };
 

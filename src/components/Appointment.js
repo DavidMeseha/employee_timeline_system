@@ -50,6 +50,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         document.body.style.overflow = 'hidden'
         if (editing === id) return setIsEditable(true)
         setIsEditable(false)
+
     }, [editing, isEditable])
 
     const confirm = () => {
@@ -117,7 +118,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     const holdToEditHandle = (e) => {
         if (isScaling) return
         if (editing && editing !== id) return
-        
+
         if (isEditable) {
             let pos = positionRef.current.style.marginTop
             setDragStart(e.clientY || e.touches[0].clientY)
@@ -176,14 +177,14 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
 
     const bottomStartmouseDragHandle = (e) => {
         setIsScaling(true)
-        setScaleStart(e.clientY)
+        setScaleStart(e.pageY)
         setOriginalHeight(parseFloat(appointmentRef.current.style.height.replace('px', '')))
     }
 
     const bottomDragHandle = (e) => {
         console.log(!isScaling, originalHeight, scaleStart)
         if (!scaleStart || !originalHeight || !isScaling) return
-        let y = e.clientY || e.touches[0].clientY
+        let y = e.pageY || e.touches && e.touches[0].clientY
         let change = y - scaleStart
         newHeight = originalHeight + change
         adjustDateAndHight()
@@ -191,6 +192,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     }
 
     const endScale = () => {
+        console.log(newHeight, isScaling)
         if (!newHeight || !isScaling) return
         adjustDateAndHight()
         enableScrolling()
@@ -226,10 +228,9 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
                         onTouchStart={bottomStartTouchDragHandle}
                         onMouseMove={bottomDragHandle}
                         onTouchMove={bottomDragHandle}
-                        onMouseUp={(e) => endScale(e.clientY)}
-                        onTouchEnd={(e) => endScale(e.changedTouches[0].clientY)}
-                        onTouchCancel={(e) => endScale(e.changedTouches[0].clientY)}
-                        onMouseLeave={(e) => endScale(e.clientY)}
+                        onMouseUp={endScale}
+                        onTouchEnd={endScale}
+                        onMouseLeave={endScale}
                         className="scale-area"
                     >
                         <div className="icon">

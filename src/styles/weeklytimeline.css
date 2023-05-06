@@ -1,0 +1,46 @@
+.date-heading {
+    background-color: white;
+}
+
+.date-title {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.day-number-selected,
+.day-number {
+    width: 30px;
+    height: 30px;
+    border-radius: 99px;
+    line-height: 30px;
+    margin: 0 10px 0px 0px;
+    text-align: center;
+    background-color: white;
+    font-size: 1.2rem;
+    color: var(--disabled-color);
+}
+
+.weekly-timeline {
+    top: 70px;
+}
+
+.date-name-selected,
+.date-name {
+    font-size: 0.8rem;
+    margin-right: 5px;
+}
+
+.date-name {
+    color: var(--disabled-color);
+}
+
+.date-name-selected {
+    color: var(--employee-icon-back-color);
+}
+
+.day-number-selected {
+    color: white;
+    background-color: var(--employee-icon-back-color);
+}

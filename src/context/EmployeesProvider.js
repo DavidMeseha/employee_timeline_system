@@ -36,6 +36,22 @@ let data = [
                 end: 'May 5 2023 14:30:00',
                 comment: 'Some Comment ....'
             },
+            {
+                id: '11',
+                client: 'Marcos R.',
+                service: 'Haircut',
+                start: 'May 3 2023 8:30:00',
+                end: 'May 3 2023 14:30:00',
+                comment: 'Some Comment ....'
+            },
+            {
+                id: '12',
+                client: 'Marcos R.',
+                service: 'Haircut',
+                start: 'May 3 2023 8:30:00',
+                end: 'May 3 2023 14:30:00',
+                comment: 'Some Comment ....'
+            },
         ],
         blocks: [
             {
@@ -116,6 +132,14 @@ let data = [
             },
             {
                 id: '09',
+                client: 'Marcos R.',
+                service: 'Haircut',
+                start: 'May 5 2023 09:30:00',
+                end: 'May 5 2023 12:30:00',
+                comment: 'Some Comment ....'
+            },
+            {
+                id: '10',
                 client: 'Marcos R.',
                 service: 'Haircut',
                 start: 'May 5 2023 09:30:00',
