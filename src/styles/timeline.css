@@ -35,7 +35,7 @@
 
 .line {
     position: relative;
-    padding-top: 15px;
+    padding-top: 30px;
     border-left: 1px solid var(--strong-line-color);
     border-right: 1px solid var(--strong-line-color);
     width: calc(100% - var(--time-to-table-gap) - var(--time-text-width));

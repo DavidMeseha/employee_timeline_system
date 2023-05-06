@@ -61,12 +61,16 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
 
     const disableScrolling = () => {
         setTableScroll(false)
+        timelineRef.current.style.overflow = 'hidden'
+        containerRef.current.style.overflow = 'hidden'
         containerRef.current.style.pointerEvents = 'none'
         timelineRef.current.style.pointerEvents = 'none'
     }
 
     const enableScrolling = () => {
         setTableScroll(true)
+        timelineRef.current.style.overflow = 'auto'
+        containerRef.current.style.overflow = 'auto'
         timelineRef.current.style.pointerEvents = 'auto'
         containerRef.current.style.pointerEvents = 'auto'
     }
@@ -164,22 +168,14 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         editEmployeeDatesView(employee, appointment.id, editStartDate, editEndDate)
     }
 
-    const bottomStartTouchDragHandle = (e) => {
-        
+    const startScale = (e) => {
         disableScrolling()
         setIsScaling(true)
-        setScaleStart(e.touches[0].clientY)
+        setScaleStart(e.pageY || e.touches[0].clientY)
         setOriginalHeight(parseFloat(appointmentRef.current.style.height.replace('px', '')))
     }
 
-    const bottomStartmouseDragHandle = (e) => {
-        disableScrolling()
-        setIsScaling(true)
-        setScaleStart(e.pageY)
-        setOriginalHeight(parseFloat(appointmentRef.current.style.height.replace('px', '')))
-    }
-
-    const bottomDragHandle = (e) => {
+    const scaleHandle = (e) => {
         if (!scaleStart || !originalHeight || !isScaling) return
         let y = e.pageY || e.touches && e.touches[0].clientY
         let change = y - scaleStart
@@ -222,10 +218,10 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
                     </div>
 
                     {isEditable && <div
-                        onMouseDown={bottomStartmouseDragHandle}
-                        onTouchStart={bottomStartTouchDragHandle}
-                        onMouseMove={bottomDragHandle}
-                        onTouchMove={bottomDragHandle}
+                        onMouseDown={startScale}
+                        onTouchStart={startScale}
+                        onMouseMove={scaleHandle}
+                        onTouchMove={scaleHandle}
                         onMouseUp={endScale}
                         onTouchEnd={endScale}
                         onMouseLeave={endScale}
