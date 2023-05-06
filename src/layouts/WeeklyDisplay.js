@@ -4,12 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import Blocked from "@/components/Blocked";
 import MultiApointmentLayout from "./MultiAppointmentLayout";
 import useEmployeesData from "@/Hooks/useEmployeesData";
-import LiveTime from "./LiveTime";
 import { groupingIntersectingAppointments } from "@/utilities/groupingAppointments";
 
 const WeeklyDisplay = () => {
     const { employees } = useEmployeesData()
-    const { date, format, weekSelectedEmployee, employeesDisplay, setEmployeesDisplay } = useDisplayManger()
+    const { date, format, weekSelectedEmployee } = useDisplayManger()
+    const [employee, setEmployee] = useState()
     const tableRef = useRef()
     const timelineRef = useRef()
     const [isToday, setIsToday] = useState(true)
@@ -19,27 +19,28 @@ const WeeklyDisplay = () => {
 
     let touchStart, initialScroll
 
-    const resetEmployees = () => {
-        setEmployeesDisplay(employees.slice())
+    const resetEmployee = () => {
+        for (let i = 0; i < employees.length; i++) {
+            if (employees[i].name === weekSelectedEmployee) {
+                setEmployee({ ...employees[i] })
+                break
+            }
+        }
         setEditing(null)
     }
 
-    const editEmployeeDatesView = (employee, appointmentId, newStartDate, newEndDate) => {
-        console.log(employees[0].appointments[0])
-        let newState = JSON.parse(JSON.stringify(employeesDisplay))
-        for (let index = 0; index < newState.length; index++) {
-            if (newState[index].name === employee) {
-                let appointments = newState[index].appointments.slice()
-                for (let appointmentIndex = 0; appointmentIndex < appointments.length; appointmentIndex++) {
-                    if (newState[index].appointments[appointmentIndex].id === appointmentId) {
-                        newState[index].appointments[appointmentIndex].end = newEndDate.toString()
-                        newState[index].appointments[appointmentIndex].start = newStartDate.toString()
-                    }
-                }
+    const editEmployeeDatesView = (appointmentEmployee, appointmentId, newStartDate, newEndDate) => {
+        let newState = JSON.parse(JSON.stringify(employee))
+        console.log(newState)
+        let appointments = newState.appointments.slice()
+        for (let appointmentIndex = 0; appointmentIndex < appointments.length; appointmentIndex++) {
+            if (newState.appointments[appointmentIndex].id === appointmentId) {
+                newState.appointments[appointmentIndex].end = newEndDate.toString()
+                newState.appointments[appointmentIndex].start = newStartDate.toString()
             }
         }
-        console.log(newState[0].appointments[0])
-        setEmployeesDisplay(newState)
+
+        setEmployee(newState)
     }
 
     useEffect(() => {
@@ -54,10 +55,10 @@ const WeeklyDisplay = () => {
         }
 
         displayDates()
-        setEditing(null)
+        resetEmployee()
         if (date.getDate() === new Date().getDate()) setIsToday(true)
         else setIsToday(false)
-    }, [date, format])
+    }, [date, format, weekSelectedEmployee])
 
     const handleScrollFromTable = (e) => {
         if (!tableScroll) return
@@ -113,47 +114,44 @@ const WeeklyDisplay = () => {
                         </thead>
                         <tbody className="data-table">
                             <tr>
-                                {employeesDisplay.map((employee, ei) => {
-                                    if (weekSelectedEmployee !== employee.name) return
-                                    let appointmentGroups = groupingIntersectingAppointments(employee.appointments)
+                                {dates.map((date, di) => {
+                                    console.log(employee)
+                                    console.log(employees)
+                                    let appointmentGroups = groupingIntersectingAppointments(employee?.appointments || [])
                                     return (
-                                        dates.map((date, di) => {
-                                            return (
-                                                <td key={di + ei}>
-                                                    {employee.blocks.map((block, bi) => {
-                                                        let blockedDate = new Date(block.start)
-                                                        if (blockedDate.getDate() !== date.getDate() || blockedDate.getMonth() !== date.getMonth() || blockedDate.getFullYear() !== date.getFullYear()) return;
+                                        <td key={di}>
+                                            {employee?.blocks?.map((block, bi) => {
+                                                let blockedDate = new Date(block.start)
+                                                if (blockedDate.getDate() !== date.getDate() || blockedDate.getMonth() !== date.getMonth() || blockedDate.getFullYear() !== date.getFullYear()) return;
 
-                                                        let blockedDateEnd = new Date(block.end)
-                                                        return (
-                                                            <Blocked key={bi} startDate={blockedDate} endDate={blockedDateEnd} comment={block.comment || ''} />
-                                                        )
-                                                    })}
+                                                let blockedDateEnd = new Date(block.end)
+                                                return (
+                                                    <Blocked key={bi} startDate={blockedDate} endDate={blockedDateEnd} comment={block.comment || ''} />
+                                                )
+                                            })}
 
-                                                    {appointmentGroups.map((group, gi) => {
-                                                        let groupDate = new Date(group.startDate)
-                                                        if (groupDate.getDate() !== date.getDate() || groupDate.getMonth() !== date.getMonth() || groupDate.getFullYear() !== date.getFullYear()) return;
-                                                        return (
-                                                            <MultiApointmentLayout
-                                                                key={ei + di + gi}
-                                                                employees={employeesDisplay}
-                                                                appointments={group.appointments}
-                                                                employeeOrder={0}
-                                                                employee={weekSelectedEmployee}
-                                                                startDate={group.startDate}
-                                                                containerRef={tableRef}
-                                                                timelineRef={timelineRef}
-                                                                setTableScroll={setTableScroll}
-                                                                editing={editing}
-                                                                setEditing={setEditing}
-                                                                editEmployeeDatesView={editEmployeeDatesView}
-                                                                reset={resetEmployees}
-                                                            />
-                                                        )
-                                                    })}
-                                                </td>
-                                            )
-                                        })
+                                            {appointmentGroups.map((group, gi) => {
+                                                let groupDate = new Date(group.startDate)
+                                                if (groupDate.getDate() !== date.getDate() || groupDate.getMonth() !== date.getMonth() || groupDate.getFullYear() !== date.getFullYear()) return;
+                                                return (
+                                                    <MultiApointmentLayout
+                                                        key={di + gi}
+                                                        employees={employee}
+                                                        appointments={group.appointments}
+                                                        employeeOrder={0}
+                                                        employee={weekSelectedEmployee}
+                                                        startDate={group.startDate}
+                                                        containerRef={tableRef}
+                                                        timelineRef={timelineRef}
+                                                        setTableScroll={setTableScroll}
+                                                        editing={editing}
+                                                        setEditing={setEditing}
+                                                        editEmployeeDatesView={editEmployeeDatesView}
+                                                        reset={resetEmployee}
+                                                    />
+                                                )
+                                            })}
+                                        </td>
                                     )
                                 })}
                             </tr>

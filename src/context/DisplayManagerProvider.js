@@ -53,7 +53,7 @@ export const DisplayManagerProvider = ({ children }) => {
     useEffect(() => {
         const setInitalDisplay = () => {
             setEmployeesDisplay(_.cloneDeep(employees))
-            if(employees[0]) setWeekSelectedEmployee(employees[0].name)
+            setWeekSelectedEmployee(employees[0]?.name)
             selectAll()
         }
         setInitalDisplay()

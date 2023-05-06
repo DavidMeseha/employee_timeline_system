@@ -59,20 +59,16 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         updateAppointmentDates(employee, appointment.id, editStartDate, editEndDate)
     }
 
-    const disableScrollingForTouch = () => {
-        if ('ontouchstart' in window) {
-            containerRef.current.style.overflow = 'hidden' //disable Scrolling for touch conflect
-            timelineRef.current.style.overflowY = 'hidden'
-            setTableScroll(false)
-        }
+    const disableScrolling = () => {
+        setTableScroll(false)
+        containerRef.current.style.pointerEvents = 'none'
+        timelineRef.current.style.pointerEvents = 'none'
     }
 
     const enableScrolling = () => {
-        if ('ontouchstart' in window) {
-            timelineRef.current.style.overflowY = 'auto'
-            containerRef.current.style.overflow = 'auto' //re-activate scrolling
-            setTableScroll(true)
-        }
+        setTableScroll(true)
+        timelineRef.current.style.pointerEvents = 'auto'
+        containerRef.current.style.pointerEvents = 'auto'
     }
 
     const adjustDateAndHight = () => {
@@ -120,6 +116,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         if (editing && editing !== id) return
 
         if (isEditable) {
+            disableScrolling()
             let pos = positionRef.current.style.marginTop
             setDragStart(e.clientY || e.touches[0].clientY)
             setOriginalPos(parseFloat(pos.replace('px', '')))
@@ -129,6 +126,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
 
         activateEditTimeout = setTimeout(() => {
             if (editing) return
+            disableScrolling()
             let pos = positionRef.current.style.marginTop
             setDragStart(e.clientY || e.touches[0].clientY)
             setOriginalPos(parseFloat(pos.replace('px', '')))
@@ -144,7 +142,6 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         let y = e.clientY || e.touches[0].clientY
         let change = y - dragStart
         newPosition = originalPos + change
-        disableScrollingForTouch()
         adjustNewDateAndPosition()
         positionRef.current.style.marginTop = `${newPosition}px`
     }
@@ -168,21 +165,21 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     }
 
     const bottomStartTouchDragHandle = (e) => {
+        
+        disableScrolling()
         setIsScaling(true)
         setScaleStart(e.touches[0].clientY)
         setOriginalHeight(parseFloat(appointmentRef.current.style.height.replace('px', '')))
-
-        disableScrollingForTouch()
     }
 
     const bottomStartmouseDragHandle = (e) => {
+        disableScrolling()
         setIsScaling(true)
         setScaleStart(e.pageY)
         setOriginalHeight(parseFloat(appointmentRef.current.style.height.replace('px', '')))
     }
 
     const bottomDragHandle = (e) => {
-        console.log(!isScaling, originalHeight, scaleStart)
         if (!scaleStart || !originalHeight || !isScaling) return
         let y = e.pageY || e.touches && e.touches[0].clientY
         let change = y - scaleStart
@@ -199,6 +196,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         setOriginalHeight(null)
         setIsScaling(false)
         setScaleStart(null)
+        setIsDragging(false)
 
         editEmployeeDatesView(employee, appointment.id, editStartDate, editEndDate)
     }

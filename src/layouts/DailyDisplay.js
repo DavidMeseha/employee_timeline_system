@@ -8,7 +8,7 @@ import { groupingIntersectingAppointments } from "@/utilities/groupingAppointmen
 
 const DailyDisplay = () => {
     const { employees } = useEmployeesData()
-    const { date, selectedEmployees, employeesDisplay, setEmployeesDisplay } = useDisplayManger()
+    const { date, format, selectedEmployees, employeesDisplay, setEmployeesDisplay } = useDisplayManger()
     const tableRef = useRef()
     const timelineRef = useRef()
     const [isToday, setIsToday] = useState(true)
@@ -41,10 +41,10 @@ const DailyDisplay = () => {
     }
 
     useEffect(() => {
-        setEditing(null)
+        resetEmployees()
         if (date.getDate() === new Date().getDate()) setIsToday(true)
         else setIsToday(false)
-    }, [date])
+    }, [date, format])
 
     const handleScrollFromTable = (e) => {
         if (!tableScroll) return

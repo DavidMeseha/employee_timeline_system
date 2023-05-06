@@ -45,6 +45,8 @@
 .date {
     background-color: var(--dark-color);
     color: var(--light-font-color);
+    height: 40px;
+    overflow: hidden;
     padding: 10px;
     width: 100%;
     text-align: center;

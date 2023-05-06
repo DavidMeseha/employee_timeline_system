@@ -154,10 +154,10 @@
     position: relative;
     padding: 20px 10px;
     height: 100%;
+    font-size: 0.6rem;
 }
 
 .appointment-contnet p {
-    font-size: 0.8rem;
     width: max-content;
 }
 
@@ -220,8 +220,11 @@
     }
 }
 
-@container appointment (max-width:85px) {
-    .appointment-contnet h3 {
-        font-size: 0.8rem;
+@container appointment (max-height:50px) {
+    .appointment-contnet {
+        display: flex;
+        width: auto;
+        align-items: center;
+        gap: 10px;
     }
 }

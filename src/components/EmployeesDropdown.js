@@ -54,8 +54,9 @@ const EmployeesDropdown = ({ employees, selected, setSelected, format }) => {
         }
 
         if (format === 'weekly') {
-            selectOne(checkboxesRef.current[0].value)
-            setSelected(checkboxesRef.current[0].value)
+            console.log(selected)
+            selectOne(selected || checkboxesRef.current[0].value)
+            setSelected(selected || checkboxesRef.current[0].value)
         }
     }, [format])
 
