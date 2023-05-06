@@ -185,10 +185,9 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     }
 
     const endScale = () => {
-        console.log(newHeight, isScaling)
+        enableScrolling()
         if (!newHeight || !isScaling) return
         adjustDateAndHight()
-        enableScrolling()
         setOriginalHeight(null)
         setIsScaling(false)
         setScaleStart(null)
