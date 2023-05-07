@@ -1,0 +1,107 @@
+.add-appointment-wrap {
+    position: fixed;
+    inset: 0;
+    background-color: var(--dark-color);
+    overflow: auto;
+}
+
+.add-appointment-form {
+    display: flex;
+    width: 80%;
+    gap: 20px;
+    margin: 25px auto 25px auto;
+}
+
+.split {
+    width: 50%;
+}
+
+.input-section-wrap {
+    color: var(--light-font-color);
+    margin-bottom: 15px;
+    flex-grow: 1;
+}
+
+.input-section-wrap .title {
+    position: relative;
+    margin: 0px 30px -15px auto;
+    width: max-content;
+    padding: 5px 10px;
+    background-color: var(--dark-color);
+    z-index: 1;
+}
+
+.input-section-container {
+    padding: 10px 20px;
+    border: 1px solid white;
+    border-radius: 10px;
+}
+
+.time-date {
+    display: flex;
+    gap: 10px;
+}
+
+.small-input {
+    width: 10%;
+}
+
+.customer-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 15px 25px;
+    border-radius: 5px;
+    background-color: var(--medium-dark-color);
+}
+
+.customer-card-tag {
+    background-color: yellow;
+    width: 50px;
+    height: 50px;
+    border-radius: 99px;
+    text-align: center;
+    font-size: 2rem;
+    line-height: 50px;
+    font-weight: 600;
+    color: var(--dark-color);
+}
+
+.customer-card p {
+    color: gray;
+    font-size: 0.8rem;
+    margin: 5px 0;
+}
+
+.customer-card p {
+    color: var();
+    font-size: 0.8rem;
+    margin: 5px 0;
+}
+
+.summery-slice {
+    padding: 20px;
+}
+
+.summery-slice span {
+    font-weight: 600;
+}
+
+@media screen and (max-width:1025px) {
+    .add-appointment-form {
+        width: 95%;
+    }
+}
+
+@media screen and (max-width:800px) {
+    .add-appointment-form {
+        width: 80%;
+        flex-direction: column;
+        gap: 0px;
+    }
+
+    .split {
+        width: 100%;
+    }
+}

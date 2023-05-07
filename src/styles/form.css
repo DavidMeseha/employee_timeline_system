@@ -1,5 +1,6 @@
 .input-field {
     margin: 15px 0;
+    flex-grow: 1;
 }
 
 .form-dropdown-container {
@@ -50,8 +51,8 @@
     background-color: var(--dark-color);
 }
 
-.wrap-title input[type='time'],
-.wrap-title input[type='date'],
+.wrap-icon input,
+.wrap-title input,
 .wrap-title textarea {
     cursor: pointer;
     width: 100%;
@@ -61,6 +62,21 @@
     outline: unset;
     border: unset;
     border-radius: 5px;
+}
+
+.wrap-icon{
+    display: flex;
+    align-items: center;
+}
+
+.wrap-icon input {
+    padding: 10px;
+}
+
+.wrap-icon .icon {
+    width: 25px;
+    margin: 0 0 0 -30px;
+    fill: yellow;
 }
 
 textarea {

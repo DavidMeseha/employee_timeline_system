@@ -70,15 +70,13 @@ const BlockedTimeForm = ({ close }) => {
                         />
                     </div>
                     <div className="input-field">
-                        <div style={{ display: 'flex' }}>
-                            <InputTextBox
-                                title={'Date'}
-                                type={'date'}
-                                value={date}
-                                required={true}
-                                onChange={(e) => setDate(e.target.value)}
-                            />
-                        </div>
+                        <InputTextBox
+                            title={'Date'}
+                            type={'date'}
+                            value={date}
+                            required={true}
+                            onChange={(e) => setDate(e.target.value)}
+                        />
                     </div>
                     <div className="input-field">
                         <div className="time-input-wrap">

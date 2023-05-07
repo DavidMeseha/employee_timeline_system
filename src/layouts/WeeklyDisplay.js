@@ -116,8 +116,6 @@ const WeeklyDisplay = () => {
                         <tbody className="data-table">
                             <tr>
                                 {dates.map((date, di) => {
-                                    console.log(employee)
-                                    console.log(employees)
                                     let appointmentGroups = groupingIntersectingAppointments(employee?.appointments || [])
                                     return (
                                         <td key={di}>

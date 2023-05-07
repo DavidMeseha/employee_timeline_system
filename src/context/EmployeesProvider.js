@@ -1,4 +1,4 @@
-import { createContext, useEffect, useReducer } from "react";
+import { createContext, useEffect, useReducer, useState } from "react";
 import _ from 'lodash'
 
 const EmployeesContext = createContext({})
@@ -7,7 +7,7 @@ const UPDATE_DATE = 'UPDATE_END_DATE'
 const ADD_BLOCKED_DATE_TIME = 'ADD_BLOCKED_DATE_TIME'
 const SET_EMPLOYEES = 'SET_EMPLOYEES'
 
-let data = [
+let employeesData = [
     {
         id: '01',
         name: 'Marcos Lima',
@@ -167,6 +167,21 @@ let data = [
     }
 ]
 
+let customersData = [
+    {
+        name: 'Marcos brother',
+        phone: '01234566789'
+    },
+    {
+        name: 'Paul father',
+        phone: '987456321'
+    },
+    {
+        name: 'Someone else',
+        phone: '01234566789'
+    }
+]
+
 function employeesReducer(employees, action) {
     switch (action.type) {
         case UPDATE_DATE: {
@@ -228,10 +243,12 @@ function employeesReducer(employees, action) {
 
 export const EmployeesProvider = ({ children }) => {
     const [employees, employeesDispatch] = useReducer(employeesReducer, [])
+    const [customers, setCustomers] = useState('')
 
     useEffect(() => {
         console.log('setEmp')
-        employeesDispatch({ type: SET_EMPLOYEES, payload: data })
+        employeesDispatch({ type: SET_EMPLOYEES, payload: employeesData })
+        setCustomers(customersData)
     }, [])
 
     const updateAppointmentDates = (employee, appointmentId, newStartDate, newEndDate) => {
@@ -258,11 +275,22 @@ export const EmployeesProvider = ({ children }) => {
         })
     }
 
+    const addCustomer = (name, phone) => {
+        let newCustomers = _.cloneDeep(customers)
+        let newCustomer = {
+            name: name,
+            phone: phone
+        }
+        newCustomers.push(newCustomer)
+        setCustomers(newCustomer)
+    }
+
     return (
         <EmployeesContext.Provider value={{
-            employees,
+            employees, customers,
             updateAppointmentDates,
             addNewBlockedTimeForEmployee,
+            addCustomer,
         }}>
             {children}
         </EmployeesContext.Provider >

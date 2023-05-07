@@ -1,9 +1,11 @@
-const InputTextBox = ({ type, value, onChange, title, required, ref }) => {
+const InputTextBox = ({ type, value, onChange, title, required }) => {
     return (
         <>
-            <div className="wrap-title">
-                <h4>{title}</h4>
-                <input type={type} value={value} ref={ref || null} onChange={onChange} required={required} />
+            <div style={{ display: 'flex', flexGrow: 1 }}>
+                <div className="wrap-title">
+                    <h4>{title}</h4>
+                    <input type={type} value={value} onChange={onChange} required={required} />
+                </div>
             </div>
         </>
     )
