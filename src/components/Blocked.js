@@ -17,7 +17,7 @@ const Blocked = ({ startDate, endDate, comment }) => {
         <>
             <div className='blocked-area' style={{ top: blockStart, height: blockEnd }}>
                 <div>
-                    <h2>{comment}</h2>
+                    <p>{comment}</p>
                     <DiagonalStrip />
                 </div>
             </div >

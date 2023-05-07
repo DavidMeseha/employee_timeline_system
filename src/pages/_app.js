@@ -4,6 +4,8 @@ import '@/styles/timeline.css'
 import '@/styles/dailytimeline.css'
 import '@/styles/confirmedit.css'
 import '@/styles/weeklytimeline.css'
+import '@/styles/blockedtimeform.css'
+import '@/styles/form.css'
 import { DisplayManagerProvider } from '../context/DisplayManagerProvider'
 import { EmployeesProvider } from '@/context/EmployeesProvider'
 

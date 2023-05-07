@@ -4,7 +4,7 @@ import _ from 'lodash'
 const EmployeesContext = createContext({})
 
 const UPDATE_DATE = 'UPDATE_END_DATE'
-const UPDATE_START_DATE = 'UPDATE_START_DATE'
+const ADD_BLOCKED_DATE_TIME = 'ADD_BLOCKED_DATE_TIME'
 const SET_EMPLOYEES = 'SET_EMPLOYEES'
 
 let data = [
@@ -172,8 +172,8 @@ function employeesReducer(employees, action) {
         case UPDATE_DATE: {
             let employee = action.payload.name
             let appointmentId = action.payload.id
-            let newEndDate = action.payload.value.endDate
-            let newStartDate = action.payload.value.startDate
+            let newEndDate = action.payload.endDate
+            let newStartDate = action.payload.startDate
             let newState = _.cloneDeep(employees)
 
             for (let index = 0; index < newState.length; index++) {
@@ -185,7 +185,31 @@ function employeesReducer(employees, action) {
                             break
                         }
                     }
+                    break
+                }
+            }
 
+            return newState
+        }
+
+        case ADD_BLOCKED_DATE_TIME: {
+            let newState = _.cloneDeep(employees)
+            let employee = action.payload.name
+            let endDate = action.payload.endDate
+            let startDate = action.payload.startDate
+            let comment = action.payload.comment
+
+            let newBlockedTime = {
+                start: startDate,
+                end: endDate,
+                comment: comment
+            }
+
+            for (let index = 0; index < newState.length; index++) {
+                if (newState[index].name === employee) {
+                    let newBlocks = [...newState[index].blocks]
+                    newBlocks.push(newBlockedTime)
+                    newState[index].blocks = newBlocks
                     break
                 }
             }
@@ -211,13 +235,25 @@ export const EmployeesProvider = ({ children }) => {
     }, [])
 
     const updateAppointmentDates = (employee, appointmentId, newStartDate, newEndDate) => {
-        console.log('setting')
         employeesDispatch({
             type: UPDATE_DATE,
             payload: {
                 name: employee,
                 id: appointmentId,
-                value: { startDate: newStartDate, endDate: newEndDate }
+                startDate: newStartDate,
+                endDate: newEndDate
+            }
+        })
+    }
+
+    const addNewBlockedTimeForEmployee = (employee, startDate, endDate, comment) => {
+        employeesDispatch({
+            type: ADD_BLOCKED_DATE_TIME,
+            payload: {
+                name: employee,
+                startDate: startDate,
+                endDate: endDate,
+                comment: comment
             }
         })
     }
@@ -226,6 +262,7 @@ export const EmployeesProvider = ({ children }) => {
         <EmployeesContext.Provider value={{
             employees,
             updateAppointmentDates,
+            addNewBlockedTimeForEmployee,
         }}>
             {children}
         </EmployeesContext.Provider >

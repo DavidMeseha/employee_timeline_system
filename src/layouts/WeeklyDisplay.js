@@ -58,7 +58,7 @@ const WeeklyDisplay = () => {
         resetEmployee()
         if (date.getDate() === new Date().getDate()) setIsToday(true)
         else setIsToday(false)
-    }, [date, format, weekSelectedEmployee])
+    }, [date, format, weekSelectedEmployee, employees])
 
     const handleScrollFromTable = (e) => {
         if (!tableScroll) return
@@ -92,17 +92,18 @@ const WeeklyDisplay = () => {
             {<div className="timeline-container">
                 <div className="white-scroll-arrows left" onClick={() => scrollBy(200)}><div className="arrow-left"></div></div>
                 <div className="white-scroll-arrows right" onClick={() => scrollBy(-200)}><div className="arrow-right"></div></div>
+                <div className="weekly-employee-name"><h4>{weekSelectedEmployee}</h4></div>
                 <div className="table-wrap" ref={tableRef} onScroll={handleScrollFromTable}>
                     <table className="weekly-table">
                         <thead>
                             <tr className="date-heading">
-                                {dates.map((date) => {
+                                {dates.map((date, key) => {
                                     let day = date.getDate()
                                     let today = new Date()
                                     let isToday = false
                                     if (today.getDate() === date.getDate() && today.getMonth() === date.getMonth() && today.getFullYear() === date.getFullYear()) isToday = true
                                     return (
-                                        <td>
+                                        <td key={key}>
                                             <div className='date-title'>
                                                 <div className={isToday ? "day-number-selected" : "day-number"}>{day}</div>
                                                 <div className={isToday ? "date-name-selected" : "date-name"}>{date.toLocaleDateString('en', { weekday: 'long' })}</div>

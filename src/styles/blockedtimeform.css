@@ -1,0 +1,63 @@
+.blocked-form-wrap {
+    position: fixed;
+    inset: 0px;
+    background-color: var(--dark-color-transparent);
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--light-font-color);
+}
+
+.blocked-form-container {
+    overflow: hidden;
+    position: relative;
+    border-radius: 10px;
+    padding: 20px;
+    width: 40%;
+    background-color: var(--dark-color);
+}
+
+.on-done-icon {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 20px;
+    inset: 0px;
+    z-index: 2;
+    fill: rgb(0, 194, 0);
+    background: var(--dark-color);
+}
+
+.on-done-icon .icon {
+    width: 100px;
+}
+
+.form-heading {
+    margin: 0 0 15px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.form-heading .icon {
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    fill: var(--negative-action-color);
+}
+
+@media screen and (max-width:769px) {
+    .blocked-form-container {
+        width: 80%;
+    }
+}
+
+@media screen and (max-width:426px) {
+    .blocked-form-container {
+        width: 95%;
+    }
+}

@@ -83,7 +83,7 @@ const EmployeesDropdown = ({ employees, selected, setSelected, format }) => {
     return (
         <div className="dropdown-container">
             <div onClick={() => setIsOpen(!isOpen)} className="dropdown-button">
-                <div className="selected">{selected?.length === employees?.length ? 'All Employees' : 'Selected'}</div>
+                <div className="selected">{selected?.length === employees?.length ? 'All Employees' : format === 'weekly' ? selected : 'Selected'}</div>
                 <div className="arrow-down"></div>
             </div>
 

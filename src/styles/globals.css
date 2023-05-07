@@ -1,6 +1,7 @@
 :root {
   --light-font-color: white;
   --dark-color: #222223;
+  --dark-color-transparent: #22222385;
   --medium-dark-color: #2e2f30;
   --light-line-color: #e5e5e5;
   --strong-line-color: #c1c1c1;
@@ -79,7 +80,7 @@ button {
   z-index: 1;
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator {
+.hidden-date::-webkit-calendar-picker-indicator {
   background: transparent;
   bottom: 0;
   color: transparent;
@@ -168,6 +169,7 @@ table {
 
 .dropdown-item {
   padding: 10px;
+  cursor: pointer;
   border-bottom: 1px solid var(--light-line-color);
 }
 

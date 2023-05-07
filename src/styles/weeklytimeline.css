@@ -2,6 +2,14 @@
     background-color: white;
 }
 
+.weekly-employee-name {
+    background-color: var(--employee-icon-back-color);
+    padding: 10px;
+    height: 40px;
+    color: white;
+    text-align: center;
+}
+
 .date-title {
     padding: 20px;
     display: flex;
@@ -23,7 +31,7 @@
 }
 
 .weekly-timeline {
-    top: 70px;
+    top: 110px;
 }
 
 .date-name-selected,

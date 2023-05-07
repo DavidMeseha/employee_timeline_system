@@ -1,0 +1,99 @@
+.input-field {
+    margin: 15px 0;
+}
+
+.form-dropdown-container {
+    position: relative;
+}
+
+.form-dropdown-container .selected {
+    display: block;
+    color: var(--light-font-color);
+    padding: 0 10px;
+}
+
+.form-dropdown-container .dropdown-title {
+    color: var(--secondry-color);
+    margin: 0px 0px 15px 0px;
+    font-weight: 600;
+}
+
+.form-dropdown-container .dropdown-button {
+    display: flex;
+    border-radius: 5px;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--medium-dark-color);
+    width: auto;
+}
+
+.form-dropdown-container .arrow-down {
+    border-top: var(--secondry-color) solid 7px;
+}
+
+.form-dropdown-container .dropdown-list {
+    box-shadow: 0px 18px 10px -8px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: 0px 18px 10px -8px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 18px 10px -8px rgba(0, 0, 0, 0.75);
+    padding-top: 10px;
+    width: 100%;
+    background-color: var(--medium-dark-color);
+    top: 69px;
+    z-index: 1;
+}
+
+.form-dropdown-container .dropdown-item {
+    padding: 10px 20px;
+}
+
+.form-dropdown-container .dropdown-item:hover {
+    background-color: var(--dark-color);
+}
+
+.wrap-title input[type='time'],
+.wrap-title input[type='date'],
+.wrap-title textarea {
+    cursor: pointer;
+    width: 100%;
+    padding: 40px 10px 10px 10px;
+    background-color: var(--medium-dark-color);
+    color: var(--light-font-color);
+    outline: unset;
+    border: unset;
+    border-radius: 5px;
+}
+
+textarea {
+    resize: none;
+}
+
+.time-input-wrap {
+    display: flex;
+    gap: 10px;
+}
+
+.wrap-title {
+    flex-grow: 1;
+}
+
+.wrap-title h4 {
+    color: var(--secondry-color);
+    position: relative;
+    margin: 10px 0px -30px 10px;
+}
+
+.confirm-button {
+    padding: 15px;
+    background-color: var(--secondry-color);
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 5px;
+    outline: unset;
+    border: unset;
+    width: 100%;
+}
+
+::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+}

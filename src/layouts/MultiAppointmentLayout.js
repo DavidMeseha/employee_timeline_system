@@ -3,7 +3,7 @@ import Appointment from "../components/Appointment";
 const MultiApointmentLayout = ({ appointments, employeeOrder, employee, containerRef, setTableScroll, timelineRef, editing, setEditing, editEmployeeDatesView, reset }) => {
     return (
         <div style={{ position: 'absolute', width: 'calc(100% - 10px)', top: 0 }}>
-            <div style={{ position: 'relative', display: "flex", gap: 10 }}>
+            <div style={{ position: 'relative', display: "flex", gap: 5 }}>
                 {appointments?.map((appointment, ai) => {
                     let appointmentDate = new Date(appointment.start).toString()
                     let appointmentEndDate = new Date(appointment.end).toString()

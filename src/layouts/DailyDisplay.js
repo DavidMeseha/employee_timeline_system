@@ -46,6 +46,10 @@ const DailyDisplay = () => {
         else setIsToday(false)
     }, [date, format])
 
+    useEffect(() => {
+        setEmployeesDisplay([...employees])
+    }, [employees])
+
     const handleScrollFromTable = (e) => {
         if (!tableScroll) return
         timelineRef.current.scrollTop = e.target.scrollTop
