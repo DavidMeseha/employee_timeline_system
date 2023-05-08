@@ -36,11 +36,15 @@
     box-shadow: 0px 18px 10px -8px rgba(0, 0, 0, 0.75);
     -webkit-box-shadow: 0px 18px 10px -8px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: 0px 18px 10px -8px rgba(0, 0, 0, 0.75);
+    overflow: auto;
+    max-height: 300px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
     padding-top: 10px;
     width: 100%;
     background-color: var(--medium-dark-color);
     top: 69px;
-    z-index: 1;
+    z-index: 2;
 }
 
 .form-dropdown-container .dropdown-item {
@@ -51,7 +55,7 @@
     background-color: var(--dark-color);
 }
 
-.wrap-icon input,
+.wrap-search-icon input,
 .wrap-title input,
 .wrap-title textarea {
     cursor: pointer;
@@ -64,18 +68,18 @@
     border-radius: 5px;
 }
 
-.wrap-icon{
+.wrap-search-icon {
     display: flex;
     align-items: center;
 }
 
-.wrap-icon input {
+.wrap-search-icon input {
     padding: 10px;
 }
 
-.wrap-icon .icon {
+.wrap-search-icon .icon {
     width: 25px;
-    margin: 0 0 0 -30px;
+    margin: 3px 0px 0px -30px;
     fill: yellow;
 }
 

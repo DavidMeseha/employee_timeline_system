@@ -1,11 +1,11 @@
 import { createContext, useEffect, useState } from "react";
-import useEmployeesData from "@/Hooks/useEmployeesData";
 import _ from 'lodash'
+import useData from "@/Hooks/useData";
 
 const DisplayManagerContext = createContext({})
 
 export const DisplayManagerProvider = ({ children }) => {
-    const { employees } = useEmployeesData()
+    const { employees } = useData()
     const [displayDate, setDisplayDate] = useState()
     const [employeesDisplay, setEmployeesDisplay] = useState([])
     const [selectedEmployees, setSelectedEmployees] = useState([])

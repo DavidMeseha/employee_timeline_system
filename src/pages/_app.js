@@ -8,16 +8,16 @@ import '@/styles/blockedtimeform.css'
 import '@/styles/form.css'
 import '@/styles/add-appointment.css'
 import { DisplayManagerProvider } from '../context/DisplayManagerProvider'
-import { EmployeesProvider } from '@/context/EmployeesProvider'
+import { DataProvider } from '@/context/DataProvider'
 
 export default function App({ Component, pageProps }) {
   return (
     <>
-      <EmployeesProvider>
+      <DataProvider>
         <DisplayManagerProvider>
           <Component {...pageProps} />
         </DisplayManagerProvider>
-      </EmployeesProvider >
+      </DataProvider >
     </>
   )
 }

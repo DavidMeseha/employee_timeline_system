@@ -1,7 +1,7 @@
 import { createContext, useEffect, useReducer, useState } from "react";
 import _ from 'lodash'
 
-const EmployeesContext = createContext({})
+const DataContext = createContext({})
 
 const UPDATE_DATE = 'UPDATE_END_DATE'
 const ADD_BLOCKED_DATE_TIME = 'ADD_BLOCKED_DATE_TIME'
@@ -182,6 +182,24 @@ let customersData = [
     }
 ]
 
+let servicesData = [
+    {
+        service: 'service 1',
+        price: 500_000_000,
+        duration: 70
+    },
+    {
+        service: 'service 2',
+        price: 10_000_000,
+        duration: 50
+    },
+    {
+        service: 'service 3',
+        price: 900_000_000,
+        duration: 120
+    },
+]
+
 function employeesReducer(employees, action) {
     switch (action.type) {
         case UPDATE_DATE: {
@@ -241,14 +259,16 @@ function employeesReducer(employees, action) {
     }
 }
 
-export const EmployeesProvider = ({ children }) => {
+export const DataProvider = ({ children }) => {
     const [employees, employeesDispatch] = useReducer(employeesReducer, [])
-    const [customers, setCustomers] = useState('')
+    const [customers, setCustomers] = useState([])
+    const [services, setServices] = useState([])
 
     useEffect(() => {
         console.log('setEmp')
         employeesDispatch({ type: SET_EMPLOYEES, payload: employeesData })
         setCustomers(customersData)
+        setServices(servicesData)
     }, [])
 
     const updateAppointmentDates = (employee, appointmentId, newStartDate, newEndDate) => {
@@ -286,15 +306,15 @@ export const EmployeesProvider = ({ children }) => {
     }
 
     return (
-        <EmployeesContext.Provider value={{
-            employees, customers,
+        <DataContext.Provider value={{
+            employees, customers, services,
             updateAppointmentDates,
             addNewBlockedTimeForEmployee,
             addCustomer,
         }}>
             {children}
-        </EmployeesContext.Provider >
+        </DataContext.Provider >
     )
 };
 
-export default EmployeesContext
+export default DataContext

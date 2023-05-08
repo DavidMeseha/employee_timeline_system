@@ -1,13 +1,13 @@
-import useEmployeesData from "@/Hooks/useEmployeesData";
 import { Close as CloseIcon } from "@/components/Icons";
 import FormDropdown from "@/components/FormDropdown";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import DonePopup from "@/components/DonePopup";
 import InputTextBox from "@/components/InputTextBox";
+import useData from "@/Hooks/useData";
 
 const BlockedTimeForm = ({ close }) => {
     const { addNewBlockedTimeForEmployee } = useEmployeesData()
-    const { employees } = useEmployeesData()
+    const { employees } = useData()
     const [employee, setEmployee] = useState('')
     const [avilableEmployees, setAvilableEmployees] = useState([])
     const [date, setDate] = useState('')

@@ -11,10 +11,11 @@
 }
 
 .date-title {
-    padding: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 20px;
+    min-width: 150px;
 }
 
 .day-number-selected,

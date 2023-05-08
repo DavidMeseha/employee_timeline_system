@@ -1,18 +1,30 @@
+import useData from "@/Hooks/useData";
 import CustomerCard from "@/components/CustomerCard";
 import FormDropdown from "@/components/FormDropdown";
 import InputTextBox from "@/components/InputTextBox";
 import SearchBar from "@/components/SearchBar";
 import InputSectionLayout from "@/layouts/InputSectionLayout";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Appointment() {
+    const { employees, services, customers } = useData()
     const [service, setService] = useState('')
     const [member, setMember] = useState('')
     const [comment, setComment] = useState('')
     const [search, setSearch] = useState('')
     const [searchResult, setSearchResult] = useState([])
-    const [avilableServices, setAvilableServices] = useState(['service 1', 'service 2'])
-    const [members, setMembers] = useState(['Member 1', 'Member 2'])
+    const [avilableServices, setAvilableServices] = useState([])
+    const [avilableTeamMembers, setAvilableTeamMembers] = useState([])
+
+    useEffect(() => {
+        const setAvilableOptions = () =>{
+
+        }
+    }, [])
+
+    const searchOnChangeHandle = () => {
+
+    }
 
     return (
         <div className="add-appointment-wrap">
@@ -46,7 +58,7 @@ export default function Appointment() {
                                 selected={member}
                                 setSelected={setMember}
                                 placeholder={'Choose Member'}
-                                options={members}
+                                options={avilableTeamMembers}
                             />
                         </div>
                         <div className="input-field">
@@ -68,7 +80,8 @@ export default function Appointment() {
                         <div className="input-field">
                             <SearchBar
                                 value={search}
-                                onChange={(e) => setSearch(e.target.value)}
+                                onChange={searchOnChangeHandle}
+                                searchResult={searchResult}
                             />
                         </div>
                         <div className="input-field">

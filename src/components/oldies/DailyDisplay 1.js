@@ -2,7 +2,7 @@ import TimeLines from "@/components/TimeLines";
 import useDisplayManger from "@/Hooks/useDisplayManger";
 import { useEffect, useRef, useState } from "react";
 import AppointmentsTable from "./AppointmentsTable 1";
-import useEmployeesData from "@/Hooks/useEmployeesData";
+import useEmployeesData from "@/Hooks/useData";
 
 const DailyDisplay = () => {
     const { employees } = useEmployeesData()

@@ -8,8 +8,9 @@
 .add-appointment-form {
     display: flex;
     width: 80%;
+    max-width: 800px;
     gap: 20px;
-    margin: 25px auto 25px auto;
+    margin: 30px auto 25px auto;
 }
 
 .split {
@@ -32,7 +33,7 @@
 }
 
 .input-section-container {
-    padding: 10px 20px;
+    padding: 5px 15px;
     border: 1px solid white;
     border-radius: 10px;
 }
@@ -71,13 +72,8 @@
 .customer-card p {
     color: gray;
     font-size: 0.8rem;
-    margin: 5px 0;
-}
-
-.customer-card p {
-    color: var();
-    font-size: 0.8rem;
-    margin: 5px 0;
+    margin: 7px 0;
+    text-align: right;
 }
 
 .summery-slice {

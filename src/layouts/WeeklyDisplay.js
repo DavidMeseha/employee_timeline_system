@@ -3,11 +3,11 @@ import useDisplayManger from "@/Hooks/useDisplayManger";
 import { useEffect, useRef, useState } from "react";
 import Blocked from "@/components/Blocked";
 import MultiApointmentLayout from "./MultiAppointmentLayout";
-import useEmployeesData from "@/Hooks/useEmployeesData";
 import { groupingIntersectingAppointments } from "@/utilities/groupingAppointments";
+import useData from "@/Hooks/useData";
 
 const WeeklyDisplay = () => {
-    const { employees } = useEmployeesData()
+    const { employees } = useData()
     const { date, format, weekSelectedEmployee } = useDisplayManger()
     const [employee, setEmployee] = useState()
     const tableRef = useRef()
