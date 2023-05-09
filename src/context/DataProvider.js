@@ -5,6 +5,7 @@ const DataContext = createContext({})
 
 const UPDATE_DATE = 'UPDATE_END_DATE'
 const ADD_BLOCKED_DATE_TIME = 'ADD_BLOCKED_DATE_TIME'
+const ADD_APPOINTMENT = 'ADD_APPOINTMENT'
 const SET_EMPLOYEES = 'SET_EMPLOYEES'
 
 let employeesData = [
@@ -173,7 +174,15 @@ let customersData = [
         phone: '01234566789'
     },
     {
+        name: 'Mady Man',
+        phone: '01234566789'
+    },
+    {
         name: 'Paul father',
+        phone: '987456321'
+    },
+    {
+        name: 'Paul Someone',
         phone: '987456321'
     },
     {
@@ -184,30 +193,42 @@ let customersData = [
 
 let servicesData = [
     {
-        service: 'service 1',
+        service: 'Hair Cut',
         price: 500_000_000,
         duration: 70
     },
     {
-        service: 'service 2',
+        service: 'Beard Cut',
         price: 10_000_000,
         duration: 50
     },
     {
-        service: 'service 3',
+        service: 'Some Service',
         price: 900_000_000,
         duration: 120
     },
+    {
+        service: 'Cut Cut',
+        price: 10_000_000,
+        duration: 30
+    },
+    {
+        service: 'Do Somthing',
+        price: 100_000_000,
+        duration: 100
+    },
 ]
+
+let NEXT_APPOINTMENT_ID = 13;
 
 function employeesReducer(employees, action) {
     switch (action.type) {
         case UPDATE_DATE: {
-            let employee = action.payload.name
+            let newState = _.cloneDeep(employees)
+            let employee = action.payload.employee
             let appointmentId = action.payload.id
             let newEndDate = action.payload.endDate
             let newStartDate = action.payload.startDate
-            let newState = _.cloneDeep(employees)
 
             for (let index = 0; index < newState.length; index++) {
                 if (newState[index].name === employee) {
@@ -225,25 +246,66 @@ function employeesReducer(employees, action) {
             return newState
         }
 
+        case ADD_APPOINTMENT: {
+            console.log(action.payload)
+            let newState = _.cloneDeep(employees)
+            let employee = action.payload.employee
+            let customer = action.payload.customer
+            let service = action.payload.service
+            let endDate = action.payload.endDate
+            let startDate = action.payload.startDate
+            let comment = action.payload.comment
+            let id = NEXT_APPOINTMENT_ID
+            NEXT_APPOINTMENT_ID++
+
+            let newAppointment = {
+                id: id.toString(),
+                client: customer.name,
+                service: service.service,
+                start: startDate,
+                end: endDate,
+                comment
+            }
+
+            for (let index = 0; index < newState.length; index++) {
+                if (newState[index].name === employee) {
+                    console.log(newState[index].appointments)
+                    let newAppointments = [...newState[index].appointments]
+                    newAppointments.push(newAppointment)
+                    newState[index].appointments = newAppointments
+                    break
+                }
+            }
+
+            console.log(newState)
+
+            return newState
+        }
+
         case ADD_BLOCKED_DATE_TIME: {
             let newState = _.cloneDeep(employees)
             let employee = action.payload.name
             let endDate = action.payload.endDate
             let startDate = action.payload.startDate
             let comment = action.payload.comment
-
             let newBlockedTime = {
                 start: startDate,
                 end: endDate,
                 comment: comment
             }
 
-            for (let index = 0; index < newState.length; index++) {
-                if (newState[index].name === employee) {
-                    let newBlocks = [...newState[index].blocks]
-                    newBlocks.push(newBlockedTime)
-                    newState[index].blocks = newBlocks
-                    break
+            if (employee === 'All Employees') {
+                newState.forEach(employee => {
+                    employee.blocks.push(newBlockedTime)
+                });
+            } else {
+                for (let index = 0; index < newState.length; index++) {
+                    if (newState[index].name === employee) {
+                        let newBlocks = [...newState[index].blocks]
+                        newBlocks.push(newBlockedTime)
+                        newState[index].blocks = newBlocks
+                        break
+                    }
                 }
             }
 
@@ -295,14 +357,11 @@ export const DataProvider = ({ children }) => {
         })
     }
 
-    const addCustomer = (name, phone) => {
-        let newCustomers = _.cloneDeep(customers)
-        let newCustomer = {
-            name: name,
-            phone: phone
-        }
-        newCustomers.push(newCustomer)
-        setCustomers(newCustomer)
+    const addNewAppointment = (employee, customer, service, startDate, endDate, comment) => {
+        employeesDispatch({
+            type: ADD_APPOINTMENT,
+            payload: { employee, startDate, endDate, customer, service, comment }
+        })
     }
 
     return (
@@ -310,7 +369,7 @@ export const DataProvider = ({ children }) => {
             employees, customers, services,
             updateAppointmentDates,
             addNewBlockedTimeForEmployee,
-            addCustomer,
+            addNewAppointment
         }}>
             {children}
         </DataContext.Provider >

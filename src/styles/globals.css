@@ -1,7 +1,7 @@
 :root {
   --light-font-color: white;
   --dark-color: #222223;
-  --dark-color-transparent: #22222385;
+  --dark-color-transparent: #000000ba;
   --medium-dark-color: #2e2f30;
   --light-line-color: #e5e5e5;
   --strong-line-color: #c1c1c1;
@@ -255,7 +255,7 @@ input[type=time] {
   width: fit-content;
   margin: auto;
   font-size: 0.8rem;
-  background-color: rgba(255, 0, 0, 0.1);
+  background-color: rgb(68, 0, 0);
   color: red;
-  border: 1px solid rgba(255, 0, 0, 0.3);
+  border: 1px solid rgb(133, 0, 0);
 }

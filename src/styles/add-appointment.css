@@ -1,8 +1,10 @@
 .add-appointment-wrap {
     position: fixed;
+    display: flex;
     inset: 0;
     background-color: var(--dark-color);
     overflow: auto;
+    align-items: center;
 }
 
 .add-appointment-form {
@@ -43,13 +45,10 @@
     gap: 10px;
 }
 
-.small-input {
-    width: 10%;
-}
-
+.services-button,
 .customer-card {
     display: flex;
-    justify-content: space-between;
+    gap: 10px;
     align-items: center;
     width: 100%;
     padding: 15px 25px;
@@ -69,19 +68,30 @@
     color: var(--dark-color);
 }
 
+.services-button p,
 .customer-card p {
     color: gray;
     font-size: 0.8rem;
     margin: 7px 0;
-    text-align: right;
+}
+
+.services-button {
+    cursor: pointer;
+    justify-content: space-between;
+    height: 76px;
+}
+
+.services-button .arrow-right {
+    border-left: var(--secondry-color) solid 10px;
 }
 
 .summery-slice {
-    padding: 20px;
+    padding: 19px;
+    color: gray;
 }
 
 .summery-slice span {
-    font-weight: 600;
+    color: white;
 }
 
 @media screen and (max-width:1025px) {
@@ -99,5 +109,11 @@
 
     .split {
         width: 100%;
+    }
+}
+
+@media screen and (max-width:426px) {
+    .time-date {
+        display: block;
     }
 }

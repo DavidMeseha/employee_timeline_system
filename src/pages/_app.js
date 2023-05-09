@@ -7,6 +7,7 @@ import '@/styles/weeklytimeline.css'
 import '@/styles/blockedtimeform.css'
 import '@/styles/form.css'
 import '@/styles/add-appointment.css'
+import '@/styles/service-select.css'
 import { DisplayManagerProvider } from '../context/DisplayManagerProvider'
 import { DataProvider } from '@/context/DataProvider'
 

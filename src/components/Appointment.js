@@ -61,8 +61,10 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
 
     const disableScrolling = () => {
         setTableScroll(false)
-        timelineRef.current.style.overflow = 'hidden'
-        containerRef.current.style.overflow = 'hidden'
+        if (('ontouchstart' in window)) {
+            timelineRef.current.style.overflow = 'hidden'
+            containerRef.current.style.overflow = 'hidden'
+        }
         containerRef.current.style.pointerEvents = 'none'
         timelineRef.current.style.pointerEvents = 'none'
     }
@@ -180,13 +182,13 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         let y = e.pageY || e.touches && e.touches[0].clientY
         let change = y - scaleStart
         newHeight = originalHeight + change
-        adjustDateAndHight()
+        //adjustDateAndHight()
         appointmentRef.current.style.height = `${newHeight}px`
     }
 
     const endScale = () => {
         enableScrolling()
-        
+
         if (!newHeight || !isScaling) return
         adjustDateAndHight()
         setOriginalHeight(null)

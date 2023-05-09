@@ -32,6 +32,7 @@
     border-top: var(--secondry-color) solid 7px;
 }
 
+.search-list,
 .form-dropdown-container .dropdown-list {
     box-shadow: 0px 18px 10px -8px rgba(0, 0, 0, 0.75);
     -webkit-box-shadow: 0px 18px 10px -8px rgba(0, 0, 0, 0.75);
@@ -47,6 +48,19 @@
     z-index: 2;
 }
 
+.search-list {
+    position: absolute;
+    top: 40px
+}
+
+.search-item>.customer-card{
+    cursor: pointer;
+}
+
+.search-item:hover>.customer-card {
+    background-color: var(--dark-color);
+}
+
 .form-dropdown-container .dropdown-item {
     padding: 10px 20px;
 }
@@ -58,7 +72,6 @@
 .wrap-search-icon input,
 .wrap-title input,
 .wrap-title textarea {
-    cursor: pointer;
     width: 100%;
     padding: 40px 10px 10px 10px;
     background-color: var(--medium-dark-color);

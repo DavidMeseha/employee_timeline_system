@@ -1,12 +1,15 @@
 import { Close as CloseIcon } from "@/components/Icons";
 import FormDropdown from "@/components/FormDropdown";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DonePopup from "@/components/DonePopup";
 import InputTextBox from "@/components/InputTextBox";
 import useData from "@/Hooks/useData";
+import Message from "@/components/Message";
+import clickRecognition from "@/Hooks/useClickRecognition";
+import { processTime } from "@/utilities/timeBy5Cap";
 
 const BlockedTimeForm = ({ close }) => {
-    const { addNewBlockedTimeForEmployee } = useEmployeesData()
+    const { addNewBlockedTimeForEmployee } = useData()
     const { employees } = useData()
     const [employee, setEmployee] = useState('')
     const [avilableEmployees, setAvilableEmployees] = useState([])
@@ -15,6 +18,8 @@ const BlockedTimeForm = ({ close }) => {
     const [endTime, setEndTime] = useState('')
     const [comment, setComment] = useState('')
     const [showDone, setShowDone] = useState(false)
+    const [errorMessage, setErrorMessage] = useState({ message: '', state: false })
+    const containerRef = useRef()
 
     useEffect(() => {
         const initialState = () => {
@@ -22,7 +27,7 @@ const BlockedTimeForm = ({ close }) => {
             employees.forEach(employee => {
                 employeesOptions.push(employee.name)
             });
-            setAvilableEmployees(employeesOptions)
+            setAvilableEmployees(['All Employees', ...employeesOptions])
         }
 
         initialState()
@@ -42,6 +47,9 @@ const BlockedTimeForm = ({ close }) => {
         let endDate = new Date(date)
         endDate.setHours(endHour, endMinute)
 
+        if (employee === '') return setErrorMessage({ message: 'No Employee Selected', state: true })
+        if (startDate >= endDate) return setErrorMessage({ message: 'The End-Date must be after the Start-Date', state: true })
+
         addNewBlockedTimeForEmployee(employee, startDate, endDate, comment)
 
         setShowDone(true)
@@ -51,10 +59,23 @@ const BlockedTimeForm = ({ close }) => {
         }, 1200)
     }
 
+    const startTimeChageHandle = (e) => {
+        let newTime = processTime(e.target.value)
+        setStartTime(newTime)
+    }
+
+    const endTimeChageHandle = (e) => {
+        let newTime = processTime(e.target.value)
+        setEndTime(newTime)
+    }
+
+    clickRecognition(close, containerRef)
+
     return (
         <>
+            <Message message={errorMessage.message} state={errorMessage.state} setState={setErrorMessage} />
             <div className="blocked-form-wrap">
-                <form className="blocked-form-container" onSubmit={submit}>
+                <form ref={containerRef} className="blocked-form-container" onSubmit={submit}>
                     {showDone && <DonePopup />}
                     <div className="form-heading">
                         <h3>Add Blocked Time</h3>
@@ -85,14 +106,14 @@ const BlockedTimeForm = ({ close }) => {
                                 type={'time'}
                                 value={startTime}
                                 required={true}
-                                onChange={(e) => setStartTime(e.target.value)}
+                                onChange={startTimeChageHandle}
                             />
                             <InputTextBox
                                 title={'End Time'}
                                 type={'time'}
                                 value={endTime}
                                 required={true}
-                                onChange={(e) => setEndTime(e.target.value)}
+                                onChange={endTimeChageHandle}
                             />
                         </div>
                     </div>

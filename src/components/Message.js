@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const Message = ({ message, type, state, setState, action }) => {
+const Message = ({ message, state, setState }) => {
     const [exit, setExit] = useState(false)
 
     useEffect(() => {
@@ -19,8 +19,8 @@ const Message = ({ message, type, state, setState, action }) => {
 
     return (
         <>
-            {state && <div className='message-position' style={{ opacity: exit ? 0 : 1 }}>
-                <div className='message'>
+            {state && <div className='message-position' style={{ opacity: exit ? 0 : 1, zIndex:6 }}>
+                <div className='error'>
                     <p>{message}.</p>
                 </div >
             </div>}

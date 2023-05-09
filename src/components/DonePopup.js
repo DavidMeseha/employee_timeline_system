@@ -4,7 +4,7 @@ const DonePopup = () => {
     return (
         <div className="on-done-icon">
             <div className='icon'><DoneIcon /></div>
-            <div><h1>Blocked Time Created</h1></div>
+            <div style={{ color: 'white' }} ><h1>Blocked Time Created</h1></div>
         </div>
     );
 };
