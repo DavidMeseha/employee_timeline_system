@@ -1,10 +1,8 @@
 .add-appointment-wrap {
     position: fixed;
-    display: flex;
     inset: 0;
     background-color: var(--dark-color);
     overflow: auto;
-    align-items: center;
 }
 
 .add-appointment-form {
