@@ -1,6 +1,5 @@
 .add-appointment-wrap {
     position: fixed;
-    
     inset: 0;
     background-color: var(--dark-color);
     overflow: auto;
