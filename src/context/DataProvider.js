@@ -225,7 +225,7 @@ function employeesReducer(employees, action) {
     switch (action.type) {
         case UPDATE_DATE: {
             let newState = _.cloneDeep(employees)
-            let employee = action.payload.name
+            let employee = action.payload.employee
             let appointmentId = action.payload.id
             let newEndDate = action.payload.endDate
             let newStartDate = action.payload.startDate
@@ -337,7 +337,7 @@ export const DataProvider = ({ children }) => {
         employeesDispatch({
             type: UPDATE_DATE,
             payload: {
-                name: employee,
+                employee,
                 id: appointmentId,
                 startDate: newStartDate,
                 endDate: newEndDate
