@@ -43,6 +43,18 @@
     color: gray;
 }
 
+.service-card .exit-duration {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.service-card .exit-duration .icon {
+    width: 25px;
+    height: 25px;
+    fill: #bc2525;
+}
+
 .service-name {
     display: flex;
     align-items: center;

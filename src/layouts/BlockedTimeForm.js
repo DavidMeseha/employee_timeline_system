@@ -76,7 +76,7 @@ const BlockedTimeForm = ({ close }) => {
             <Message message={errorMessage.message} state={errorMessage.state} setState={setErrorMessage} />
             <div className="blocked-form-wrap">
                 <form ref={containerRef} className="blocked-form-container" onSubmit={submit}>
-                    {showDone && <DonePopup />}
+                    {showDone && <DonePopup action={'Blocked Time'} />}
                     <div className="form-heading">
                         <h3>Add Blocked Time</h3>
                         <div onClick={close} className="icon"><CloseIcon /></div>

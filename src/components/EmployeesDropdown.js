@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import CheckBox from "./CheckBox";
+import clickRecognition from "@/Hooks/useClickRecognition";
 
 const EmployeesDropdown = ({ employees, selected, setSelected, format }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const allCheckboxRef = useRef()
     const checkboxesRef = useRef();
+    const containerRef = useRef()
     checkboxesRef.current = [];
 
     const setCheckBoxRef = (e) => {
@@ -46,11 +48,16 @@ const EmployeesDropdown = ({ employees, selected, setSelected, format }) => {
     }
 
     useEffect(() => {
+        if (!allCheckboxRef.current) return
+        allCheckboxRef.current.checked = true
+        selectAll()
+    }, [employees])
+
+    useEffect(() => {
         if (!checkboxesRef.current[0]) return;
 
         if (format === 'daily') {
             selectAll()
-            allCheckboxRef.current.checked = true
         }
 
         if (format === 'weekly') {
@@ -80,8 +87,10 @@ const EmployeesDropdown = ({ employees, selected, setSelected, format }) => {
         }
     }
 
+    clickRecognition(() => setIsOpen(false), containerRef)
+
     return (
-        <div className="dropdown-container">
+        <div className="dropdown-container" ref={containerRef}>
             <div onClick={() => setIsOpen(!isOpen)} className="dropdown-button">
                 <div className="selected">{selected?.length === employees?.length ? 'All Employees' : format === 'weekly' ? selected : 'Selected'}</div>
                 <div className="arrow-down"></div>

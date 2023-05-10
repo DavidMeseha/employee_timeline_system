@@ -16,7 +16,7 @@ let employeesData = [
             {
                 id: '01',
                 client: 'Marcos R.',
-                service: 'Haircut',
+                service: ['Haircut'],
                 start: 'May 5 2023 10:30:00',
                 end: 'May 5 2023 13:30:00',
                 comment: 'Some Comment ....'
@@ -24,7 +24,7 @@ let employeesData = [
             {
                 id: '03',
                 client: 'Marcos R.',
-                service: 'Haircut',
+                service: ['Haircut'],
                 start: 'May 5 2023 10:30:00',
                 end: 'May 5 2023 13:30:00',
                 comment: 'Some Comment ....'
@@ -32,7 +32,7 @@ let employeesData = [
             {
                 id: '04',
                 client: 'Marcos R.',
-                service: 'Haircut',
+                service: ['Haircut'],
                 start: 'May 5 2023 8:30:00',
                 end: 'May 5 2023 14:30:00',
                 comment: 'Some Comment ....'
@@ -40,7 +40,7 @@ let employeesData = [
             {
                 id: '11',
                 client: 'Marcos R.',
-                service: 'Haircut',
+                service: ['Haircut'],
                 start: 'May 3 2023 8:30:00',
                 end: 'May 3 2023 14:30:00',
                 comment: 'Some Comment ....'
@@ -48,7 +48,7 @@ let employeesData = [
             {
                 id: '12',
                 client: 'Marcos R.',
-                service: 'Haircut',
+                service: ['Haircut'],
                 start: 'May 3 2023 8:30:00',
                 end: 'May 3 2023 14:30:00',
                 comment: 'Some Comment ....'
@@ -79,7 +79,7 @@ let employeesData = [
             {
                 id: '05',
                 client: 'Marcos R.',
-                service: 'Haircut',
+                service: ['Haircut'],
                 start: 'May 5 2023 09:30:00',
                 end: 'May 5 2023 12:30:00',
                 comment: 'Some Comment ....'
@@ -87,7 +87,7 @@ let employeesData = [
             {
                 id: '06',
                 client: 'Marcos R.',
-                service: 'Haircut',
+                service: ['Haircut'],
                 start: 'May 5 2023 09:30:00',
                 end: 'May 5 2023 12:30:00',
                 comment: 'Some Comment ....'
@@ -95,7 +95,7 @@ let employeesData = [
             {
                 id: '07',
                 client: 'Marcos R.',
-                service: 'Haircut',
+                service: ['Haircut'],
                 start: 'May 5 2023 05:30:00',
                 end: 'May 5 2023 08:00:00',
                 comment: 'Some Comment ....'
@@ -126,7 +126,7 @@ let employeesData = [
             {
                 id: '08',
                 client: 'Marcos R.',
-                service: 'Haircut',
+                service: ['Haircut'],
                 start: 'May 5 2023 09:30:00',
                 end: 'May 5 2023 12:30:00',
                 comment: 'Some Comment ....'
@@ -134,7 +134,7 @@ let employeesData = [
             {
                 id: '09',
                 client: 'Marcos R.',
-                service: 'Haircut',
+                service: ['Haircut'],
                 start: 'May 5 2023 09:30:00',
                 end: 'May 5 2023 12:30:00',
                 comment: 'Some Comment ....'
@@ -142,7 +142,7 @@ let employeesData = [
             {
                 id: '10',
                 client: 'Marcos R.',
-                service: 'Haircut',
+                service: ['Haircut'],
                 start: 'May 5 2023 09:30:00',
                 end: 'May 5 2023 12:30:00',
                 comment: 'Some Comment ....'
@@ -247,7 +247,6 @@ function employeesReducer(employees, action) {
         }
 
         case ADD_APPOINTMENT: {
-            console.log(action.payload)
             let newState = _.cloneDeep(employees)
             let employee = action.payload.employee
             let customer = action.payload.customer
@@ -276,8 +275,6 @@ function employeesReducer(employees, action) {
                     break
                 }
             }
-
-            console.log(newState)
 
             return newState
         }

@@ -1,5 +1,4 @@
 import useData from "@/Hooks/useData";
-import CustomerCard from "@/components/CustomerCard";
 import FormDropdown from "@/components/FormDropdown";
 import InputTextBox from "@/components/InputTextBox";
 import ServiceSelectScreen from "@/layouts/ServiceSelectScreen";
@@ -10,25 +9,29 @@ import { useEffect, useState } from "react";
 import Message from "@/components/Message";
 import DonePopup from "@/components/DonePopup";
 import { useRouter } from "next/router";
+import Card from "@/components/Card";
 
 export default function Appointment() {
     const router = useRouter()
     const { employees, services, customers, addNewAppointment } = useData()
-    const [selectService, setSelectService] = useState(false)
-    const [service, setService] = useState('')
+    const [totalDuration, setTotalDuration] = useState(0)
+    const [totalPrice, setTotalPrice] = useState(0)
+    const [displayTime, setDisplayTime] = useState('')
+    const [displayDate, setDisplayDate] = useState('')
+
+    const [selectedServices, setSelectedServices] = useState([])
     const [member, setMember] = useState('')
     const [date, setDate] = useState('')
-    const [displayDate, setDisplayDate] = useState('')
     const [time, setTime] = useState('')
-    const [displayTime, setDisplayTime] = useState('')
     const [customer, setCustomer] = useState({})
     const [comment, setComment] = useState('')
-    const [searchCustomer, setSearchCustomer] = useState('m')
-    const [searchResult, setSearchResult] = useState([])
-    const [avilableCustomers, setAvilableCustomers] = useState([])
+
+    const [searchCustomer, setSearchCustomer] = useState('')
     const [avilableTeamMembers, setAvilableTeamMembers] = useState([])
+
+    const [selectServiceShow, setSelectServiceShow] = useState(false)
     const [errorMessage, setErrorMessage] = useState({ message: '', state: false })
-    const [showDone, setShowDone] = useState(false)
+    const [isDone, setIsDone] = useState(false)
 
     useEffect(() => {
         const setAvilableOptions = () => {
@@ -37,28 +40,22 @@ export default function Appointment() {
                 values.push(employee.name)
             });
             setAvilableTeamMembers(values)
-
-            values = []
-            customers.forEach(customer => {
-                values.push({ ...customer })
-            })
-            setAvilableCustomers(values)
         }
 
         setAvilableOptions()
     }, [employees, customers])
 
-    const searchOnChangeHandle = (e) => {
-        let value = e.target.value
-        setSearchCustomer(value)
-        if (value === '') return setSearchResult([])
-        let values = []
-        avilableCustomers.forEach(customer => {
-            if (customer.name.toLowerCase().indexOf(e.target.value.toLowerCase()) >= 0) values.push(customer)
+    useEffect(() => {
+        let price = 0
+        let duration = 0
+        selectedServices.forEach(service => {
+            price += service.price
+            duration += service.duration
         });
 
-        setSearchResult(values)
-    }
+        setTotalDuration(duration)
+        setTotalPrice(price)
+    }, [selectedServices])
 
     const timeOnChangeHandle = (e) => {
         let value = processTime(e.target.value)
@@ -82,21 +79,21 @@ export default function Appointment() {
         let startDate = new Date(date)
         startDate.setHours(startHour, startMinute)
         let endHour = startHour
-        let endMinute = startMinute + service.duration
+        let endMinute = startMinute + totalDuration
         let endDate = new Date(date)
         endDate.setHours(endHour, endMinute)
 
         console.log(startDate, ' ', startDate)
 
         if (member === '') return setErrorMessage({ message: 'No Team Member Selected', state: true })
-        if (!service.service) return setErrorMessage({ message: 'No Service Selected', state: true })
+        if (selectedServices.length < 1) return setErrorMessage({ message: 'No Service Selected', state: true })
         if (!customer.name) return setErrorMessage({ message: 'No Customer Selected', state: true })
 
-        addNewAppointment(member, customer, service, startDate, endDate, comment)
+        addNewAppointment(member, customer, selectedServices, startDate, endDate, comment)
 
-        setShowDone(true)
+        setIsDone(true)
         setTimeout(() => {
-            setShowDone(false)
+            setIsDone(false)
             close()
             router.push('/')
         }, 1200)
@@ -104,21 +101,25 @@ export default function Appointment() {
 
     return (
         <>
+            {isDone && <div style={{ position: "fixed", inset: 0, zIndex: 4 }}>
+                <DonePopup action={'Appointment'} />
+            </div>}
             <Message message={errorMessage.message} state={errorMessage.state} setState={setErrorMessage} />
-            {selectService && <ServiceSelectScreen services={services} setService={setService} close={() => setSelectService(false)} />}
+            {selectServiceShow && <ServiceSelectScreen services={services} setSelected={setSelectedServices} selected={selectedServices} close={() => setSelectServiceShow(false)} />}
             <div className="add-appointment-wrap">
                 <form className="add-appointment-form" onSubmit={saveAppointment}>
-                    {showDone && <DonePopup />}
                     <div className="split">
                         <InputSectionLayout title={'Service & Duration'}>
                             <div className="input-field">
-                                <div onClick={() => setSelectService(true)} className="services-button">
+                                <div onClick={() => setSelectServiceShow(true)} className="services-button">
                                     <div>
                                         <h3 style={{ color: "yellow" }}>Services</h3>
-                                        <p>{service.service || 'Select Service'}</p>
+                                        <p>{selectedServices.map((service) => {
+                                            return (service.service + ', ')
+                                        })}</p>
                                     </div>
                                     <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-                                        <p>{service.duration ? service.duration + ' ' + 'min' : ''}</p>
+                                        <p>{totalDuration} min</p>
                                         <div className="arrow-right"></div>
                                     </div>
                                 </div>
@@ -163,27 +164,29 @@ export default function Appointment() {
                             <div className="input-field">
                                 <SearchBar
                                     value={searchCustomer}
-                                    onChange={searchOnChangeHandle}
-                                    searchResult={searchResult}
-                                    setSearchResult={setSearchResult}
-                                    setCustomer={setCustomer}
+                                    setSelected={setCustomer}
+                                    customers={customers}
                                 />
                             </div>
                             <div className="input-field">
                                 <h3 style={{ color: 'blue' }}>+ Add New Customer</h3>
                             </div>
-                            <div className="input-field">
-                                <CustomerCard name={customer?.name || 'select customer'} phone={customer?.phone || '__________'} />
+                            <div className="input-field" style={{ height: 80 }}>
+                                {customer.name && <Card head={customer?.name || 'select customer'} sup={customer?.phone || '__________'} />}
                             </div>
                         </InputSectionLayout>
                         <InputSectionLayout title={'Date, Time and Price'}>
                             <div className="input-field">
-                                <p className="summery-slice"><span>Date:</span> {displayDate}</p>
-                                <p className="summery-slice"><span>Time:</span> {displayTime}</p>
-                                <p className="summery-slice"><span>Price:</span> {service?.price?.toLocaleString('en-US') || 0} L.L</p>
+                                <div className="date_section">
+                                    <p className="summery-slice"><span>Date:</span> {displayDate}</p>
+                                    <p className="summery-slice"><span>Time:</span> {displayTime}</p>
+                                </div>
+                                <div className="">
+                                    <p className="summery-slice"><span>Price:</span> {totalPrice.toLocaleString('en-US')} L.L</p>
+                                </div>
                             </div>
                             <div className="input-field">
-                                <button type="submit" className="confirm-button">Save Appointment ({service.duration ? service.duration + ' ' + 'min' : '0 min'})</button>
+                                <button type="submit" className="confirm-button">Save Appointment ({totalDuration} min)</button>
                             </div>
                         </InputSectionLayout>
                     </div>

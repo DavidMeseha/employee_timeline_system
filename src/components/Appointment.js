@@ -21,7 +21,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     const [originalPos, setOriginalPos] = useState(null)
 
     let activateEditTimeout
-    let id = appointment.id + employee
+    let id = appointment.id
 
     let editStartDate = new Date(startDate)
     let editEndDate = new Date(endDate)
@@ -182,7 +182,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         let y = e.pageY || e.touches && e.touches[0].clientY
         let change = y - scaleStart
         newHeight = originalHeight + change
-        //adjustDateAndHight()
+        adjustDateAndHight()
         appointmentRef.current.style.height = `${newHeight}px`
     }
 
@@ -216,7 +216,11 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
                     <div className="appointment-contnet">
                         <p ref={timeRef}>{time}</p>
                         <h3>{appointment.client}</h3>
-                        <p>{appointment.service}</p>
+                        <p>{appointment.service.map((service) => {
+                            return (
+                                service + ', '
+                            )
+                        })}</p>
                     </div>
 
                     {isEditable && <div
