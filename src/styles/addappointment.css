@@ -20,7 +20,7 @@
 
 .input-section-wrap {
     color: var(--light-font-color);
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     flex-grow: 1;
 }
 
@@ -72,6 +72,8 @@
     color: gray;
     font-size: 0.8rem;
     margin: 7px 0;
+    max-height: 30px;
+    overflow: hidden;
 }
 
 .services-button {
@@ -84,13 +86,33 @@
     border-left: var(--secondry-color) solid 10px;
 }
 
+.date_time-price {
+    display: flex;
+}
+
+.price-section,
+.date-section {
+    flex-grow: 1;
+}
+
 .summery-slice {
+    height: 55px;
     padding: 19px;
     color: gray;
 }
 
 .summery-slice span {
     color: white;
+}
+
+.item-list-container{
+    height: 120px;
+    overflow: auto;
+}
+
+.item-list{
+    padding: 10px;
+    background-color: var(--medium-dark-color);
 }
 
 @media screen and (max-width:1025px) {
@@ -112,6 +134,10 @@
 }
 
 @media screen and (max-width:426px) {
+    .add-appointment-form {
+        width: 90%;
+    }
+
     .time-date {
         display: block;
     }

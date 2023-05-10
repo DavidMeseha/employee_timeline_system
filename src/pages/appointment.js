@@ -10,6 +10,7 @@ import Message from "@/components/Message";
 import DonePopup from "@/components/DonePopup";
 import { useRouter } from "next/router";
 import Card from "@/components/Card";
+import { Close } from "@/components/Icons";
 
 export default function Appointment() {
     const router = useRouter()
@@ -26,9 +27,7 @@ export default function Appointment() {
     const [customer, setCustomer] = useState({})
     const [comment, setComment] = useState('')
 
-    const [searchCustomer, setSearchCustomer] = useState('')
     const [avilableTeamMembers, setAvilableTeamMembers] = useState([])
-
     const [selectServiceShow, setSelectServiceShow] = useState(false)
     const [errorMessage, setErrorMessage] = useState({ message: '', state: false })
     const [isDone, setIsDone] = useState(false)
@@ -72,6 +71,12 @@ export default function Appointment() {
         setDisplayDate(display)
     }
 
+    const removeService = (index) => {
+        let values = [...selectedServices]
+        values.splice(index, 1)
+        setSelectedServices(values)
+    }
+
     const saveAppointment = (e) => {
         e.preventDefault()
         let startHour = parseInt(time.split(':')[0])
@@ -89,7 +94,7 @@ export default function Appointment() {
         if (selectedServices.length < 1) return setErrorMessage({ message: 'No Service Selected', state: true })
         if (!customer.name) return setErrorMessage({ message: 'No Customer Selected', state: true })
 
-        addNewAppointment(member, customer, selectedServices, startDate, endDate, comment)
+        addNewAppointment(member, customer, selectedServices, totalDuration, startDate, endDate, comment)
 
         setIsDone(true)
         setTimeout(() => {
@@ -123,6 +128,22 @@ export default function Appointment() {
                                         <div className="arrow-right"></div>
                                     </div>
                                 </div>
+                            </div>
+                            <div className="input-field item-list-container">
+                                {selectedServices.map((service, index) => {
+                                    return (
+                                        <div key={index} className="service-card item-list">
+                                            <div className="service-name">
+                                                <div className="service-tag">{service.service[0]}</div>
+                                                <h4>{service.service}</h4>
+                                            </div>
+                                            <div className="exit-duration">
+                                                <p>{service.duration} min</p>
+                                                <div className="icon" onClick={() => removeService(index)}><Close /></div>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
                             </div>
                         </InputSectionLayout>
                         <InputSectionLayout title={'Date & Time'}>
@@ -160,35 +181,40 @@ export default function Appointment() {
                         </InputSectionLayout>
                     </div>
                     <div className="split">
-                        <InputSectionLayout title={'Add Customer'}>
-                            <div className="input-field">
-                                <SearchBar
-                                    value={searchCustomer}
-                                    setSelected={setCustomer}
-                                    customers={customers}
-                                />
-                            </div>
-                            <div className="input-field">
-                                <h3 style={{ color: 'blue' }}>+ Add New Customer</h3>
-                            </div>
-                            <div className="input-field" style={{ height: 80 }}>
-                                {customer.name && <Card head={customer?.name || 'select customer'} sup={customer?.phone || '__________'} />}
-                            </div>
-                        </InputSectionLayout>
-                        <InputSectionLayout title={'Date, Time and Price'}>
-                            <div className="input-field">
-                                <div className="date_section">
-                                    <p className="summery-slice"><span>Date:</span> {displayDate}</p>
-                                    <p className="summery-slice"><span>Time:</span> {displayTime}</p>
+                        <div>
+                            <InputSectionLayout title={'Add Customer'}>
+                                <div className="input-field">
+                                    <SearchBar
+                                        setSelected={setCustomer}
+                                        customers={customers}
+                                    />
                                 </div>
-                                <div className="">
-                                    <p className="summery-slice"><span>Price:</span> {totalPrice.toLocaleString('en-US')} L.L</p>
+                                <div className="input-field">
+                                    <h3 style={{ color: 'blue' }}>+ Add New Customer</h3>
                                 </div>
-                            </div>
-                            <div className="input-field">
-                                <button type="submit" className="confirm-button">Save Appointment ({totalDuration} min)</button>
-                            </div>
-                        </InputSectionLayout>
+                                <div className="input-field" style={{ height: 80 }}>
+                                    {customer.name && <Card head={customer.name} sup={customer.phone} />}
+                                </div>
+                            </InputSectionLayout>
+                        </div>
+                        <div>
+                            <InputSectionLayout title={'Date, Time and Price'}>
+                                <div className="input-field date_time-price">
+                                    <div className="date-section">
+                                        <p className="summery-slice"><span>Date & Time</span></p>
+                                        <p className="summery-slice">{displayDate}</p>
+                                        <p className="summery-slice">{displayTime}</p>
+                                    </div>
+                                    <div className="price-section">
+                                        <p className="summery-slice"><span>Price</span></p>
+                                        <p className="summery-slice"> {totalPrice.toLocaleString('en-US')} L.L</p>
+                                    </div>
+                                </div>
+                                <div className="input-field">
+                                    <button type="submit" className="confirm-button">Save Appointment ({totalDuration} min)</button>
+                                </div>
+                            </InputSectionLayout>
+                        </div>
                     </div>
                 </form>
             </div>

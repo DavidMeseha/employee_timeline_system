@@ -16,7 +16,8 @@ let employeesData = [
             {
                 id: '01',
                 client: 'Marcos R.',
-                service: ['Haircut'],
+                services: ['Haircut'],
+                total: 500_000_000,
                 start: 'May 5 2023 10:30:00',
                 end: 'May 5 2023 13:30:00',
                 comment: 'Some Comment ....'
@@ -24,7 +25,14 @@ let employeesData = [
             {
                 id: '03',
                 client: 'Marcos R.',
-                service: ['Haircut'],
+                services: [
+                    {
+                        service: 'Hair Cut',
+                        price: 500_000_000,
+                        duration: 70
+                    },
+                ],
+                total: 500_000_000,
                 start: 'May 5 2023 10:30:00',
                 end: 'May 5 2023 13:30:00',
                 comment: 'Some Comment ....'
@@ -32,7 +40,14 @@ let employeesData = [
             {
                 id: '04',
                 client: 'Marcos R.',
-                service: ['Haircut'],
+                services: [
+                    {
+                        service: 'Hair Cut',
+                        price: 500_000_000,
+                        duration: 70
+                    },
+                ],
+                total: 500_000_000,
                 start: 'May 5 2023 8:30:00',
                 end: 'May 5 2023 14:30:00',
                 comment: 'Some Comment ....'
@@ -40,7 +55,14 @@ let employeesData = [
             {
                 id: '11',
                 client: 'Marcos R.',
-                service: ['Haircut'],
+                services: [
+                    {
+                        service: 'Hair Cut',
+                        price: 500_000_000,
+                        duration: 70
+                    },
+                ],
+                total: 500_000_000,
                 start: 'May 3 2023 8:30:00',
                 end: 'May 3 2023 14:30:00',
                 comment: 'Some Comment ....'
@@ -48,7 +70,14 @@ let employeesData = [
             {
                 id: '12',
                 client: 'Marcos R.',
-                service: ['Haircut'],
+                services: [
+                    {
+                        service: 'Hair Cut',
+                        price: 500_000_000,
+                        duration: 70
+                    },
+                ],
+                total: 500_000_000,
                 start: 'May 3 2023 8:30:00',
                 end: 'May 3 2023 14:30:00',
                 comment: 'Some Comment ....'
@@ -79,7 +108,14 @@ let employeesData = [
             {
                 id: '05',
                 client: 'Marcos R.',
-                service: ['Haircut'],
+                services: [
+                    {
+                        service: 'Hair Cut',
+                        price: 500_000_000,
+                        duration: 70
+                    },
+                ],
+                total: 500_000_000,
                 start: 'May 5 2023 09:30:00',
                 end: 'May 5 2023 12:30:00',
                 comment: 'Some Comment ....'
@@ -87,7 +123,14 @@ let employeesData = [
             {
                 id: '06',
                 client: 'Marcos R.',
-                service: ['Haircut'],
+                services: [
+                    {
+                        service: 'Hair Cut',
+                        price: 500_000_000,
+                        duration: 70
+                    },
+                ],
+                total: 500_000_000,
                 start: 'May 5 2023 09:30:00',
                 end: 'May 5 2023 12:30:00',
                 comment: 'Some Comment ....'
@@ -95,7 +138,14 @@ let employeesData = [
             {
                 id: '07',
                 client: 'Marcos R.',
-                service: ['Haircut'],
+                services: [
+                    {
+                        service: 'Hair Cut',
+                        price: 500_000_000,
+                        duration: 70
+                    },
+                ],
+                total: 500_000_000,
                 start: 'May 5 2023 05:30:00',
                 end: 'May 5 2023 08:00:00',
                 comment: 'Some Comment ....'
@@ -126,7 +176,14 @@ let employeesData = [
             {
                 id: '08',
                 client: 'Marcos R.',
-                service: ['Haircut'],
+                services: [
+                    {
+                        service: 'Hair Cut',
+                        price: 500_000_000,
+                        duration: 70
+                    },
+                ],
+                total: 500_000_000,
                 start: 'May 5 2023 09:30:00',
                 end: 'May 5 2023 12:30:00',
                 comment: 'Some Comment ....'
@@ -134,7 +191,14 @@ let employeesData = [
             {
                 id: '09',
                 client: 'Marcos R.',
-                service: ['Haircut'],
+                services: [
+                    {
+                        service: 'Hair Cut',
+                        price: 500_000_000,
+                        duration: 70
+                    },
+                ],
+                total: 500_000_000,
                 start: 'May 5 2023 09:30:00',
                 end: 'May 5 2023 12:30:00',
                 comment: 'Some Comment ....'
@@ -142,7 +206,14 @@ let employeesData = [
             {
                 id: '10',
                 client: 'Marcos R.',
-                service: ['Haircut'],
+                services: [
+                    {
+                        service: 'Hair Cut',
+                        price: 500_000_000,
+                        duration: 70
+                    },
+                ],
+                total: 500_000_000,
                 start: 'May 5 2023 09:30:00',
                 end: 'May 5 2023 12:30:00',
                 comment: 'Some Comment ....'
@@ -250,17 +321,19 @@ function employeesReducer(employees, action) {
             let newState = _.cloneDeep(employees)
             let employee = action.payload.employee
             let customer = action.payload.customer
-            let service = action.payload.service
+            let services = action.payload.services
             let endDate = action.payload.endDate
             let startDate = action.payload.startDate
             let comment = action.payload.comment
+            let total = action.payload.total
             let id = NEXT_APPOINTMENT_ID
             NEXT_APPOINTMENT_ID++
 
             let newAppointment = {
                 id: id.toString(),
                 client: customer.name,
-                service: service.service,
+                services: services,
+                total,
                 start: startDate,
                 end: endDate,
                 comment
@@ -324,7 +397,6 @@ export const DataProvider = ({ children }) => {
     const [services, setServices] = useState([])
 
     useEffect(() => {
-        console.log('setEmp')
         employeesDispatch({ type: SET_EMPLOYEES, payload: employeesData })
         setCustomers(customersData)
         setServices(servicesData)
@@ -354,10 +426,10 @@ export const DataProvider = ({ children }) => {
         })
     }
 
-    const addNewAppointment = (employee, customer, service, startDate, endDate, comment) => {
+    const addNewAppointment = (employee, customer, services, total, startDate, endDate, comment) => {
         employeesDispatch({
             type: ADD_APPOINTMENT,
-            payload: { employee, startDate, endDate, customer, service, comment }
+            payload: { employee, startDate, endDate, customer, services, comment, total }
         })
     }
 

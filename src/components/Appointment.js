@@ -95,14 +95,15 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
 
     const adjustNewDateAndPosition = () => {
         let newStartTotalMinutes = calculateMinutesFromTop(newPosition)
-        if ((newStartTotalMinutes / 5) % 1 !== 0) newStartTotalMinutes = ((~~(newStartTotalMinutes / 5)) + 1) * 5
+        if ((newStartTotalMinutes / 5) % 1 !== 0) newStartTotalMinutes = ((~~(newStartTotalMinutes / 5)) + 1) * 5 
         let height = parseFloat(appointmentRef.current.style.height.replace('px', ''))
         newPosition = calculateTopFromMinutes(newStartTotalMinutes)
+        if (newPosition + height > 2975) return newPosition = 2975 - height
+        if (newPosition < 0 && originalPos !== newPosition) return newPosition = 10
 
         let newEndTotalMinutes = calculateMinutesFromHeight(height, newStartTotalMinutes)
         let newStartHour = ~~(newStartTotalMinutes / 60)
         let newStartMinute = ~~((((newStartTotalMinutes / 60) - newStartHour) * 60) + 0.1) //getting the reminder floot and convert into 60, +0.1 is a fix for the long float
-
         let newEndHour = ~~(newEndTotalMinutes / 60)
         let newEndMinute = ~~((((newEndTotalMinutes / 60) - newEndHour) * 60) + 0.1) //getting the reminder floot and convert into 60, +0.1 is a fix for the long float
 
@@ -166,6 +167,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         setOriginalPos(null)
         newPosition = null
         setIsDragging(false)
+        positionRef.current.style.marginTop = `${newPosition}px`
 
         editEmployeeDatesView(employee, appointment.id, editStartDate, editEndDate)
     }
@@ -216,9 +218,9 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
                     <div className="appointment-contnet">
                         <p ref={timeRef}>{time}</p>
                         <h3>{appointment.client}</h3>
-                        <p>{appointment.service.map((service) => {
+                        <p>{appointment.services.map((service) => {
                             return (
-                                service + ', '
+                                service.service + ', '
                             )
                         })}</p>
                     </div>
