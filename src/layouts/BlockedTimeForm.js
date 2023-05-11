@@ -48,7 +48,8 @@ const BlockedTimeForm = ({ close }) => {
         let endDate = new Date(date)
         endDate.setHours(endHour, endMinute)
 
-        console.log(endDate)
+        if (startTime === '00:00' && parseInt(endHour) >= 12) return setErrorMessage({ message: 'The End of Bloked time exceeds middle of the day', state: true })
+        if (end === '23:59' && parseInt(startHour) <= 12) return setErrorMessage({ message: 'The End of Bloked time exceeds middle of the day', state: true })
         if (employee === '') return setErrorMessage({ message: 'No Employee Selected', state: true })
         if (startDate >= endDate) return setErrorMessage({ message: 'The End-Date must be after the Start-Date', state: true })
 

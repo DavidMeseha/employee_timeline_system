@@ -18,13 +18,6 @@
     width: 50%;
 }
 
-.split-fill {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 50%;
-}
-
 .input-section-wrap {
     color: var(--light-font-color);
     margin-bottom: 10px;
@@ -112,11 +105,6 @@
     color: white;
 }
 
-.item-list-container {
-    max-height: 120px;
-    overflow: auto;
-}
-
 .item-list {
     padding: 10px;
     background-color: var(--medium-dark-color);
@@ -135,8 +123,7 @@
         gap: 0px;
     }
 
-    .split,
-    .split-fill {
+    .split {
         width: 100%;
     }
 }

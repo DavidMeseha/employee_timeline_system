@@ -93,7 +93,7 @@ const WeeklyDisplay = () => {
                 <div className="white-scroll-arrows left" onClick={() => scrollBy(200)}><div className="arrow-left"></div></div>
                 <div className="white-scroll-arrows right" onClick={() => scrollBy(-200)}><div className="arrow-right"></div></div>
                 <div className="weekly-employee-name"><h4>{weekSelectedEmployee}</h4></div>
-                <div className="table-wrap" ref={tableRef} onScroll={handleScrollFromTable}>
+                <div className="table-wrap" style={{ paddingBottom: 100 }} ref={tableRef} onScroll={handleScrollFromTable}>
                     <table className="weekly-table">
                         <thead>
                             <tr className="date-heading">
@@ -160,7 +160,7 @@ const WeeklyDisplay = () => {
                 <div ref={(e) => timelineRef.current = e} onScroll={handleScrollFromTimeline} onTouchStart={touchStartHandle} onTouchMove={touchScrollXHandle} className="weekly-timeline">
                     <TimeLines liveIndicator={isToday} />
                 </div>
-            </div>}
+            </div >}
         </>
     )
 };
