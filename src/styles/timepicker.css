@@ -33,3 +33,9 @@
 input[type="time"]::-webkit-calendar-picker-indicator {
     pointer-events: none;
 }
+
+input[type="time"]::-webkit-calendar-picker {
+    pointer-events: none;
+    display: none;
+    opacity: 0;
+}
