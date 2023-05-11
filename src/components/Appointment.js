@@ -26,8 +26,8 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     let editStartDate = new Date(startDate)
     let editEndDate = new Date(endDate)
 
-    let startTime = new Date(editStartDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: false })
-    let endTime = new Date(editEndDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: false })
+    let startTime = new Date(editStartDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: true })
+    let endTime = new Date(editEndDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: true })
     let time = startTime + ' - ' + endTime
 
     let startHours = editStartDate.getHours();
@@ -95,7 +95,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
 
     const adjustNewDateAndPosition = () => {
         let newStartTotalMinutes = calculateMinutesFromTop(newPosition)
-        if ((newStartTotalMinutes / 5) % 1 !== 0) newStartTotalMinutes = ((~~(newStartTotalMinutes / 5)) + 1) * 5 
+        if ((newStartTotalMinutes / 5) % 1 !== 0) newStartTotalMinutes = ((~~(newStartTotalMinutes / 5)) + 1) * 5
         let height = parseFloat(appointmentRef.current.style.height.replace('px', ''))
         newPosition = calculateTopFromMinutes(newStartTotalMinutes)
         if (newPosition + height > 2975) return newPosition = 2975 - height
@@ -112,8 +112,8 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         editEndDate.setHours(newEndHour)
         editEndDate.setMinutes(newEndMinute)
 
-        endTime = new Date(editEndDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: false })
-        startTime = new Date(editStartDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: false })
+        endTime = new Date(editEndDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: true })
+        startTime = new Date(editStartDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: true })
         time = startTime + ' - ' + endTime
         timeRef.current.innerText = time
     }
@@ -210,6 +210,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
                     ref={appointmentRef}
                     onMouseDown={holdToEditHandle}
                     onMouseUp={holdEndHandle}
+                    onMouseLeave={holdEndHandle}
                     onTouchMove={dragAppointment}
                     onMouseMove={dragAppointment}
                     style={{ height: appointmentEnd }}

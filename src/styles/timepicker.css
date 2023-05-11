@@ -2,7 +2,7 @@
     background-color: white;
     display: flex;
     position: absolute;
-    height: 250px;
+    height: 190px;
     z-index: 10;
     color: black;
     border-radius: 10px;
@@ -15,12 +15,10 @@
     background: transparent;
 }
 
+.value,
 .picker-item {
     padding: 10px;
-}
-
-.value {
-    padding: 10px;
+    cursor: pointer;
 }
 
 .selected-value{

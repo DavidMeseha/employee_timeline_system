@@ -35,11 +35,12 @@ const BlockedTimeForm = ({ close }) => {
 
     const submit = (e) => {
         e.preventDefault()
+        let end = endTime === '00:00' ? '23:59' : endTime
         let startHour = startTime.split(':')[0]
         let startMinute = startTime.split(':')[1]
 
-        let endHour = endTime.split(':')[0]
-        let endMinute = endTime.split(':')[1]
+        let endHour = end.split(':')[0]
+        let endMinute = end.split(':')[1]
 
         let startDate = new Date(date)
         startDate.setHours(startHour, startMinute)
@@ -47,6 +48,7 @@ const BlockedTimeForm = ({ close }) => {
         let endDate = new Date(date)
         endDate.setHours(endHour, endMinute)
 
+        console.log(endDate)
         if (employee === '') return setErrorMessage({ message: 'No Employee Selected', state: true })
         if (startDate >= endDate) return setErrorMessage({ message: 'The End-Date must be after the Start-Date', state: true })
 
@@ -105,6 +107,7 @@ const BlockedTimeForm = ({ close }) => {
                                 title={'Start Time'}
                                 type={'time'}
                                 value={startTime}
+                                setValue={(setStartTime)}
                                 required={true}
                                 onChange={startTimeChageHandle}
                             />
@@ -112,6 +115,7 @@ const BlockedTimeForm = ({ close }) => {
                                 title={'End Time'}
                                 type={'time'}
                                 value={endTime}
+                                setValue={setEndTime}
                                 required={true}
                                 onChange={endTimeChageHandle}
                             />
