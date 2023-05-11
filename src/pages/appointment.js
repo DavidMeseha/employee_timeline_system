@@ -180,7 +180,7 @@ export default function Appointment() {
                             </div>
                         </InputSectionLayout>
                     </div>
-                    <div className="split">
+                    <div className="split-fill">
                         <div>
                             <InputSectionLayout title={'Add Customer'}>
                                 <div className="input-field">

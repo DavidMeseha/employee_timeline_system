@@ -18,6 +18,13 @@
     width: 50%;
 }
 
+.split-fill{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 50%;
+}
+
 .input-section-wrap {
     color: var(--light-font-color);
     margin-bottom: 10px;
