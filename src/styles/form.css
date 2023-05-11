@@ -53,7 +53,7 @@
     top: 40px
 }
 
-.search-item>.customer-card{
+.search-item>.customer-card {
     cursor: pointer;
 }
 
@@ -87,7 +87,7 @@
 }
 
 .wrap-search-icon input {
-    padding: 10px;
+    padding: 10px 35px 10px 10px;
 }
 
 .wrap-search-icon .icon {

@@ -1,7 +1,9 @@
 import { calculateTopFromMinutes } from "@/utilities/calculations";
+import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 
 const TimeLines = ({ liveIndicator }) => { //bool
+    const router = useRouter()
     const sections = 24 * 4
     const liveTimeRef = useRef()
     const [liveTime, setLiveTime] = useState()
@@ -59,7 +61,7 @@ const TimeLines = ({ liveIndicator }) => { //bool
         }
 
         return (
-            <div key={value} className="time-stamp">
+            <div key={value} onClick={() => router.push('/appointment/' + time)} className="time-stamp">
                 <div className="hour">{isFullHour && time}</div>
                 <div className="line">
                     <div className="line-time">{time}</div>

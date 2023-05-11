@@ -11,10 +11,12 @@ import DonePopup from "@/components/DonePopup";
 import { useRouter } from "next/router";
 import Card from "@/components/Card";
 import { Close } from "@/components/Icons";
+import useDisplayManger from "@/Hooks/useDisplayManger";
 
 export default function Appointment() {
     const router = useRouter()
     const { employees, services, customers, addNewAppointment } = useData()
+    const { date: recentDate } = useDisplayManger()
     const [totalDuration, setTotalDuration] = useState(0)
     const [totalPrice, setTotalPrice] = useState(0)
     const [displayTime, setDisplayTime] = useState('')
@@ -33,6 +35,22 @@ export default function Appointment() {
     const [isDone, setIsDone] = useState(false)
 
     useEffect(() => {
+        const setInitialDateTime = () => {
+            let month = recentDate.toLocaleDateString('en', { month: '2-digit' })
+            let year = recentDate.toLocaleDateString('en', { year: 'numeric' })
+            let day = recentDate.toLocaleDateString('en', { day: '2-digit' })
+            console.log(year + '-' + month + '-' + day)
+            setDate(year + '-' + month + '-' + day)
+            let display = recentDate.toLocaleDateString('en', { day: 'numeric', month: 'long', year: 'numeric' })
+            setDisplayDate(display)
+
+            setTime(router.query.time)
+        }
+
+        setInitialDateTime()
+    }, [])
+
+    useEffect(() => {
         const setAvilableOptions = () => {
             let values = []
             employees.forEach(employee => {
@@ -42,7 +60,7 @@ export default function Appointment() {
         }
 
         setAvilableOptions()
-    }, [employees, customers])
+    }, [employees])
 
     useEffect(() => {
         let price = 0
@@ -56,13 +74,16 @@ export default function Appointment() {
         setTotalPrice(price)
     }, [selectedServices])
 
+    useEffect(() => {
+        let aDate = new Date()
+        aDate.setHours(parseInt(time.split(':')[0]), parseInt(time.split(':')[1]))
+        let display = aDate.toLocaleTimeString('en', { hour12: true, hour: 'numeric', minute: '2-digit' })
+        setDisplayTime(display)
+    }, [time])
+
     const timeOnChangeHandle = (e) => {
         let value = processTime(e.target.value)
         setTime(value)
-        let aDate = new Date()
-        aDate.setHours(parseInt(value.split(':')[0]), parseInt(value.split(':')[1]))
-        let display = aDate.toLocaleTimeString('en', { hour12: true, hour: 'numeric', minute: '2-digit' })
-        setDisplayTime(display)
     }
 
     const dateChangeHandle = (e) => {
@@ -88,8 +109,7 @@ export default function Appointment() {
         let endDate = new Date(date)
         endDate.setHours(endHour, endMinute)
 
-        console.log(startDate, ' ', startDate)
-
+        if (endDate.getDate() !== startDate.getDate()) return setErrorMessage({ message: 'Totale appointment end time will exceeded the end of the day', state: true })
         if (member === '') return setErrorMessage({ message: 'No Team Member Selected', state: true })
         if (selectedServices.length < 1) return setErrorMessage({ message: 'No Service Selected', state: true })
         if (!customer.name) return setErrorMessage({ message: 'No Customer Selected', state: true })
@@ -152,7 +172,7 @@ export default function Appointment() {
                                     <InputTextBox title={'Date'} type={'date'} value={date} onChange={dateChangeHandle} />
                                 </div>
                                 <div className="input-field small-input">
-                                    <InputTextBox title={'Time'} type={'time'} value={time} onChange={timeOnChangeHandle} />
+                                    <InputTextBox title={'Time'} type={'time'} value={time} setValue={setTime} onChange={timeOnChangeHandle} />
                                 </div>
                             </div>
                         </InputSectionLayout>

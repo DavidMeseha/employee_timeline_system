@@ -1,0 +1,37 @@
+.time-picker {
+    background-color: white;
+    display: flex;
+    position: absolute;
+    height: 250px;
+    z-index: 10;
+    color: black;
+    border-radius: 10px;
+    padding: 0px 10px;
+    gap: 10px;
+}
+
+.time-picker div::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+.picker-item {
+    padding: 10px;
+}
+
+.value {
+    padding: 10px;
+}
+
+.selected-value{
+    border: 1px solid black;
+}
+
+.selected-value,
+.value:hover {
+    background-color: var(--light-line-color);
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+    pointer-events: none;
+}

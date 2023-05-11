@@ -8,6 +8,7 @@ import '@/styles/blockedtimeform.css'
 import '@/styles/form.css'
 import '@/styles/addappointment.css'
 import '@/styles/service-select.css'
+import '@/styles/timepicker.css'
 import { DisplayManagerProvider } from '../context/DisplayManagerProvider'
 import { DataProvider } from '@/context/DataProvider'
 

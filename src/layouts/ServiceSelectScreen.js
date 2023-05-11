@@ -6,7 +6,6 @@ const ServiceSelectScreen = ({ setSelected, services, selected, close }) => {
     const containerRef = useRef()
     const [searchResult, setSearchResult] = useState([])
     const [search, setSearch] = useState('')
-    const [isActive, setIsActive] = useState(false)
 
     const selectService = (service) => {
         let servicesToAdd = [...selected]
@@ -33,7 +32,7 @@ const ServiceSelectScreen = ({ setSelected, services, selected, close }) => {
                 <div ref={containerRef} className="service-select-container">
                     <div style={{ flexGrow: 1, position: 'relative' }}>
                         <div className="wrap-search-icon">
-                            <input type='text' value={search} onChange={searchService} onClick={() => setIsActive(true)} placeholder="Find service" />
+                            <input type='text' value={search} onChange={searchService} placeholder="Find service" />
                             <div className="icon"><Search /></div>
                         </div>
                     </div>
@@ -42,7 +41,7 @@ const ServiceSelectScreen = ({ setSelected, services, selected, close }) => {
                         <h3>Duration</h3>
                     </div>
                     <div className="service-search-result">
-                        {searchResult.length === 0 && search === '' && !isActive ?
+                        {searchResult.length === 0 && search === ''?
                             (services.map((service, index) => {
                                 return (
                                     <div key={index} onClick={() => selectService(service)} className="service-card">
