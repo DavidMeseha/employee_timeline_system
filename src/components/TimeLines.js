@@ -51,9 +51,9 @@ const TimeLines = ({ liveIndicator, selectedEmployees, tableRef, dates }) => { /
         if (hoursInt.toString().length === 1) hour = '0' + hoursInt
         else hour = '' + hoursInt
 
-        if ((value / 4) - hoursInt === 0.25) time = hour + ':15 ' + dayPeriod
-        if ((value / 4) - hoursInt === 0.5) time = hour + ':30 ' + dayPeriod
-        if ((value / 4) - hoursInt === 0.75) time = hour + ':45 ' + dayPeriod
+        if ((value / 4) - hoursInt === 0.25 || ((value) / 4) - 12 - hoursInt === 0.25) time = hour + ':15 ' + dayPeriod
+        if ((value / 4) - hoursInt === 0.5 || ((value) / 4) - 12 - hoursInt === 0.5) time = hour + ':30 ' + dayPeriod
+        if ((value / 4) - hoursInt === 0.75 || ((value) / 4) - 12 - hoursInt === 0.75) time = hour + ':45 ' + dayPeriod
         if (value % 4 === 0) time = hour + ':00 ' + dayPeriod
 
         return time
@@ -81,6 +81,7 @@ const TimeLines = ({ liveIndicator, selectedEmployees, tableRef, dates }) => { /
     const timeRow = (value) => {
         let time = formatTime(value)
         let isFullHour = false
+        console.log(time)
 
         if (value % 4 === 0) {
             isFullHour = true

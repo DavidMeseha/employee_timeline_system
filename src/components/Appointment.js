@@ -94,7 +94,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         editEndDate.setHours(newEndHour)
         editEndDate.setMinutes(newEndMinute)
 
-        endTime = new Date(editEndDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: false })
+        endTime = new Date(editEndDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: true })
         time = startTime + ' - ' + endTime
         timeRef.current.innerText = time
     }
@@ -197,11 +197,11 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
 
     const endScale = () => {
         enableScrolling()
-
-        if (!newHeight || !isScaling) return
+        if (isScaling) setIsScaling(false)
+        else return
+        if (!newHeight) return
         adjustDateAndHight()
         setOriginalHeight(null)
-        setIsScaling(false)
         setScaleStart(null)
         setIsDragging(false)
 

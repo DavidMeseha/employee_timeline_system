@@ -20,7 +20,7 @@ const TimePickerInput = ({ time, setTime, onChange }) => {
             setMinutes(mins)
 
             let hrs = []
-            for (let i = 0; i <= 12; i++) {
+            for (let i = 1; i <= 12; i++) {
                 let stringValue = i.toString()
                 if (stringValue.length === 1) stringValue = '0' + stringValue
                 hrs.push(stringValue)
