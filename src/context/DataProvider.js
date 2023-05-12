@@ -384,14 +384,15 @@ function employeesReducer(employees, action) {
 
         case DELETE_APPOINTMENT: {
             let newState = _.cloneDeep(employees)
+            console.log(action.payload)
             let id = action.payload.appointmentId
             let employee = action.payload.employee
 
             for (let index = 0; index < newState.length; index++) {
                 if (newState[index].name === employee) {
-                    for (let appointmentIndex = 0; appointmentIndex < newState[index].appointments.length; appointmentIndex++) {
-                        let appointments = [...newState[index].appointments]
-                        if (newState[index].appointments[appointmentIndex].id === id) {
+                    let appointments = [...newState[index].appointments]
+                    for (let appointmentIndex = 0; appointmentIndex < appointments.length; appointmentIndex++) {
+                        if (appointments[appointmentIndex].id === id) {
                             appointments.splice(appointmentIndex, 1)
                             newState[index].appointments = appointments
                             break

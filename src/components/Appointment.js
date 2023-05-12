@@ -3,9 +3,9 @@ import { calculateHeightFromMinutes, calculateMinutesFromHeight, calculateMinute
 import { memo, useEffect, useRef, useState } from "react";
 import ConfirmEdit from "./ConfirmEdit";
 
-const ConfirmEditMemo = memo(({ confirm, cancel }) => {
+const ConfirmEditMemo = memo(({ confirm, cancel, deleteAppointment }) => {
     return (
-        <ConfirmEdit confirm={confirm} cancel={cancel} />
+        <ConfirmEdit confirm={confirm} cancel={cancel} deleteAppointment={deleteAppointment} />
     )
 })
 
@@ -81,6 +81,12 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         let newEndTotalMinutes = calculateMinutesFromHeight(newHeight, startTotalMinutes)
         if ((newEndTotalMinutes / 5) % 1 !== 0) newEndTotalMinutes = ((~~(newEndTotalMinutes / 5)) + 1) * 5
         newHeight = calculateHeightFromMinutes(newEndTotalMinutes, startTotalMinutes)
+        let position = parseInt(positionRef.current.style.marginTop.replace('px', ''))
+        if (position + newHeight > 2975) {
+            newHeight = 2975 - position
+            newEndTotalMinutes = calculateMinutesFromHeight(newHeight, startTotalMinutes)
+        }
+
 
         let newEndHour = ~~(newEndTotalMinutes / 60)
         let newEndMinute = ~~((((newEndTotalMinutes / 60) - newEndHour) * 60) + 0.1)//getting the reminder floot and convert into 60, +0.1 is a fix for the long float
@@ -98,8 +104,9 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         if ((newStartTotalMinutes / 5) % 1 !== 0) newStartTotalMinutes = ((~~(newStartTotalMinutes / 5)) + 1) * 5
         let height = parseFloat(appointmentRef.current.style.height.replace('px', ''))
         newPosition = calculateTopFromMinutes(newStartTotalMinutes)
-        if (newPosition + height > 2975) return newPosition = 2975 - height
-        if (newPosition < 0 && originalPos !== newPosition) return newPosition = 10
+        if (newPosition + height > 2975) newPosition = 2977 - height
+        if (newPosition < 0 && originalPos !== newPosition) newPosition = 10
+        newStartTotalMinutes = calculateMinutesFromTop(newPosition)
 
         let newEndTotalMinutes = calculateMinutesFromHeight(height, newStartTotalMinutes)
         let newStartHour = ~~(newStartTotalMinutes / 60)
@@ -201,9 +208,17 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         editEmployeeDatesView(employee, appointment.id, editStartDate, editEndDate)
     }
 
+    const cancelAppointment = () => {
+        console.log('deleting')
+        setIsEditable(false)
+        setEditing(null)
+
+        deleteAppointment(employee, id)
+    }
+
     return (
         <>
-            {isEditable && <ConfirmEditMemo confirm={confirm} cancel={reset} deleteAppointment={deleteAppointment} />}
+            {isEditable && <ConfirmEditMemo confirm={confirm} cancel={reset} deleteAppointment={cancelAppointment} />}
             <div onTouchStart={holdToEditHandle} onTouchEnd={holdEndHandle} ref={positionRef} style={{ width: '100%', marginTop: appointmentStart }}>
                 <div
                     id={id}
