@@ -18,7 +18,7 @@ const SearchBar = ({ value, setSelected, customers }) => {
         let value = e.target.value
         setIsActive(true)
         setSearchValue(value)
-        if (value === '') return setSearchResult([])
+        if (value === '') return setSearchResult(customers)
         let values = []
         customers.forEach(customer => {
             if (customer.name.toLowerCase().indexOf(e.target.value.toLowerCase()) >= 0) values.push(customer)
