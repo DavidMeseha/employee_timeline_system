@@ -2,7 +2,7 @@ import TimeLines from "@/components/TimeLines";
 import useDisplayManger from "@/Hooks/useDisplayManger";
 import { useEffect, useRef, useState } from "react";
 import Blocked from "@/components/Blocked";
-import MultiApointmentLayout from "./MultiAppointmentLayout";
+import MultiApointmentLayout from "../../layouts/MultiAppointmentLayout";
 import { groupingIntersectingAppointments } from "@/utilities/groupingAppointments";
 import useData from "@/Hooks/useData";
 
@@ -14,9 +14,6 @@ const DailyDisplay = () => {
     const [isToday, setIsToday] = useState(true)
     const [tableScroll, setTableScroll] = useState(true)
     const [editing, setEditing] = useState()
-
-    const colRef = useRef()
-    colRef.current = []
 
     let touchStart, initialScroll
 
@@ -110,7 +107,7 @@ const DailyDisplay = () => {
                                             let appointmentGroups = groupingIntersectingAppointments(employee.appointments)
 
                                             return (
-                                                <td dropable ref={(e) => colRef.current.push(e)} key={ei + eni}>
+                                                <td key={ei + eni}>
                                                     {employee.blocks.map((block, bi) => {
                                                         let blockedDate = new Date(block.start)
                                                         if (blockedDate.getDate() !== date.getDate()) return;

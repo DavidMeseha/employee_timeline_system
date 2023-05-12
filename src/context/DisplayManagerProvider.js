@@ -47,7 +47,6 @@ export const DisplayManagerProvider = ({ children }) => {
         }
 
         if (format === 'daily') setDisplayDate(date.toLocaleDateString('en', { day: 'numeric', month: 'long', weekday: 'long', year: 'numeric' }))
-        selectAll()
     }
 
     useEffect(() => {

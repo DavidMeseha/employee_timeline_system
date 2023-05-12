@@ -236,6 +236,14 @@ input[type=checkbox]:checked+.check-mark:after {
   display: block;
 }
 
+input[type='time']::-webkit-input-placeholder {
+  visibility: hidden;
+}
+
+input[type='time']::-webkit-input-calender {
+  visibility: hidden;
+}
+
 input[type=date],
 input[type=time] {
   border-radius: 0;

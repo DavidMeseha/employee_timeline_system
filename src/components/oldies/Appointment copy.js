@@ -1,7 +1,7 @@
 import useEmployeesData from "@/Hooks/useData";
 import { calculateHeightFromMinutes, calculateMinutesFromHeight, calculateMinutesFromTop, calculateTopFromMinutes } from "@/utilities/calculations";
 import { memo, useEffect, useRef, useState } from "react";
-import ConfirmEdit from "./ConfirmEdit";
+import ConfirmEdit from "../ConfirmEdit";
 
 const ConfirmEditMemo = memo(({ confirm, cancel, deleteAppointment }) => {
     return (
@@ -82,7 +82,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         if ((newEndTotalMinutes / 5) % 1 !== 0) newEndTotalMinutes = ((~~(newEndTotalMinutes / 5)) + 1) * 5
         newHeight = calculateHeightFromMinutes(newEndTotalMinutes, startTotalMinutes)
         let position = parseInt(positionRef.current.style.marginTop.replace('px', ''))
-        if (position + newHeight > 2977) {
+        if (position + newHeight > 2975) {
             newHeight = 2975 - position
             newEndTotalMinutes = calculateMinutesFromHeight(newHeight, startTotalMinutes)
         }
@@ -93,7 +93,6 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
 
         editEndDate.setHours(newEndHour)
         editEndDate.setMinutes(newEndMinute)
-        editEndDate.getHours() === 0 && editEndDate.getMinutes() === 0 && editEndDate.setDate(editStartDate.getDate() + 1)
 
         endTime = new Date(editEndDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: true })
         time = startTime + ' - ' + endTime
@@ -105,16 +104,9 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         if ((newStartTotalMinutes / 5) % 1 !== 0) newStartTotalMinutes = ((~~(newStartTotalMinutes / 5)) + 1) * 5
         let height = parseFloat(appointmentRef.current.style.height.replace('px', ''))
         newPosition = calculateTopFromMinutes(newStartTotalMinutes)
-        if (newPosition <= 0 && originalPos !== newPosition) {
-            newPosition = 10
-            newStartTotalMinutes = calculateMinutesFromTop(newPosition)
-            if ((newStartTotalMinutes / 5) % 1 !== 0) newStartTotalMinutes = ((~~(newStartTotalMinutes / 5)) + 1) * 5
-        }
-        if (newPosition + height >= 2977) {
-            newPosition = 2975 - height
-            newStartTotalMinutes = calculateMinutesFromTop(newPosition)
-            if ((newStartTotalMinutes / 5) % 1 !== 0) newStartTotalMinutes = ((~~(newStartTotalMinutes / 5)) + 1) * 5
-        }
+        if (newPosition + height > 2975) newPosition = 2977 - height
+        if (newPosition < 0 && originalPos !== newPosition) newPosition = 10
+        newStartTotalMinutes = calculateMinutesFromTop(newPosition)
 
         let newEndTotalMinutes = calculateMinutesFromHeight(height, newStartTotalMinutes)
         let newStartHour = ~~(newStartTotalMinutes / 60)
@@ -126,11 +118,9 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         editStartDate.setMinutes(newStartMinute)
         editEndDate.setHours(newEndHour)
         editEndDate.setMinutes(newEndMinute)
-        editEndDate.getHours() === 0 && editEndDate.getMinutes() === 0 && editEndDate.setDate(editStartDate.getDate() + 1)
 
         endTime = new Date(editEndDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: true })
         startTime = new Date(editStartDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: true })
-        console.log(startDate, ' ', endDate)
         time = startTime + ' - ' + endTime
         timeRef.current.innerText = time
     }
@@ -172,6 +162,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
 
     const holdEndHandle = () => {
         enableScrolling()
+
         if (activateEditTimeout && !isEditable) return clearTimeout(activateEditTimeout)
         if (!newPosition || isScaling || !isEditable) return setIsDragging(false)
         endReposition()
@@ -218,6 +209,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     }
 
     const cancelAppointment = () => {
+        console.log('deleting')
         setIsEditable(false)
         setEditing(null)
 
@@ -227,13 +219,13 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     return (
         <>
             {isEditable && <ConfirmEditMemo confirm={confirm} cancel={reset} deleteAppointment={cancelAppointment} />}
-            <div /*draggable onDrag={dragAppointment} onDragEnd={holdEndHandle}*/ onTouchStart={holdToEditHandle} onTouchEnd={holdEndHandle} ref={positionRef} style={{ width: '100%', marginTop: appointmentStart }}>
+            <div onTouchStart={holdToEditHandle} onTouchEnd={holdEndHandle} ref={positionRef} style={{ width: '100%', marginTop: appointmentStart }}>
                 <div
                     id={id}
                     ref={appointmentRef}
                     onMouseDown={holdToEditHandle}
                     onMouseUp={holdEndHandle}
-                    //onMouseLeave={holdEndHandle}
+                    onMouseLeave={holdEndHandle}
                     onTouchMove={dragAppointment}
                     onMouseMove={dragAppointment}
                     style={{ height: appointmentEnd }}

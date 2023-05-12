@@ -19,7 +19,7 @@ const TimeLines = ({ liveIndicator, selectedEmployees, tableRef, dates }) => { /
             let minutes = date.getMinutes()
             let totalMinutes = minutes + (hours * 60)
 
-            setLiveTime(date.toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: false })) //01:01 || 15:05 || 10:25
+            setLiveTime(date.toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: true })) //01:01 || 15:05 || 10:25
 
             //                                                      for every 15min
             //                 one pixel per minute-V         V-Line Hight per section V-middle of the indecator
@@ -47,9 +47,10 @@ const TimeLines = ({ liveIndicator, selectedEmployees, tableRef, dates }) => { /
             dayPeriod = 'PM'
             hoursInt = hoursInt % 12 === 0 ? 12 : hoursInt % 12
         }
+        if (value === 24 * 4) dayPeriod = 'AM'
 
-        if (hoursInt.toString().length === 1) hour = '0' + hoursInt
-        else hour = '' + hoursInt
+        if (hoursInt.toString().length === 1) hour = (hoursInt === 0 ? 12 : '0' + hoursInt)
+        else hour = '' + (hoursInt === 0 ? 12 : hoursInt)
 
         if ((value / 4) - hoursInt === 0.25 || ((value) / 4) - 12 - hoursInt === 0.25) time = hour + ':15 ' + dayPeriod
         if ((value / 4) - hoursInt === 0.5 || ((value) / 4) - 12 - hoursInt === 0.5) time = hour + ':30 ' + dayPeriod
@@ -81,7 +82,6 @@ const TimeLines = ({ liveIndicator, selectedEmployees, tableRef, dates }) => { /
     const timeRow = (value) => {
         let time = formatTime(value)
         let isFullHour = false
-        console.log(time)
 
         if (value % 4 === 0) {
             isFullHour = true
