@@ -11,7 +11,7 @@ const ConfirmEditMemo = memo(({ confirm, cancel }) => {
 
 const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate, containerRef, timelineRef, setTableScroll, editing, setEditing, editEmployeeDatesView, reset }) => {
     const colorClasses = ['appointment-red', 'appointment-blue', 'appointment-green']
-    const { updateAppointmentDates } = useEmployeesData()
+    const { updateAppointmentDates, deleteAppointment } = useEmployeesData()
     const appointmentRef = useRef()
     const positionRef = useRef()
     const timeRef = useRef()
@@ -203,7 +203,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
 
     return (
         <>
-            {isEditable && <ConfirmEditMemo confirm={confirm} cancel={reset} />}
+            {isEditable && <ConfirmEditMemo confirm={confirm} cancel={reset} deleteAppointment={deleteAppointment} />}
             <div onTouchStart={holdToEditHandle} onTouchEnd={holdEndHandle} ref={positionRef} style={{ width: '100%', marginTop: appointmentStart }}>
                 <div
                     id={id}

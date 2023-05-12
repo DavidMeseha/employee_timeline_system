@@ -158,7 +158,7 @@ const WeeklyDisplay = () => {
                     </table>
                 </div>
                 <div ref={(e) => timelineRef.current = e} onScroll={handleScrollFromTimeline} onTouchStart={touchStartHandle} onTouchMove={touchScrollXHandle} className="weekly-timeline">
-                    <TimeLines liveIndicator={isToday} />
+                    <TimeLines liveIndicator={isToday} selectedEmployees={weekSelectedEmployee} dates={dates} tableRef={tableRef} />
                 </div>
             </div >}
         </>

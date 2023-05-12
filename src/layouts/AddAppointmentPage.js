@@ -16,7 +16,6 @@ import useDisplayManger from "@/Hooks/useDisplayManger";
 const AddAppointmentPage = () => {
     const router = useRouter()
     const { employees, services, customers, addNewAppointment } = useData()
-    const { date: recentDate } = useDisplayManger()
     const [totalDuration, setTotalDuration] = useState(0)
     const [totalPrice, setTotalPrice] = useState(0)
     const [displayTime, setDisplayTime] = useState('')
@@ -35,13 +34,29 @@ const AddAppointmentPage = () => {
     const [isDone, setIsDone] = useState(false)
 
     useEffect(() => {
-        let month = recentDate.toLocaleDateString('en', { month: '2-digit' })
-        let year = recentDate.toLocaleDateString('en', { year: 'numeric' })
-        let day = recentDate.toLocaleDateString('en', { day: '2-digit' })
-        setDate(year + '-' + month + '-' + day)
-        let display = recentDate.toLocaleDateString('en', { day: 'numeric', month: 'long', year: 'numeric' })
-        setDisplayDate(display)
-        if (router.query.time) setTime(router.query.time)
+        if (router.query.time) {
+            let timeValue = router.query.time
+            let hour = timeValue.split(':')[0]
+            let mins = timeValue.split(':')[1].split(' ')[0]
+            let dayTime = timeValue.split(' ')[1]
+            if (dayTime === 'PM') {
+                hour = parseInt(hour) + 12
+            }
+
+            let convertedTime = hour + ':' + mins
+
+            setTime(convertedTime)
+        }
+        if (router.query.employee) setMember(router.query.employee)
+        if (router.query.date) {
+            let aDate = new Date(router.query.date)
+            let month = aDate.toLocaleDateString('en', { month: '2-digit' })
+            let year = aDate.toLocaleDateString('en', { year: 'numeric' })
+            let day = aDate.toLocaleDateString('en', { day: '2-digit' })
+            let display = aDate.toLocaleDateString('en', { day: 'numeric', month: 'long', year: 'numeric' })
+            setDate(year + '-' + month + '-' + day)
+            setDisplayDate(display)
+        }
     }, [])
 
     useEffect(() => {
@@ -194,7 +209,7 @@ const AddAppointmentPage = () => {
                             </div>
                         </InputSectionLayout>
                     </div>
-                    <div className="split">
+                    <div className="split-fill">
                         <div>
                             <InputSectionLayout title={'Add Customer'}>
                                 <div className="input-field">

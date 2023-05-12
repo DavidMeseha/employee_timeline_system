@@ -1,9 +1,11 @@
+import useDisplayManger from "@/Hooks/useDisplayManger";
 import { calculateTopFromMinutes } from "@/utilities/calculations";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 
-const TimeLines = ({ liveIndicator }) => { //bool
+const TimeLines = ({ liveIndicator, selectedEmployees, tableRef, dates }) => { //bool
     const router = useRouter()
+    const { format, date } = useDisplayManger()
     const sections = 24 * 4
     const liveTimeRef = useRef()
     const [liveTime, setLiveTime] = useState()
@@ -40,16 +42,40 @@ const TimeLines = ({ liveIndicator }) => { //bool
         let time = ''
         let hour = ''
         let hoursInt = ~~(value / 4)
+        let dayPeriod = 'AM'
+        if (hoursInt > 11) {
+            dayPeriod = 'PM'
+            hoursInt = hoursInt % 12 === 0 ? 12 : hoursInt % 12
+        }
 
         if (hoursInt.toString().length === 1) hour = '0' + hoursInt
         else hour = '' + hoursInt
 
-        if ((value / 4) - hoursInt === 0.25) time = hour + ':15'
-        if ((value / 4) - hoursInt === 0.5) time = hour + ':30'
-        if ((value / 4) - hoursInt === 0.75) time = hour + ':45'
-        if (value % 4 === 0) time = hour + ':00'
+        if ((value / 4) - hoursInt === 0.25) time = hour + ':15 ' + dayPeriod
+        if ((value / 4) - hoursInt === 0.5) time = hour + ':30 ' + dayPeriod
+        if ((value / 4) - hoursInt === 0.75) time = hour + ':45 ' + dayPeriod
+        if (value % 4 === 0) time = hour + ':00 ' + dayPeriod
 
         return time
+    }
+
+    const sendClickedData = (e, time) => {
+        const rightMargin = 50
+        const leftMargin = ('touchstart' in window) ? 15 : 30
+        const minWidth = format === 'daily' ? 400 : 150
+        let scrollLeft = tableRef.current.scrollLeft
+        let clickPosition = e.clientX
+        let tableWidth = window.innerWidth - rightMargin - leftMargin
+        let sectionsCount = format === 'daily' ? selectedEmployees.length : 7
+        let widthPerSection = tableWidth / sectionsCount <= minWidth ? minWidth : tableWidth / sectionsCount
+        let index = ~~(((clickPosition - 50) + scrollLeft) / widthPerSection)
+        let employee = format === 'daily' ? selectedEmployees[index] : selectedEmployees
+        let selectedDate = (format === 'daily' ? date : dates[index]).toLocaleDateString('en', { day: '2-digit', month: '2-digit', year: 'numeric' })
+
+        router.push({
+            pathname: '/appointment/',
+            query: { time, employee, date: selectedDate }
+        });
     }
 
     const timeRow = (value) => {
@@ -61,7 +87,7 @@ const TimeLines = ({ liveIndicator }) => { //bool
         }
 
         return (
-            <div key={value} onClick={() => router.push('/appointment/' + time)} className="time-stamp">
+            <div key={value} onClick={(e) => sendClickedData(e, time)} className="time-stamp">
                 <div className="hour">{isFullHour && time}</div>
                 <div className="line">
                     <div className="line-time">{time}</div>

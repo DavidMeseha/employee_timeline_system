@@ -7,6 +7,7 @@ const UPDATE_DATE = 'UPDATE_END_DATE'
 const ADD_BLOCKED_DATE_TIME = 'ADD_BLOCKED_DATE_TIME'
 const ADD_APPOINTMENT = 'ADD_APPOINTMENT'
 const SET_EMPLOYEES = 'SET_EMPLOYEES'
+const DELETE_APPOINTMENT = 'DELETE_APPOINTMENT'
 
 let employeesData = [
     {
@@ -310,7 +311,6 @@ function employeesReducer(employees, action) {
                             break
                         }
                     }
-                    break
                 }
             }
 
@@ -382,6 +382,27 @@ function employeesReducer(employees, action) {
             return newState
         }
 
+        case DELETE_APPOINTMENT: {
+            let newState = _.cloneDeep(employees)
+            let id = action.payload.appointmentId
+            let employee = action.payload.employee
+
+            for (let index = 0; index < newState.length; index++) {
+                if (newState[index].name === employee) {
+                    for (let appointmentIndex = 0; appointmentIndex < newState[index].appointments.length; appointmentIndex++) {
+                        let appointments = [...newState[index].appointments]
+                        if (newState[index].appointments[appointmentIndex].id === id) {
+                            appointments.splice(appointmentIndex, 1)
+                            newState[index].appointments = appointments
+                            break
+                        }
+                    }
+                }
+            }
+
+            return newState
+        }
+
         case SET_EMPLOYEES: {
             let data = action.payload
             return data
@@ -433,12 +454,19 @@ export const DataProvider = ({ children }) => {
         })
     }
 
+    const deleteAppointment = (employee, appointmentId) => {
+        employeesDispatch({
+            type: DELETE_APPOINTMENT,
+            payload: { employee, appointmentId }
+        })
+    }
+
     return (
         <DataContext.Provider value={{
             employees, customers, services,
             updateAppointmentDates,
             addNewBlockedTimeForEmployee,
-            addNewAppointment
+            addNewAppointment, deleteAppointment
         }}>
             {children}
         </DataContext.Provider >

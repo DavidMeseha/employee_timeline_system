@@ -14,8 +14,15 @@
     margin: 30px auto 25px auto;
 }
 
+.split-fill,
 .split {
     width: 50%;
+}
+
+.split-fill {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .input-section-wrap {
@@ -123,6 +130,7 @@
         gap: 0px;
     }
 
+    .split-fill,
     .split {
         width: 100%;
     }

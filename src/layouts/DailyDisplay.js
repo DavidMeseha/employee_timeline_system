@@ -34,7 +34,7 @@ const DailyDisplay = () => {
                     }
                 }
             }
-        }         setEmployeesDisplay(newState)
+        } setEmployeesDisplay(newState)
     }
 
     useEffect(() => {
@@ -149,7 +149,7 @@ const DailyDisplay = () => {
                     </table>
                 </div>
                 <div ref={(e) => timelineRef.current = e} onScroll={handleScrollFromTimeline} onTouchStart={touchStartHandle} onTouchMove={touchScrollXHandle} className="daily-timeline">
-                    <TimeLines liveIndicator={isToday} />
+                    <TimeLines liveIndicator={isToday} selectedEmployees={selectedEmployees} dates={date} tableRef={tableRef} />
                 </div>
             </div>}
         </>

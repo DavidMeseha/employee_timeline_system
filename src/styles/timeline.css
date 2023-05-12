@@ -44,9 +44,11 @@
 
 .line-time {
     display: none;
+    text-align: center;
     position: absolute;
-    bottom: 10px;
+    bottom: 2px;
     left: -41px;
+    width: var(--time-text-width);
     color: var(--time-stamp-color);
     font-size: 12px;
 }
