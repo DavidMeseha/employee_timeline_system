@@ -82,7 +82,7 @@ const TimePickerInput = ({ time, setTime, onChange }) => {
                 <input
                     type="time"
                     value={time}
-                    onClick={() => setIsOpen(true)}
+                    onClick={(e) => { e.preventDefault(); setIsOpen(true) }}
                     onChange={onChange}
                     step={300}
                 />
