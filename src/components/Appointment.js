@@ -161,7 +161,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     const dragAppointment = (e) => {
         console.log(newPosition, ' ', originalPos)
         if ((activateEditTimeout && !isEditable && !('ontouchstart' in window))) clearTimeout(activateEditTimeout)
-        if (!dragStart || originalPos === null || originalPos === newPosition || !isDragging || isScaling) return
+        if (!dragStart || originalPos === null || !isDragging || isScaling) return
         let y = e.clientY || e.touches[0].clientY
         let change = y - dragStart
         newPosition = originalPos + change
