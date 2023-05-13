@@ -25,14 +25,6 @@ export const groupingIntersectingAppointments = (appointments) => {
                 let startDate = new Date(appointments[addIndex].start)
                 let endDate = new Date(appointments[addIndex].end)
 
-                //console.log(endDate.getHours(), endDate.getMinutes())
-
-                if (endDate.getHours() === 0 && endDate.getMinutes() === 0) {
-                    endDate.setHours(23, 55)
-                    endDate.setDate(startDate.getDate())
-                }
-
-                console.log(endDate)
                 if ((startDate >= minStartDate && startDate < maxEndDate) ||
                     (endDate > minStartDate && startDate < minStartDate) ||
                     (endDate <= maxEndDate && startDate > minStartDate) ||

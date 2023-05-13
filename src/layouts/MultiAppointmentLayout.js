@@ -4,10 +4,9 @@ const MultiApointmentLayout = ({ appointments, employeeOrder, employee, containe
     return (
         <div style={{ position: 'absolute', width: 'calc(100% - 10px)', top: 0 }}>
             <div style={{ position: 'relative', display: "flex", gap: 5 }}>
-                {appointments?.map((appointment, ai) => {
-                    let appointmentDate = new Date(appointment.start).toString()
-                    let appointmentEndDate = new Date(appointment.end).toString()
-
+                {appointments?.map((appointment) => {
+                    let appointmentDate = new Date(appointment.start)
+                    let appointmentEndDate = new Date(appointment.end)
                     return (
                         <Appointment
                             key={appointment.id}

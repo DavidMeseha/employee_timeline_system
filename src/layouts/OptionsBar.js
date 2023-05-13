@@ -7,7 +7,7 @@ import useData from "@/Hooks/useData";
 const OptionsBar = () => {
     const { employees } = useData()
     const {
-        displayDate, setDate, nextDate, prevDate,
+        date,displayDate, setDate, nextDate, prevDate,
         selectedEmployees, setSelectedEmployees,
         weekSelectedEmployee, setWeekSelectedEmployee,
         format, setFormat
@@ -25,7 +25,7 @@ const OptionsBar = () => {
                     />
                 </div>
                 <div className='date-option'>
-                    <DateSwitch date={displayDate} setDate={setDate} next={nextDate} prev={prevDate} />
+                    <DateSwitch date={date} displayDate={displayDate} setDate={setDate} next={nextDate} prev={prevDate} />
                 </div>
                 <div className='toggle-view-option'>
                     <button

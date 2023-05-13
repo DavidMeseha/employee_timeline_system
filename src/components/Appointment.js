@@ -34,7 +34,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     let startMinutes = editStartDate.getMinutes();
     let startTotalMinutes = (startHours * 60) + startMinutes
 
-    let endHours = editEndDate.getHours()
+    let endHours = editEndDate.getHours() === 0 ? 24 : editEndDate.getHours()
     let endMinutes = editEndDate.getMinutes()
     let endTotalMinutes = (endHours * 60) + endMinutes
 
@@ -54,6 +54,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     }, [editing, isEditable])
 
     const confirm = () => {
+        console.log(editStartDate)
         setIsEditable(false)
         setEditing(null)
         updateAppointmentDates(employee, appointment.id, editStartDate, editEndDate)
@@ -87,7 +88,6 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
             newEndTotalMinutes = calculateMinutesFromHeight(newHeight, startTotalMinutes)
         }
 
-
         let newEndHour = ~~(newEndTotalMinutes / 60)
         let newEndMinute = ~~((((newEndTotalMinutes / 60) - newEndHour) * 60) + 0.1)//getting the reminder floot and convert into 60, +0.1 is a fix for the long float
 
@@ -105,10 +105,9 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         if ((newStartTotalMinutes / 5) % 1 !== 0) newStartTotalMinutes = ((~~(newStartTotalMinutes / 5)) + 1) * 5
         let height = parseFloat(appointmentRef.current.style.height.replace('px', ''))
         newPosition = calculateTopFromMinutes(newStartTotalMinutes)
-        if (newPosition <= 0 && originalPos !== newPosition) {
-            newPosition = 10
-            newStartTotalMinutes = calculateMinutesFromTop(newPosition)
-            if ((newStartTotalMinutes / 5) % 1 !== 0) newStartTotalMinutes = ((~~(newStartTotalMinutes / 5)) + 1) * 5
+        if (newPosition < 0) {
+            newPosition = 0
+            newStartTotalMinutes = 0
         }
         if (newPosition + height >= 2977) {
             newPosition = 2975 - height
@@ -118,7 +117,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
 
         let newEndTotalMinutes = calculateMinutesFromHeight(height, newStartTotalMinutes)
         let newStartHour = ~~(newStartTotalMinutes / 60)
-        let newStartMinute = ~~((((newStartTotalMinutes / 60) - newStartHour) * 60) + 0.1) //getting the reminder floot and convert into 60, +0.1 is a fix for the long float
+        let newStartMinute = newStartTotalMinutes === 0 ? 0 : ~~((((newStartTotalMinutes / 60) - newStartHour) * 60) + 0.1) //getting the reminder floot and convert into 60, +0.1 is a fix for the long float
         let newEndHour = ~~(newEndTotalMinutes / 60)
         let newEndMinute = ~~((((newEndTotalMinutes / 60) - newEndHour) * 60) + 0.1) //getting the reminder floot and convert into 60, +0.1 is a fix for the long float
 
@@ -128,9 +127,11 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         editEndDate.setMinutes(newEndMinute)
         editEndDate.getHours() === 0 && editEndDate.getMinutes() === 0 && editEndDate.setDate(editStartDate.getDate() + 1)
 
+        console.log(editStartDate.getMinutes(), ' ', newStartTotalMinutes)
+
         endTime = new Date(editEndDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: true })
         startTime = new Date(editStartDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: true })
-        console.log(startDate, ' ', endDate)
+
         time = startTime + ' - ' + endTime
         timeRef.current.innerText = time
     }
@@ -138,7 +139,6 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     const holdToEditHandle = (e) => {
         if (isScaling) return
         if (editing && editing !== id) return
-
         if (isEditable) {
             disableScrolling()
             let pos = positionRef.current.style.marginTop
@@ -162,7 +162,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
 
     const dragAppointment = (e) => {
         if ((activateEditTimeout && !isEditable && !('ontouchstart' in window))) clearTimeout(activateEditTimeout)
-        if (!dragStart || !originalPos || !isDragging || isScaling) return
+        if (!dragStart || originalPos === null || !isDragging || isScaling) return
         let y = e.clientY || e.touches[0].clientY
         let change = y - dragStart
         newPosition = originalPos + change
@@ -173,7 +173,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     const holdEndHandle = () => {
         enableScrolling()
         if (activateEditTimeout && !isEditable) return clearTimeout(activateEditTimeout)
-        if (!newPosition || isScaling || !isEditable) return setIsDragging(false)
+        if (newPosition === null || isScaling || !isEditable) return setIsDragging(false)
         endReposition()
     }
 

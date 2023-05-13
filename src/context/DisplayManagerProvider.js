@@ -64,8 +64,6 @@ export const DisplayManagerProvider = ({ children }) => {
             let days = 0
             while (days < 7) {
                 if (startDate.toLocaleDateString('en', { weekday: 'long' }) === 'Sunday') {
-                    console.log(startDate)
-                    console.log(startDate.toLocaleDateString('en', { weekday: 'long' }))
                     setDate(startDate)
                     break
                 }

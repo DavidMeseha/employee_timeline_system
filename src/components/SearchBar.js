@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import CustomerCard from "./Card";
 import { Search } from "./Icons";
 import clickRecognition from "@/Hooks/useClickRecognition";
 import Card from "./Card";

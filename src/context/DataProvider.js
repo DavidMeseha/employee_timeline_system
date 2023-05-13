@@ -425,6 +425,7 @@ export const DataProvider = ({ children }) => {
     }, [])
 
     const updateAppointmentDates = (employee, appointmentId, newStartDate, newEndDate) => {
+        console.log(newStartDate)
         employeesDispatch({
             type: UPDATE_DATE,
             payload: {

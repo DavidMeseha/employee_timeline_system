@@ -11,7 +11,7 @@ import DonePopup from "@/components/DonePopup";
 import { useRouter } from "next/router";
 import Card from "@/components/Card";
 import { Close } from "@/components/Icons";
-import useDisplayManger from "@/Hooks/useDisplayManger";
+import { convertDateToYMD } from "@/utilities/convertDateToYMD";
 
 const AddAppointmentPage = () => {
     const router = useRouter()
@@ -42,19 +42,16 @@ const AddAppointmentPage = () => {
             if (dayTime === 'PM') {
                 hour = parseInt(hour) + 12
             }
+            if(hour === '12' && dayTime === 'AM') hour='00'
 
             let convertedTime = hour + ':' + mins
-
             setTime(convertedTime)
         }
         if (router.query.employee) setMember(router.query.employee)
         if (router.query.date) {
             let aDate = new Date(router.query.date)
-            let month = aDate.toLocaleDateString('en', { month: '2-digit' })
-            let year = aDate.toLocaleDateString('en', { year: 'numeric' })
-            let day = aDate.toLocaleDateString('en', { day: '2-digit' })
             let display = aDate.toLocaleDateString('en', { day: 'numeric', month: 'long', year: 'numeric' })
-            setDate(year + '-' + month + '-' + day)
+            setDate(convertDateToYMD(aDate))
             setDisplayDate(display)
         }
     }, [])

@@ -88,11 +88,11 @@ const TimeLines = ({ liveIndicator, selectedEmployees, tableRef, dates }) => { /
         }
 
         return (
-            <div key={value} onClick={(e) => sendClickedData(e, time)} className="time-stamp">
+            <div key={value} className="time-stamp">
                 <div className="hour">{isFullHour && time}</div>
                 <div className="line">
                     <div className="line-time">{time}</div>
-                    <div style={{ height: 1, backgroundColor: `${isFullHour ? '#c1c1c1' : '#e5e5e5'}` }}></div>
+                    <div onClick={(e) => sendClickedData(e, time)} style={{ height: 1, backgroundColor: `${isFullHour ? '#c1c1c1' : '#e5e5e5'}` }}></div>
                 </div>
             </div >
         )
