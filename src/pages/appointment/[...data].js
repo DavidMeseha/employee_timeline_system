@@ -1,4 +1,5 @@
 import AddAppointmentPage from "@/layouts/AddAppointmentPage";
+import Head from "next/head";
 
 export default function Appointment() {
     return (
