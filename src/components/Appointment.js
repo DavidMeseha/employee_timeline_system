@@ -109,7 +109,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
             newPosition = 0
             newStartTotalMinutes = 0
         }
-        if (newPosition + height >= 2977) {
+        if (newPosition + height >= 2976) {
             newPosition = 2975 - height
             newStartTotalMinutes = calculateMinutesFromTop(newPosition)
             if ((newStartTotalMinutes / 5) % 1 !== 0) newStartTotalMinutes = ((~~(newStartTotalMinutes / 5)) + 1) * 5
@@ -126,8 +126,6 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         editEndDate.setHours(newEndHour)
         editEndDate.setMinutes(newEndMinute)
         editEndDate.getHours() === 0 && editEndDate.getMinutes() === 0 && editEndDate.setDate(editStartDate.getDate() + 1)
-
-        console.log(editStartDate.getMinutes(), ' ', newStartTotalMinutes)
 
         endTime = new Date(editEndDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: true })
         startTime = new Date(editStartDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: true })
@@ -161,8 +159,9 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     }
 
     const dragAppointment = (e) => {
+        console.log(newPosition, ' ', originalPos)
         if ((activateEditTimeout && !isEditable && !('ontouchstart' in window))) clearTimeout(activateEditTimeout)
-        if (!dragStart || originalPos === null || !isDragging || isScaling) return
+        if (!dragStart || originalPos === null || originalPos === newPosition || !isDragging || isScaling) return
         let y = e.clientY || e.touches[0].clientY
         let change = y - dragStart
         newPosition = originalPos + change
@@ -172,8 +171,9 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
 
     const holdEndHandle = () => {
         enableScrolling()
+        console.log(newPosition, ' ', originalPos)
         if (activateEditTimeout && !isEditable) return clearTimeout(activateEditTimeout)
-        if (newPosition === null || isScaling || !isEditable) return setIsDragging(false)
+        if (newPosition === null || newPosition === undefined || originalPos === null || isScaling || !isEditable) return setIsDragging(false)
         endReposition()
     }
 
