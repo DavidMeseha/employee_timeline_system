@@ -125,7 +125,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         editStartDate.setMinutes(newStartMinute)
         editEndDate.setHours(newEndHour)
         editEndDate.setMinutes(newEndMinute)
-        editEndDate.getHours() === 0 && editEndDate.getMinutes() === 0 && editEndDate.setDate(editStartDate.getDate() + 1)
+        editEndDate.getHours() === 0 && editEndDate.getMinutes() === 0 ? editEndDate.setDate(editStartDate.getDate() + 1) : editEndDate.setDate(editStartDate.getDate())
 
         endTime = new Date(editEndDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: true })
         startTime = new Date(editStartDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: true })
