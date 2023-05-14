@@ -125,7 +125,7 @@ const WeeklyDisplay = () => {
 
                                                 let blockedDateEnd = new Date(block.end)
                                                 return (
-                                                    <Blocked key={bi} startDate={blockedDate} endDate={blockedDateEnd} comment={block.comment || ''} />
+                                                    <Blocked key={block.id} startDate={blockedDate} endDate={blockedDateEnd} comment={block.comment || ''} employee={weekSelectedEmployee} id={block.id} />
                                                 )
                                             })}
 

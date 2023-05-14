@@ -15,6 +15,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     const appointmentRef = useRef()
     const positionRef = useRef()
     const timeRef = useRef()
+    const scaleRef = useRef()
     const [isEditable, setIsEditable] = useState(false)
     const [isDragging, setIsDragging] = useState(false)
     const [dragStart, setDragStart] = useState(null)
@@ -25,6 +26,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
 
     let editStartDate = new Date(startDate)
     let editEndDate = new Date(endDate)
+    console.log(editEndDate)
 
     let startTime = new Date(editStartDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: true })
     let endTime = new Date(editEndDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: true })
@@ -85,6 +87,10 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         let position = parseInt(positionRef.current.style.marginTop.replace('px', ''))
         if (position + newHeight > 2977) {
             newHeight = 2975 - position
+            newEndTotalMinutes = calculateMinutesFromHeight(newHeight, startTotalMinutes)
+        }
+        if (newHeight <= 60) {
+            newHeight = 60
             newEndTotalMinutes = calculateMinutesFromHeight(newHeight, startTotalMinutes)
         }
 
@@ -159,7 +165,6 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     }
 
     const dragAppointment = (e) => {
-        console.log(newPosition, ' ', originalPos)
         if ((activateEditTimeout && !isEditable && !('ontouchstart' in window))) clearTimeout(activateEditTimeout)
         if (!dragStart || originalPos === null || !isDragging || isScaling) return
         let y = e.clientY || e.touches[0].clientY
@@ -171,7 +176,6 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
 
     const holdEndHandle = () => {
         enableScrolling()
-        console.log(newPosition, ' ', originalPos)
         if (activateEditTimeout && !isEditable) return clearTimeout(activateEditTimeout)
         if (newPosition === null || newPosition === undefined || originalPos === null || isScaling || !isEditable) return setIsDragging(false)
         endReposition()
@@ -189,15 +193,17 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     }
 
     const startScale = (e) => {
+        if (!scaleRef.current) return
+        if (!scaleRef.current.contains(e.target)) return
         disableScrolling()
         setIsScaling(true)
-        setScaleStart(e.pageY || e.touches[0].clientY)
+        setScaleStart(e.clientY || e.touches[0].clientY)
         setOriginalHeight(parseFloat(appointmentRef.current.style.height.replace('px', '')))
     }
 
     const scaleHandle = (e) => {
         if (!scaleStart || !originalHeight || !isScaling) return
-        let y = e.pageY || e.touches && e.touches[0].clientY
+        let y = e.clientY || e.touches && e.touches[0].clientY
         let change = y - scaleStart
         newHeight = originalHeight + change
         adjustDateAndHight()
@@ -220,9 +226,25 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     const cancelAppointment = () => {
         setIsEditable(false)
         setEditing(null)
-
         deleteAppointment(employee, id)
     }
+
+    useEffect(() => {
+        document.addEventListener('mousedown', startScale)
+        document.addEventListener('touchstart', startScale)
+        document.addEventListener('mousemove', scaleHandle)
+        document.addEventListener('touchmove', scaleHandle)
+        document.addEventListener('mouseup', endScale)
+        document.addEventListener('touchend', endScale)
+        return () => {
+            document.removeEventListener('mousedown', startScale)
+            document.removeEventListener('touchstart', startScale)
+            document.removeEventListener('mousemove', scaleHandle)
+            document.removeEventListener('touchmove', scaleHandle)
+            document.removeEventListener('mouseup', endScale)
+            document.removeEventListener('touchend', endScale)
+        }
+    }, [scaleStart, originalHeight, isEditable, editing, isDragging, newHeight, isScaling, appointmentRef, positionRef])
 
     return (
         <>
@@ -249,23 +271,14 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
                         })}</p>
                     </div>
 
-                    {isEditable && <div
-                        onMouseDown={startScale}
-                        onTouchStart={startScale}
-                        onMouseMove={scaleHandle}
-                        onTouchMove={scaleHandle}
-                        onMouseUp={endScale}
-                        onTouchEnd={endScale}
-                        onMouseLeave={endScale}
-                        className="scale-area"
-                    >
+                    {isEditable && <div ref={scaleRef} className="scale-area">
                         <div className="icon">
                             <div></div>
                             <div></div>
                         </div>
                     </div>}
                 </div>
-            </div>
+            </div >
         </>
     )
 };

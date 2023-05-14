@@ -118,7 +118,7 @@ const DailyDisplay = () => {
 
                                                         let blockedDateEnd = new Date(block.end)
                                                         return (
-                                                            <Blocked key={bi} startDate={blockedDate} endDate={blockedDateEnd} comment={block.comment || ''} />
+                                                            <Blocked key={bi} startDate={blockedDate} endDate={blockedDateEnd} comment={block.comment || ''} employee={employee.name} id={block.id} />
                                                         )
                                                     })}
 

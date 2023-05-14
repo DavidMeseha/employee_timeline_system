@@ -8,6 +8,7 @@ const ADD_BLOCKED_DATE_TIME = 'ADD_BLOCKED_DATE_TIME'
 const ADD_APPOINTMENT = 'ADD_APPOINTMENT'
 const SET_EMPLOYEES = 'SET_EMPLOYEES'
 const DELETE_APPOINTMENT = 'DELETE_APPOINTMENT'
+const DELETE_BLOCKED = 'DELETE_BLOCKED'
 
 let employeesData = [
     {
@@ -86,16 +87,19 @@ let employeesData = [
         ],
         blocks: [
             {
+                id: '01',
                 start: 'May 1 2023 00:00:00',
                 end: 'May 1 2023 04:00:00',
                 comment: 'Some Comment.....'
             },
             {
+                id: '02',
                 start: 'April 30 2023 00:00:00',
                 end: 'April 30 2023 04:00:00',
                 comment: ''
             },
             {
+                id: '03',
                 start: 'April 30 2023 20:00:00',
                 end: 'April 30 2023 23:59:00',
                 comment: 'day End Comment.....'
@@ -154,16 +158,19 @@ let employeesData = [
         ],
         blocks: [
             {
+                id: '04',
                 start: 'May 1 2023 00:00:00',
                 end: 'May 1 2023 04:00:00',
                 comment: 'Some Comment.....'
             },
             {
+                id: '05',
                 start: 'April 30 2023 00:00:00',
                 end: 'April 30 2023 04:00:00',
                 comment: ''
             },
             {
+                id: '06',
                 start: 'April 30 2023 20:00:00',
                 end: 'April 30 2023 23:59:00',
                 comment: 'day End Comment.....'
@@ -222,16 +229,19 @@ let employeesData = [
         ],
         blocks: [
             {
+                id: '07',
                 start: 'May 1 2023 00:00:00',
                 end: 'May 1 2023 04:00:00',
                 comment: 'Some Comment.....'
             },
             {
+                id: '08',
                 start: 'April 30 2023 00:00:00',
                 end: 'April 30 2023 04:00:00',
                 comment: ''
             },
             {
+                id: '09',
                 start: 'April 30 2023 20:00:00',
                 end: 'April 30 2023 23:59:00',
                 comment: 'day End Comment.....'
@@ -292,6 +302,7 @@ let servicesData = [
 ]
 
 let NEXT_APPOINTMENT_ID = 13;
+let NEXT_BLOCKED_ID = 13;
 
 function employeesReducer(employees, action) {
     switch (action.type) {
@@ -346,6 +357,28 @@ function employeesReducer(employees, action) {
                     newAppointments.push(newAppointment)
                     newState[index].appointments = newAppointments
                     break
+                }
+            }
+
+            return newState
+        }
+
+        case DELETE_BLOCKED: {
+            console.log(action.payload)
+            let newState = _.cloneDeep(employees)
+            let employee = action.payload.employee
+            let id = action.payload.id
+
+            for (let index = 0; index < newState.length; index++) {
+                if (newState[index].name === employee) {
+                    let blocks = [...newState[index].blocks]
+                    for (let blockIndex = 0; blockIndex < blocks.length; blockIndex++) {
+                        if (blocks[blockIndex].id === id) {
+                            blocks.splice(blockIndex, 1)
+                            newState[index].blocks = blocks
+                            break
+                        }
+                    }
                 }
             }
 
@@ -463,12 +496,20 @@ export const DataProvider = ({ children }) => {
         })
     }
 
+    const deleteBlocked = (employee, id) => {
+        employeesDispatch({
+            type: DELETE_BLOCKED,
+            payload: { employee, id }
+        })
+    }
+
     return (
         <DataContext.Provider value={{
             employees, customers, services,
             updateAppointmentDates,
             addNewBlockedTimeForEmployee,
-            addNewAppointment, deleteAppointment
+            addNewAppointment, deleteAppointment,
+            deleteBlocked
         }}>
             {children}
         </DataContext.Provider >

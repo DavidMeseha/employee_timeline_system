@@ -60,31 +60,31 @@ const TimeLines = ({ liveIndicator, selectedEmployees, tableRef, dates }) => { /
         return time
     }
 
-    const sendClickedData = (e, time) => {
-        const rightMargin = 50
-        const leftMargin = ('touchstart' in window) ? 15 : 30
-        const minWidth = format === 'daily' ? 400 : 150
-        let scrollLeft = tableRef.current.scrollLeft
-        let clickPosition = e.clientX
-        let tableWidth = window.innerWidth - rightMargin - leftMargin
-        let sectionsCount = format === 'daily' ? selectedEmployees.length : 7
-        let widthPerSection = tableWidth / sectionsCount <= minWidth ? minWidth : tableWidth / sectionsCount
-        let index = ~~(((clickPosition - 50) + scrollLeft) / widthPerSection)
-        let employee = format === 'daily' ? selectedEmployees[index] : selectedEmployees
-        let selectedDate = (format === 'daily' ? date : dates[index]).toLocaleDateString('en', { day: '2-digit', month: '2-digit', year: 'numeric' })
-
-        router.push({
-            pathname: '/appointment/',
-            query: { time, employee, date: selectedDate }
-        });
-    }
-
     const timeRow = (value) => {
         let time = formatTime(value)
         let isFullHour = false
 
         if (value % 4 === 0) {
             isFullHour = true
+        }
+
+        const sendClickedData = (e, time) => {
+            const rightMargin = 50
+            const leftMargin = ('touchstart' in window) ? 15 : 30
+            const minWidth = format === 'daily' ? 400 : 150
+            let scrollLeft = tableRef.current.scrollLeft
+            let clickPosition = e.clientX
+            let tableWidth = window.innerWidth - rightMargin - leftMargin
+            let sectionsCount = format === 'daily' ? selectedEmployees.length : 7
+            let widthPerSection = tableWidth / sectionsCount <= minWidth ? minWidth : tableWidth / sectionsCount
+            let index = ~~(((clickPosition - 50) + scrollLeft) / widthPerSection)
+            let employee = format === 'daily' ? selectedEmployees[index] : selectedEmployees
+            let selectedDate = (format === 'daily' ? date : dates[index]).toLocaleDateString('en', { day: '2-digit', month: '2-digit', year: 'numeric' })
+
+            router.push({
+                pathname: '/appointment/',
+                query: { time, employee, date: selectedDate }
+            });
         }
 
         return (

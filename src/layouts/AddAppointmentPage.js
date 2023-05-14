@@ -42,7 +42,7 @@ const AddAppointmentPage = () => {
             if (dayTime === 'PM') {
                 hour = parseInt(hour) + 12
             }
-            if(hour === '12' && dayTime === 'AM') hour='00'
+            if (hour === '12' && dayTime === 'AM') hour = '00'
 
             let convertedTime = hour + ':' + mins
             setTime(convertedTime)
@@ -229,7 +229,7 @@ const AddAppointmentPage = () => {
                                     <div className="date-section">
                                         <p className="summery-slice"><span>Date & Time</span></p>
                                         <p className="summery-slice">{displayDate}</p>
-                                        <p className="summery-slice">{displayTime}</p>
+                                        <p className="summery-slice">{displayTime === 'Invalid Date' ? '' : displayTime}</p>
                                     </div>
                                     <div className="price-section">
                                         <p className="summery-slice"><span>Price</span></p>
