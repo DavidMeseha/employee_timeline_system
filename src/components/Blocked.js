@@ -42,6 +42,7 @@ const Blocked = ({ startDate, endDate, comment, id, employee }) => {
     }, [editable, containerRef, confirmRef])
 
     const holdStartHandle = () => {
+        console.log('starting')
         if (editable) return
         timeoutId = setTimeout(() => {
             setEditable(true)
@@ -65,7 +66,7 @@ const Blocked = ({ startDate, endDate, comment, id, employee }) => {
     return (
         <>
             {editable && <ConfirmEdit confirmRef={confirmRef} cancel={cancel} deleteAppointment={deleteBlockedHandle} action={'Delete Blocked Time'} />}
-            <div ref={containerRef} onMouseDown={holdStartHandle} onTouchStart={holdEndHandle} onMouseUp={holdEndHandle} onTouchEnd={holdEndHandle} className='blocked-area' style={{ top: blockStart, height: blockEnd, backgroundColor: editable ? '#c1c1c1' : 'transparent' }}>
+            <div ref={containerRef} onMouseDown={holdStartHandle} onTouchStart={holdStartHandle} onMouseUp={holdEndHandle} onTouchEnd={holdEndHandle} className='blocked-area' style={{ top: blockStart, height: blockEnd, backgroundColor: editable ? '#c1c1c1' : 'transparent' }}>
                 <div>
                     <p>{comment}</p>
                     <DiagonalStrip />
