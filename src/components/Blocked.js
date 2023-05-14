@@ -23,16 +23,22 @@ const Blocked = ({ startDate, endDate, comment, id, employee }) => {
 
     let timeoutId
 
-    useEffect(() => {
-        const clickCheck = (e) => {
-            console.log(editable)
-            if (!editable) return
-            if (!containerRef.current || !confirmRef.current) return
-            if (!containerRef.current.contains(e.target) || !confirmRef.current.contains(e.target)) setEditable(false)
+    const clickCheck = (e) => {
+        if (!editable) return
+        console.log(containerRef.current, '  ', confirmRef.current, '  ', e.target)
+        console.log(containerRef.current.contains(e.target))
+        if (!containerRef.current.contains(e.target)) {
+            if (!confirmRef.current.contains(e.target)) setEditable(false)
         }
+    }
 
+    useEffect(() => {
         document.addEventListener('mousedown', clickCheck)
-        return () => document.addEventListener('mousedown', clickCheck)
+        document.addEventListener('touchstart', clickCheck)
+        return () => {
+            document.removeEventListener('mousedown', clickCheck)
+            document.removeEventListener('touchstart', clickCheck)
+        }
     }, [editable, containerRef, confirmRef])
 
     const holdStartHandle = () => {
