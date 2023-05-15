@@ -51,7 +51,7 @@ const EmployeesDropdown = ({ employees, selected, setSelected, format }) => {
         if (!allCheckboxRef.current) return
         allCheckboxRef.current.checked = true
         selectAll()
-    }, [employees, format])
+    }, [format])
 
     useEffect(() => {
         if (!checkboxesRef.current[0]) return;

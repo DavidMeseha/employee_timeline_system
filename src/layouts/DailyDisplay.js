@@ -26,7 +26,6 @@ const DailyDisplay = () => {
     }
 
     const editEmployeeDatesView = (employee, appointmentId, newStartDate, newEndDate) => {
-        console.log(newStartDate)
         let newState = JSON.parse(JSON.stringify(employeesDisplay))
         for (let index = 0; index < newState.length; index++) {
             if (newState[index].name === employee) {
@@ -38,7 +37,9 @@ const DailyDisplay = () => {
                     }
                 }
             }
-        } setEmployeesDisplay(newState)
+        }
+        
+        setEmployeesDisplay(newState)
     }
 
     useEffect(() => {
