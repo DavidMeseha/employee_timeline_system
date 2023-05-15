@@ -23,6 +23,7 @@ const EmployeesDropdown = ({ employees, selected, setSelected, format }) => {
     const selectAll = () => {
         let selectedTemp = [];
 
+        allCheckboxRef.current.checked = true
         checkboxesRef.current.forEach(checkBox => {
             checkBox.checked = true;
             selectedTemp.push(checkBox.value);
@@ -48,13 +49,8 @@ const EmployeesDropdown = ({ employees, selected, setSelected, format }) => {
     }
 
     useEffect(() => {
-        if (!allCheckboxRef.current) return
-        allCheckboxRef.current.checked = true
-        selectAll()
-    }, [employees])
-
-    useEffect(() => {
-        if (!checkboxesRef.current[0]) return;
+        if (!checkboxesRef.current) return;
+        console.log('selecting')
 
         if (format === 'daily') {
             selectAll()
@@ -64,7 +60,7 @@ const EmployeesDropdown = ({ employees, selected, setSelected, format }) => {
             selectOne(selected || checkboxesRef.current[0].value)
             setSelected(selected || checkboxesRef.current[0].value)
         }
-    }, [format])
+    }, [format, allCheckboxRef.current, checkboxesRef])
 
     const checkBoxChangeHandle = (e) => {
         if (format === 'daily') {

@@ -38,7 +38,7 @@ const DailyDisplay = () => {
                 }
             }
         }
-        
+
         setEmployeesDisplay(newState)
     }
 
@@ -50,7 +50,7 @@ const DailyDisplay = () => {
 
     useEffect(() => {
         setEmployeesDisplay([...employees])
-    }, [])
+    }, [employees])
 
     const handleScrollFromTable = (e) => {
         if (!tableScroll) return

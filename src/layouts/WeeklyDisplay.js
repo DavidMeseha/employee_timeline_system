@@ -44,6 +44,10 @@ const WeeklyDisplay = () => {
     }
 
     useEffect(() => {
+        resetEmployee()
+    }, [employees])
+
+    useEffect(() => {
         const displayDates = () => {
             let set = []
             let recentDate = new Date(date)
@@ -55,7 +59,6 @@ const WeeklyDisplay = () => {
         }
 
         displayDates()
-        resetEmployee()
         if (date.getDate() === new Date().getDate()) setIsToday(true)
         else setIsToday(false)
     }, [date, format, weekSelectedEmployee])

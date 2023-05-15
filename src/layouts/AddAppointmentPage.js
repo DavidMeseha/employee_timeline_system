@@ -37,6 +37,7 @@ const AddAppointmentPage = () => {
     useEffect(() => {
         if (router.query.time) {
             let t = router.query.time
+            console.log(convert12to24(t))
             setTime(convert12to24(t))
         }
         if (router.query.employee) setMember(router.query.employee)
@@ -169,7 +170,7 @@ const AddAppointmentPage = () => {
                                 <div className="input-field">
                                     <InputTextBox title={'Date'} type={'date'} value={date} onChange={dateChangeHandle} />
                                 </div>
-                                <div className="input-field small-input">
+                                <div className="input-field">
                                     <InputTextBox title={'Time'} type={'time'} value={time} setValue={setTime} onChange={timeOnChangeHandle} />
                                 </div>
                             </div>

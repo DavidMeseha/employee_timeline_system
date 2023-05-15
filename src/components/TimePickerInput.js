@@ -84,9 +84,8 @@ const TimePickerInput = ({ time, setTime, onChange }) => {
                     type="text"
                     value={time === '' ? '' : convert24to12(time)}
                     onClick={(e) => { e.preventDefault(); setIsOpen(true) }}
-                    onFocus={(e) => e.preventDefault()}
                     onChange={(e) => e.preventDefault()}
-                    step={300}
+                    required
                 />
                 {isOpen && <div className="time-picker">
                     <div style={{ overflow: 'auto' }}>
