@@ -30,8 +30,8 @@ const WeeklyDisplay = () => {
     }
 
     const editEmployeeDatesView = (appointmentEmployee, appointmentId, newStartDate, newEndDate) => {
-        console.log(newStartDate, ' ', newEndDate)
-        let newState = JSON.parse(JSON.stringify(employee))
+        console.log(newStartDate, ' ', newEndDate, ' ', appointmentId)
+        let newState = _.cloneDeep(employee)
         let appointments = newState.appointments.slice()
         for (let appointmentIndex = 0; appointmentIndex < appointments.length; appointmentIndex++) {
             if (newState.appointments[appointmentIndex].id === appointmentId) {
@@ -58,7 +58,7 @@ const WeeklyDisplay = () => {
         resetEmployee()
         if (date.getDate() === new Date().getDate()) setIsToday(true)
         else setIsToday(false)
-    }, [date, format, weekSelectedEmployee, employees])
+    }, [date, format, weekSelectedEmployee])
 
     const handleScrollFromTable = (e) => {
         if (!tableScroll) return

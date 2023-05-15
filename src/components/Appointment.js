@@ -20,6 +20,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     const [isDragging, setIsDragging] = useState(false)
     const [dragStart, setDragStart] = useState(null)
     const [originalPos, setOriginalPos] = useState(null)
+    const [recentHeight, setRecentHeight] = useState(null)
 
     let activateEditTimeout
     let id = appointment.id
@@ -82,7 +83,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         let newEndTotalMinutes = calculateMinutesFromHeight(newHeight, startTotalMinutes)
         if ((newEndTotalMinutes / 5) % 1 !== 0) newEndTotalMinutes = ((~~(newEndTotalMinutes / 5)) + 1) * 5
         newHeight = calculateHeightFromMinutes(newEndTotalMinutes, startTotalMinutes)
-        let position = parseInt(positionRef.current.style.marginTop.replace('px', ''))
+        let position = parseInt(positionRef.current.style.top.replace('px', ''))
         if (position + newHeight > 2977) {
             newHeight = 2975 - position
             newEndTotalMinutes = calculateMinutesFromHeight(newHeight, startTotalMinutes)
@@ -91,6 +92,8 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
             newHeight = 60
             newEndTotalMinutes = calculateMinutesFromHeight(newHeight, startTotalMinutes)
         }
+
+        setRecentHeight(newHeight)
 
         let newEndHour = ~~(newEndTotalMinutes / 60)
         let newEndMinute = ~~((((newEndTotalMinutes / 60) - newEndHour) * 60) + 0.1)//getting the reminder floot and convert into 60, +0.1 is a fix for the long float
@@ -143,7 +146,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         if (editing && editing !== id) return
         if (isEditable) {
             disableScrolling()
-            let pos = positionRef.current.style.marginTop
+            let pos = positionRef.current.style.top
             setDragStart(e.clientY || e.touches[0].clientY)
             setOriginalPos(parseFloat(pos.replace('px', '')))
             setIsDragging(true)
@@ -153,7 +156,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         activateEditTimeout = setTimeout(() => {
             if (editing) return
             disableScrolling()
-            let pos = positionRef.current.style.marginTop
+            let pos = positionRef.current.style.top
             setDragStart(e.clientY || e.touches[0].clientY)
             setOriginalPos(parseFloat(pos.replace('px', '')))
             setIsDragging(true)
@@ -169,7 +172,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         let change = y - dragStart
         newPosition = originalPos + change
         adjustNewDateAndPosition()
-        positionRef.current.style.marginTop = `${newPosition}px`
+        positionRef.current.style.top = `${newPosition}px`
     }
 
     const holdEndHandle = () => {
@@ -185,7 +188,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         setOriginalPos(null)
         newPosition = null
         setIsDragging(false)
-        positionRef.current.style.marginTop = `${newPosition}px`
+        positionRef.current.style.top = `${newPosition}px`
 
         editEmployeeDatesView(employee, appointment.id, editStartDate, editEndDate)
     }
@@ -209,14 +212,18 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     }
 
     const endScale = () => {
+        console.log(isScaling, recentHeight)
         enableScrolling()
         if (isScaling) setIsScaling(false)
         else return
-        if (!newHeight) return
+        if (!recentHeight) return
+        newHeight = recentHeight
         adjustDateAndHight()
         setOriginalHeight(null)
         setScaleStart(null)
         setIsDragging(false)
+        setRecentHeight(null)
+        newHeight = null
 
         editEmployeeDatesView(employee, appointment.id, editStartDate, editEndDate)
     }
@@ -242,12 +249,12 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
             document.removeEventListener('mouseup', endScale)
             document.removeEventListener('touchend', endScale)
         }
-    }, [scaleStart, originalHeight, isEditable, editing, isDragging, newHeight, isScaling, appointmentRef, positionRef])
+    }, [scaleStart, originalHeight, isEditable, editing, isDragging, isScaling, appointmentRef, positionRef, recentHeight])
 
     return (
         <>
             {isEditable && <ConfirmEditMemo confirm={confirm} cancel={reset} deleteAppointment={cancelAppointment} />}
-            <div /*draggable onDrag={dragAppointment} onDragEnd={holdEndHandle}*/ onTouchStart={holdToEditHandle} onTouchEnd={holdEndHandle} ref={positionRef} style={{ width: '100%', marginTop: appointmentStart }}>
+            <div /*draggable onDrag={dragAppointment} onDragEnd={holdEndHandle}*/ onTouchStart={holdToEditHandle} onTouchEnd={holdEndHandle} ref={positionRef} style={{position:'absolute', width: '100%', top: appointmentStart }}>
                 <div
                     id={id}
                     ref={appointmentRef}

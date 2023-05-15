@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import Card from "@/components/Card";
 import { Close } from "@/components/Icons";
 import { convertDateToYMD } from "@/utilities/convertDateToYMD";
+import { convert12to24 } from "@/utilities/convertTime";
 
 const AddAppointmentPage = () => {
     const router = useRouter()
@@ -35,17 +36,8 @@ const AddAppointmentPage = () => {
 
     useEffect(() => {
         if (router.query.time) {
-            let timeValue = router.query.time
-            let hour = timeValue.split(':')[0]
-            let mins = timeValue.split(':')[1].split(' ')[0]
-            let dayTime = timeValue.split(' ')[1]
-            if (dayTime === 'PM' && hour !== '12') {
-                hour = parseInt(hour) + 12
-            }
-            if (hour === '12' && dayTime === 'AM') hour = '00'
-
-            let convertedTime = hour + ':' + mins
-            setTime(convertedTime)
+            let t = router.query.time
+            setTime(convert12to24(t))
         }
         if (router.query.employee) setMember(router.query.employee)
         if (router.query.date) {

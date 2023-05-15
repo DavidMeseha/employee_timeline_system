@@ -1,4 +1,5 @@
 import clickRecognition from "@/Hooks/useClickRecognition";
+import { convert24to12 } from "@/utilities/convertTime";
 import { useEffect, useRef, useState } from "react";
 
 const TimePickerInput = ({ time, setTime, onChange }) => {
@@ -80,11 +81,11 @@ const TimePickerInput = ({ time, setTime, onChange }) => {
         <>
             <div ref={containerRef} >
                 <input
-                    type="time"
-                    value={time}
+                    type="text"
+                    value={time === '' ? '' : convert24to12(time)}
                     onClick={(e) => { e.preventDefault(); setIsOpen(true) }}
                     onFocus={(e) => e.preventDefault()}
-                    onChange={onChange}
+                    onChange={(e) => e.preventDefault()}
                     step={300}
                 />
                 {isOpen && <div className="time-picker">

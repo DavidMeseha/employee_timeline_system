@@ -56,7 +56,7 @@ export const DisplayManagerProvider = ({ children }) => {
             selectAll()
         }
         setInitalDisplay()
-    }, [employees])
+    }, [])
 
     useEffect(() => {
         if (format === 'weekly') {
