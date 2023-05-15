@@ -30,13 +30,13 @@ const WeeklyDisplay = () => {
     }
 
     const editEmployeeDatesView = (appointmentEmployee, appointmentId, newStartDate, newEndDate) => {
+        console.log(newStartDate, ' ', newEndDate)
         let newState = JSON.parse(JSON.stringify(employee))
-        console.log(newState)
         let appointments = newState.appointments.slice()
         for (let appointmentIndex = 0; appointmentIndex < appointments.length; appointmentIndex++) {
             if (newState.appointments[appointmentIndex].id === appointmentId) {
-                newState.appointments[appointmentIndex].end = newEndDate.toString()
-                newState.appointments[appointmentIndex].start = newStartDate.toString()
+                newState.appointments[appointmentIndex].end = newEndDate
+                newState.appointments[appointmentIndex].start = newStartDate
             }
         }
 

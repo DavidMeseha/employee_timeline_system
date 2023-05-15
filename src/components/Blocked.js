@@ -61,8 +61,6 @@ const Blocked = ({ startDate, endDate, comment, id, employee }) => {
         setEditable(false)
     }
 
-    //clickRecognition(() => setEditable(false), containerRef)
-
     return (
         <>
             {editable && <ConfirmEdit confirmRef={confirmRef} cancel={cancel} deleteAppointment={deleteBlockedHandle} action={'Delete Blocked Time'} />}

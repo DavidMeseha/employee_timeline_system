@@ -26,7 +26,6 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
 
     let editStartDate = new Date(startDate)
     let editEndDate = new Date(endDate)
-    console.log(editEndDate)
 
     let startTime = new Date(editStartDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: true })
     let endTime = new Date(editEndDate).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: true })
@@ -56,7 +55,6 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     }, [editing, isEditable])
 
     const confirm = () => {
-        console.log(editStartDate)
         setIsEditable(false)
         setEditing(null)
         updateAppointmentDates(employee, appointment.id, editStartDate, editEndDate)

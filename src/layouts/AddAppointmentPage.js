@@ -39,7 +39,7 @@ const AddAppointmentPage = () => {
             let hour = timeValue.split(':')[0]
             let mins = timeValue.split(':')[1].split(' ')[0]
             let dayTime = timeValue.split(' ')[1]
-            if (dayTime === 'PM') {
+            if (dayTime === 'PM' && hour !== '12') {
                 hour = parseInt(hour) + 12
             }
             if (hour === '12' && dayTime === 'AM') hour = '00'
