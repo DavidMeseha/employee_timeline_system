@@ -45,7 +45,7 @@ const WeeklyDisplay = () => {
 
     useEffect(() => {
         resetEmployee()
-    }, [employees])
+    }, [employees, weekSelectedEmployee])
 
     useEffect(() => {
         const displayDates = () => {

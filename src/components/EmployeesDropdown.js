@@ -47,11 +47,7 @@ const EmployeesDropdown = ({ employees, selected, setSelected, format }) => {
 
         setSelected([])
     }
-
-    useEffect(()=>{
-
-    },[])
-
+    
     useEffect(() => {
         if (!checkboxesRef.current) return;
         console.log('selecting')

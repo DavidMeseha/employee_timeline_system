@@ -80,11 +80,6 @@ const AddAppointmentPage = () => {
         setDisplayTime(display)
     }, [time])
 
-    const timeOnChangeHandle = (e) => {
-        let value = processTime(e.target.value)
-        setTime(value)
-    }
-
     const dateChangeHandle = (e) => {
         setDate(e.target.value)
         let display = new Date(e.target.value).toLocaleDateString('en', { day: 'numeric', month: 'long', year: 'numeric' })
@@ -171,7 +166,7 @@ const AddAppointmentPage = () => {
                                     <InputTextBox title={'Date'} type={'date'} value={date} onChange={dateChangeHandle} />
                                 </div>
                                 <div className="input-field">
-                                    <InputTextBox title={'Time'} type={'time'} value={time} setValue={setTime} onChange={timeOnChangeHandle} />
+                                    <InputTextBox title={'Time'} type={'time'} value={time} setValue={setTime} />
                                 </div>
                             </div>
                         </InputSectionLayout>
