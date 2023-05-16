@@ -8,14 +8,13 @@ import useData from "@/Hooks/useData";
 
 const WeeklyDisplay = () => {
     const { employees } = useData()
-    const { date, format, weekSelectedEmployee } = useDisplayManger()
+    const { date, format, weekSelectedEmployee, dates, setDates } = useDisplayManger()
     const [employee, setEmployee] = useState()
     const tableRef = useRef()
     const timelineRef = useRef()
     const [isToday, setIsToday] = useState(true)
     const [tableScroll, setTableScroll] = useState(true)
     const [editing, setEditing] = useState()
-    const [dates, setDates] = useState([])
 
     let touchStart, initialScroll
 
@@ -29,10 +28,12 @@ const WeeklyDisplay = () => {
         setEditing(null)
     }
 
-    const editEmployeeDatesView = (appointmentEmployee, appointmentId, newStartDate, newEndDate, targetEmployee) => {
-        console.log(newStartDate, ' ', newEndDate, ' ', appointmentId)
+    const editEmployeeDatesView = (appointmentEmployee, appointmentId, newStartDate, newEndDate, targetDate) => {
+        console.log(targetDate)
         let newState = _.cloneDeep(employee)
         let appointments = newState.appointments.slice()
+        newStartDate = new Date(newStartDate.setDate(targetDate.getDate()))
+        newEndDate = new Date(newEndDate.setDate(targetDate.getDate()))
         for (let appointmentIndex = 0; appointmentIndex < appointments.length; appointmentIndex++) {
             if (newState.appointments[appointmentIndex].id === appointmentId) {
                 newState.appointments[appointmentIndex].end = newEndDate

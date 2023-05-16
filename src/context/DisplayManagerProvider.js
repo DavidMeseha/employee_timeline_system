@@ -9,9 +9,10 @@ export const DisplayManagerProvider = ({ children }) => {
     const [displayDate, setDisplayDate] = useState()
     const [employeesDisplay, setEmployeesDisplay] = useState([])
     const [selectedEmployees, setSelectedEmployees] = useState([])
-    const [weekSelectedEmployee, setWeekSelectedEmployee] = useState('none')
+    const [weekSelectedEmployee, setWeekSelectedEmployee] = useState(null)
     const [format, setFormat] = useState('daily')
     const [date, setDate] = useState(new Date())
+    const [dates, setDates] = useState([])
 
     const selectAll = () => {
         let selectedTemp = []
@@ -51,7 +52,6 @@ export const DisplayManagerProvider = ({ children }) => {
     useEffect(() => {
         const setInitalDisplay = () => {
             setEmployeesDisplay(_.cloneDeep(employees))
-            if (weekSelectedEmployee === 'none') setWeekSelectedEmployee(employees[0]?.name)
             if (selectedEmployees.length === 0) selectAll()
         }
         setInitalDisplay()
@@ -95,7 +95,7 @@ export const DisplayManagerProvider = ({ children }) => {
 
     return (
         <DisplayManagerContext.Provider value={{
-            format, setFormat,
+            format, setFormat, dates, setDates,
             displayDate, setDate, date, nextDate, prevDate,
             employeesDisplay, setEmployeesDisplay,
             selectedEmployees, setSelectedEmployees,

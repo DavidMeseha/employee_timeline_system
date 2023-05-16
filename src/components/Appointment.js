@@ -13,8 +13,8 @@ const ConfirmEditMemo = memo(({ confirm, cancel, deleteAppointment }) => {
 const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate, containerRef, timelineRef, setTableScroll, editing, setEditing, editEmployeeDatesView, reset }) => {
     const colorClasses = ['appointment-red', 'appointment-blue', 'appointment-green']
     const { updateAppointment, deleteAppointment } = useData()
-    const { format, selectedEmployees } = useDisplayManger()
-    const [targetEmployee, setTargetEmployee] = useState('')
+    const { format, selectedEmployees, dates } = useDisplayManger()
+    const [targetValue, setTargetValue] = useState('')
     const appointmentRef = useRef()
     const positionRef = useRef()
     const timeRef = useRef()
@@ -25,15 +25,15 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     const [originalPos, setOriginalPos] = useState(null)
     const [originalIndex, setOriginalIndex] = useState(null)
     const [recentHeight, setRecentHeight] = useState(null)
+    const [activateEditTimeout, setActivateEditTimeout] = useState()
 
     const rightMargin = 50
     const leftMargin = ('touchstart' in window) ? 15 : 30
-    const minWidth = 400
+    const minWidth = format === 'daily' ? 400 : 150
     let tableWidth = window.innerWidth - rightMargin - leftMargin
-    let sectionsCount = selectedEmployees.length
+    let sectionsCount = format === 'daily' ? selectedEmployees.length : 7
     let widthPerSection = tableWidth / sectionsCount <= minWidth ? minWidth : tableWidth / sectionsCount
 
-    let activateEditTimeout
     let id = appointment.id
 
     let editStartDate = new Date(startDate)
@@ -156,12 +156,12 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     const checkXPosition = (x) => {
         let scrollLeft = containerRef.current.scrollLeft
         tableWidth = window.innerWidth - rightMargin - leftMargin
-        sectionsCount = selectedEmployees.length
+        sectionsCount = format === 'daily' ? selectedEmployees.length : 7
         widthPerSection = tableWidth / sectionsCount <= minWidth ? minWidth : tableWidth / sectionsCount
         let index = ~~(((x - 50) + scrollLeft) / widthPerSection)
-        let employee = selectedEmployees[index]
+        let value = format === 'daily' ? selectedEmployees[index] : dates[index]
 
-        setTargetEmployee(employee)
+        setTargetValue(value)
         return index
     }
 
@@ -178,7 +178,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
             return
         }
 
-        activateEditTimeout = setTimeout(() => {
+        let timeout = setTimeout(() => {
             if (editing) return
             disableScrolling()
             let pos = positionRef.current.style.top
@@ -189,28 +189,28 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
             setEditing(id)
             setIsEditable(true)
         }, 1200)
+
+        console.log(timeout)
+        setActivateEditTimeout(timeout)
     }
 
     const dragAppointment = (e) => {
-        if ((activateEditTimeout && !isEditable && !('ontouchstart' in window))) clearTimeout(activateEditTimeout)
-        if (!dragStart || originalPos === null || !isDragging || isScaling) return
+        if (!dragStart || originalPos === null || !isDragging || isScaling || !isEditable) return
         let y = e.clientY || e.touches[0].clientY
         let change = y - dragStart
         newPosition = originalPos + change
         adjustNewDateAndPosition()
         positionRef.current.style.top = `${newPosition}px`
 
-        if (format === 'daily') {
-            let x = e.clientX || e.touches[0].clientX
-            let employeeIndex = checkXPosition(x)
-            positionRef.current.style.zIndex = 2
-            positionRef.current.style.transform = `translateX(${(employeeIndex - originalIndex) * widthPerSection}px)`
-        }
+        let colIndex
+        let x = e.clientX || e.touches[0].clientX
+        colIndex = checkXPosition(x)
+        positionRef.current.style.zIndex = 2
+        positionRef.current.style.transform = `translateX(${(colIndex - originalIndex) * widthPerSection}px)`
     }
 
     const holdEndHandle = () => {
         enableScrolling()
-        if (activateEditTimeout && !isEditable) return clearTimeout(activateEditTimeout)
         if (newPosition === null || newPosition === undefined || originalPos === null || isScaling || !isEditable) return setIsDragging(false)
         endReposition()
     }
@@ -224,7 +224,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         positionRef.current.style.top = `${newPosition}px`
         positionRef.current.style.zIndex = 2
 
-        editEmployeeDatesView(employee, appointment.id, editStartDate, editEndDate, targetEmployee)
+        editEmployeeDatesView(employee, appointment.id, editStartDate, editEndDate, targetValue)
     }
 
     const startScale = (e) => {
@@ -256,7 +256,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         setRecentHeight(null)
         newHeight = null
 
-        editEmployeeDatesView(employee, appointment.id, editStartDate, editEndDate, targetEmployee)
+        editEmployeeDatesView(employee, appointment.id, editStartDate, editEndDate, targetValue)
     }
 
     const cancelAppointment = () => {
@@ -297,6 +297,10 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         }
     }
 
+    const cancelHold = () => {
+        if (activateEditTimeout && !isEditable) return clearTimeout(activateEditTimeout)
+    }
+
     useEffect(() => {
         document.addEventListener('mousedown', mouseDownHandle)
         document.addEventListener('touchstart', mouseDownHandle)
@@ -312,12 +316,12 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
             document.removeEventListener('mouseup', mouseUpHandle)
             document.removeEventListener('touchend', mouseUpHandle)
         }
-    }, [scaleStart, originalHeight, isEditable, editing, isDragging, isScaling, appointmentRef, positionRef, scaleRef, recentHeight, targetEmployee])
+    }, [scaleStart, originalHeight, isEditable, editing, isDragging, isScaling, appointmentRef, positionRef, scaleRef, recentHeight, targetValue, activateEditTimeout])
 
     return (
         <>
             {isEditable && <ConfirmEditMemo confirm={confirm} cancel={reset} deleteAppointment={cancelAppointment} />}
-            <div ref={positionRef} style={{ position: 'absolute', width: '100%', top: appointmentStart, transition: 'all 0.1s ease 0s' }}>
+            <div onMouseUp={cancelHold} onTouchEnd={cancelHold} ref={positionRef} style={{ position: 'absolute', width: '100%', top: appointmentStart, transition: 'all 0.1s ease 0s' }}>
                 <div
                     id={id}
                     ref={appointmentRef}

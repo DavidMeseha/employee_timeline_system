@@ -62,8 +62,6 @@ const DailyDisplay = () => {
 
     useEffect(() => {
         setEmployeesDisplay([...employees])
-        document.addEventListener('touchmove', (e) => e.preventDefault())
-        return () => document.removeEventListener('touchmove', (e) => e.preventDefault())
     }, [employees])
 
     const handleScrollFromTable = (e) => {

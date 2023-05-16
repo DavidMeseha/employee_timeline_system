@@ -50,7 +50,7 @@ const EmployeesDropdown = ({ employees, selected, setSelected, format }) => {
 
     useEffect(() => {
         if (!checkboxesRef.current) return;
-        
+
         if (format === 'daily') {
             checkboxesRef.current.forEach(checkBox => {
                 if (selected.includes(checkBox.value)) checkBox.checked = true
@@ -62,7 +62,7 @@ const EmployeesDropdown = ({ employees, selected, setSelected, format }) => {
         }
 
         if (format === 'weekly') {
-            selectOne(selected)
+            selectOne(selected || checkboxesRef.current[0].value)
         }
 
         format === 'weekly' ? setSelectedDisplay(selected) : setSelectedDisplay(selected.length === employees.length ? 'All Employees' : 'Selected')
