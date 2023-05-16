@@ -188,7 +188,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
             setIsDragging(true)
             setEditing(id)
             setIsEditable(true)
-        }, 1000)
+        }, 1200)
     }
 
     const dragAppointment = (e) => {

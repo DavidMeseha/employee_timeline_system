@@ -14,7 +14,6 @@ const DailyDisplay = () => {
     const [isToday, setIsToday] = useState(true)
     const [tableScroll, setTableScroll] = useState(true)
     const [editing, setEditing] = useState()
-
     const colRef = useRef()
     colRef.current = []
 
@@ -68,11 +67,13 @@ const DailyDisplay = () => {
     }, [employees])
 
     const handleScrollFromTable = (e) => {
+        e.preventDefault()
         if (!tableScroll) return
         timelineRef.current.scrollTop = e.target.scrollTop
     }
 
     const handleScrollFromTimeline = (e) => {
+        e.preventDefault()
         if (!tableScroll) return
         tableRef.current.scrollTop = e.target.scrollTop
     }
@@ -83,12 +84,14 @@ const DailyDisplay = () => {
     }
 
     const touchStartHandle = (e) => {
+        e.preventDefault()
         if (!tableScroll) return
         touchStart = e.touches[0].clientX
         initialScroll = tableRef.current.scrollLeft
     }
 
     const touchScrollXHandle = (e) => {
+        e.preventDefault()
         if (!tableScroll) return
         let change = initialScroll + touchStart - e.touches[0].clientX
         tableRef.current.scrollLeft = change
