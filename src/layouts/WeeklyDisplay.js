@@ -32,8 +32,8 @@ const WeeklyDisplay = () => {
         console.log(targetDate)
         let newState = _.cloneDeep(employee)
         let appointments = newState.appointments.slice()
-        newStartDate = new Date(newStartDate.setDate(targetDate.getDate()))
-        newEndDate = new Date(newEndDate.setDate(targetDate.getDate()))
+        newStartDate = new Date(newStartDate.setFullYear(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate()))
+        newEndDate = new Date(newEndDate.setFullYear(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate()))
         for (let appointmentIndex = 0; appointmentIndex < appointments.length; appointmentIndex++) {
             if (newState.appointments[appointmentIndex].id === appointmentId) {
                 newState.appointments[appointmentIndex].end = newEndDate
