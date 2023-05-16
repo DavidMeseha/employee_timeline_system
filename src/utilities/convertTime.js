@@ -1,15 +1,7 @@
 export const convert24to12 = (time) => {
-    let hour = time.split(':')[0]
-    let minute = time.split(':')[1]
-    let dayTime = 'AM'
-    if (hour === '12') dayTime = 'PM'
-    if (hour === '00') hour = '12'
-    if (parseInt(hour) > 12) {
-        dayTime = 'PM'
-        hour = (parseInt(hour) - 12).toString()
-    }
-    if (hour.length === 1) hour = '0' + hour
-    let convertedTime = hour + ':' + minute + ' ' + dayTime
+    let aDate = new Date()
+    aDate.setHours(parseInt(time.split(':')[0]), parseInt(time.split(':')[1]))
+    let convertedTime = aDate.toLocaleTimeString('en', { hour12: true, hour: '2-digit', minute: '2-digit' })
 
     return convertedTime
 }

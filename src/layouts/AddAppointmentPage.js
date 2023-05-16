@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import Card from "@/components/Card";
 import { Close } from "@/components/Icons";
 import { convertDateToYMD } from "@/utilities/convertDateToYMD";
-import { convert12to24 } from "@/utilities/convertTime";
+import { convert12to24, convert24to12 } from "@/utilities/convertTime";
 
 const AddAppointmentPage = () => {
     const router = useRouter()
@@ -72,13 +72,6 @@ const AddAppointmentPage = () => {
         setTotalDuration(duration)
         setTotalPrice(price)
     }, [selectedServices])
-
-    useEffect(() => {
-        let aDate = new Date()
-        aDate.setHours(parseInt(time.split(':')[0]), parseInt(time.split(':')[1]))
-        let display = aDate.toLocaleTimeString('en', { hour12: true, hour: 'numeric', minute: '2-digit' })
-        setDisplayTime(display)
-    }, [time])
 
     const dateChangeHandle = (e) => {
         setDate(e.target.value)
@@ -217,7 +210,7 @@ const AddAppointmentPage = () => {
                                     <div className="date-section">
                                         <p className="summery-slice"><span>Date & Time</span></p>
                                         <p className="summery-slice">{displayDate}</p>
-                                        <p className="summery-slice">{displayTime === 'Invalid Date' ? '' : displayTime}</p>
+                                        <p className="summery-slice">{convert24to12(time) === 'Invalid Date' ? '' : convert24to12(time)}</p>
                                     </div>
                                     <div className="price-section">
                                         <p className="summery-slice"><span>Price</span></p>

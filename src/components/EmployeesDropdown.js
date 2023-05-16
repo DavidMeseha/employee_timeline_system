@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import CheckBox from "./CheckBox";
 import clickRecognition from "@/Hooks/useClickRecognition";
-import useData from "@/Hooks/useData";
 
 const EmployeesDropdown = ({ employees, selected, setSelected, format }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [selectedDisplay, setSelectedDisplay] = useState('')
     const allCheckboxRef = useRef()
     const checkboxesRef = useRef();
     const containerRef = useRef()
@@ -49,26 +49,24 @@ const EmployeesDropdown = ({ employees, selected, setSelected, format }) => {
     }
 
     useEffect(() => {
-        if (!checkboxesRef.current || !allCheckboxRef.current) return;
-
+        if (!checkboxesRef.current) return;
+        
         if (format === 'daily') {
-            console.log(selected)
-            if (selected.length === 0) return selectAll()
-            selected.forEach(name => {
-                checkboxesRef.current.forEach(checkBox => {
-                    if (checkBox.value === name) checkBox.checked = true
-                    else checkBox.checked = false
-                })
+            checkboxesRef.current.forEach(checkBox => {
+                if (selected.includes(checkBox.value)) checkBox.checked = true
+                else checkBox.checked = false
             })
 
-            if (selected.length === employees.length) checkboxesRef.current.checked = true
+            if (selected.length === employees.length) allCheckboxRef.current.checked = true
             else allCheckboxRef.current.checked = false
         }
 
         if (format === 'weekly') {
             selectOne(selected || checkboxesRef.current[0].value)
         }
-    }, [format, allCheckboxRef.current, checkboxesRef])
+
+        format === 'weekly' ? setSelectedDisplay(selected) : setSelectedDisplay(selected.length === employees.length ? 'All Employees' : 'Selected')
+    }, [format, selected, allCheckboxRef.current, checkboxesRef])
 
     const checkBoxChangeHandle = (e) => {
         if (format === 'daily') {
@@ -95,7 +93,7 @@ const EmployeesDropdown = ({ employees, selected, setSelected, format }) => {
     return (
         <div className="dropdown-container" ref={containerRef}>
             <div onClick={() => setIsOpen(!isOpen)} className="dropdown-button">
-                <div className="selected">{selected?.length === employees?.length ? 'All Employees' : format === 'weekly' ? selected : 'Selected'}</div>
+                <div className="selected">{selectedDisplay}</div>
                 <div className="arrow-down"></div>
             </div>
 
