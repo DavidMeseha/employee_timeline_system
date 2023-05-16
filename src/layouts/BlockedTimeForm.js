@@ -6,7 +6,6 @@ import InputTextBox from "@/components/InputTextBox";
 import useData from "@/Hooks/useData";
 import Message from "@/components/Message";
 import clickRecognition from "@/Hooks/useClickRecognition";
-import { processTime } from "@/utilities/timeBy5Cap";
 
 const BlockedTimeForm = ({ close }) => {
     const { addNewBlockedTimeForEmployee } = useData()
@@ -62,16 +61,6 @@ const BlockedTimeForm = ({ close }) => {
         }, 1200)
     }
 
-    const startTimeChageHandle = (e) => {
-        let newTime = processTime(e.target.value)
-        setStartTime(newTime)
-    }
-
-    const endTimeChageHandle = (e) => {
-        let newTime = processTime(e.target.value)
-        setEndTime(newTime)
-    }
-
     clickRecognition(close, containerRef)
 
     return (
@@ -110,7 +99,6 @@ const BlockedTimeForm = ({ close }) => {
                                 value={startTime}
                                 setValue={(setStartTime)}
                                 required={true}
-                                onChange={startTimeChageHandle}
                             />
                             <InputTextBox
                                 title={'End Time'}
@@ -118,7 +106,6 @@ const BlockedTimeForm = ({ close }) => {
                                 value={endTime}
                                 setValue={setEndTime}
                                 required={true}
-                                onChange={endTimeChageHandle}
                             />
                         </div>
                     </div>

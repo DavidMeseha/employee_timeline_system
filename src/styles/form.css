@@ -69,6 +69,10 @@
     background-color: var(--dark-color);
 }
 
+.wrap-title input[type='date'] {
+    height: 72px;
+}
+
 .wrap-search-icon input,
 .wrap-title input,
 .wrap-title textarea {

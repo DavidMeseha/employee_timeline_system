@@ -7,7 +7,7 @@ const InputTextBox = ({ type, value, setValue, onChange, title, required }) => {
                 <div className="wrap-title">
                     <h4>{title}</h4>
                     {
-                        type !== 'time' ? <input type={type} value={value} onChange={onChange} required={required} step={type === 'time' ? 300 : 1} ></input>
+                        type !== 'time' ? <input type={type} value={value} onChange={onChange} required={required} placeholder="title" ></input>
                             : <TimePickerInput time={value} setTime={setValue}/>
                     }
                 </div>

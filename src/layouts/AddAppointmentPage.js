@@ -4,7 +4,6 @@ import InputTextBox from "@/components/InputTextBox";
 import ServiceSelectScreen from "@/layouts/ServiceSelectScreen";
 import SearchBar from "@/components/SearchBar";
 import InputSectionLayout from "@/layouts/InputSectionLayout";
-import { processTime } from "@/utilities/timeBy5Cap";
 import { useEffect, useState } from "react";
 import Message from "@/components/Message";
 import DonePopup from "@/components/DonePopup";
@@ -19,7 +18,6 @@ const AddAppointmentPage = () => {
     const { employees, services, customers, addNewAppointment } = useData()
     const [totalDuration, setTotalDuration] = useState(0)
     const [totalPrice, setTotalPrice] = useState(0)
-    const [displayTime, setDisplayTime] = useState('')
     const [displayDate, setDisplayDate] = useState('')
 
     const [selectedServices, setSelectedServices] = useState([])

@@ -62,7 +62,7 @@ const EmployeesDropdown = ({ employees, selected, setSelected, format }) => {
         }
 
         if (format === 'weekly') {
-            selectOne(selected || checkboxesRef.current[0].value)
+            selectOne(selected)
         }
 
         format === 'weekly' ? setSelectedDisplay(selected) : setSelectedDisplay(selected.length === employees.length ? 'All Employees' : 'Selected')

@@ -1,7 +1,8 @@
-import useEmployeesData from "@/Hooks/useData";
 import { calculateHeightFromMinutes, calculateMinutesFromHeight, calculateMinutesFromTop, calculateTopFromMinutes } from "@/utilities/calculations";
 import { memo, useEffect, useRef, useState } from "react";
 import ConfirmEdit from "./ConfirmEdit";
+import useData from "@/Hooks/useData";
+import useDisplayManger from "@/Hooks/useDisplayManger";
 
 const ConfirmEditMemo = memo(({ confirm, cancel, deleteAppointment }) => {
     return (
@@ -11,7 +12,9 @@ const ConfirmEditMemo = memo(({ confirm, cancel, deleteAppointment }) => {
 
 const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate, containerRef, timelineRef, setTableScroll, editing, setEditing, editEmployeeDatesView, reset }) => {
     const colorClasses = ['appointment-red', 'appointment-blue', 'appointment-green']
-    const { updateAppointmentDates, deleteAppointment } = useEmployeesData()
+    const { updateAppointment, deleteAppointment } = useData()
+    const { format, selectedEmployees } = useDisplayManger()
+    const [targetEmployee, setTargetEmployee] = useState('')
     const appointmentRef = useRef()
     const positionRef = useRef()
     const timeRef = useRef()
@@ -20,7 +23,16 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     const [isDragging, setIsDragging] = useState(false)
     const [dragStart, setDragStart] = useState(null)
     const [originalPos, setOriginalPos] = useState(null)
+    const [originalIndex, setOriginalIndex] = useState(null)
     const [recentHeight, setRecentHeight] = useState(null)
+
+    const rightMargin = 50
+    const leftMargin = ('touchstart' in window) ? 15 : 30
+    const minWidth = 400
+    let scrollLeft = 0
+    let tableWidth = window.innerWidth - rightMargin - leftMargin
+    let sectionsCount = selectedEmployees.length
+    let widthPerSection = tableWidth / sectionsCount <= minWidth ? minWidth : tableWidth / sectionsCount
 
     let activateEditTimeout
     let id = appointment.id
@@ -49,16 +61,21 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     let newHeight, newPosition
 
     useEffect(() => {
+        scrollLeft = containerRef.current.scrollLeft
+        tableWidth = window.innerWidth - rightMargin - leftMargin
+        sectionsCount = selectedEmployees.length
+        widthPerSection = tableWidth / sectionsCount <= minWidth ? minWidth : tableWidth / sectionsCount
+
         document.body.style.overflow = 'hidden'
         if (editing === id) return setIsEditable(true)
         setIsEditable(false)
 
-    }, [editing, isEditable])
+    }, [editing, isEditable, containerRef])
 
     const confirm = () => {
         setIsEditable(false)
         setEditing(null)
-        updateAppointmentDates(employee, appointment.id, editStartDate, editEndDate)
+        updateAppointment(appointment.id, editStartDate, editEndDate, employee)
     }
 
     const disableScrolling = () => {
@@ -142,6 +159,14 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         timeRef.current.innerText = time
     }
 
+    const checkXPosition = (x) => {
+        let index = ~~(((x - 50) + scrollLeft) / widthPerSection)
+        let employee = selectedEmployees[index]
+
+        setTargetEmployee(employee)
+        return index
+    }
+
     const holdToEditHandle = (e) => {
         if (isScaling) return
         if (editing && editing !== id) return
@@ -149,6 +174,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
             disableScrolling()
             let pos = positionRef.current.style.top
             setDragStart(e.clientY || e.touches[0].clientY)
+            setOriginalIndex(checkXPosition(e.clientX || e.touches[0].clientX))
             setOriginalPos(parseFloat(pos.replace('px', '')))
             setIsDragging(true)
             return
@@ -160,6 +186,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
             let pos = positionRef.current.style.top
             setDragStart(e.clientY || e.touches[0].clientY)
             setOriginalPos(parseFloat(pos.replace('px', '')))
+            setOriginalIndex(checkXPosition(e.clientX || e.touches[0].clientX))
             setIsDragging(true)
             setEditing(id)
             setIsEditable(true)
@@ -174,6 +201,13 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         newPosition = originalPos + change
         adjustNewDateAndPosition()
         positionRef.current.style.top = `${newPosition}px`
+
+        if (format === 'daily') {
+            let x = e.clientX || e.touches[0].clientX
+            let employeeIndex = checkXPosition(x)
+            positionRef.current.style.zIndex = 2
+            positionRef.current.style.transform = `translateX(${(employeeIndex - originalIndex) * widthPerSection}px)`
+        }
     }
 
     const holdEndHandle = () => {
@@ -190,13 +224,12 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         newPosition = null
         setIsDragging(false)
         positionRef.current.style.top = `${newPosition}px`
+        positionRef.current.style.zIndex = 2
 
-        editEmployeeDatesView(employee, appointment.id, editStartDate, editEndDate)
+        editEmployeeDatesView(employee, appointment.id, editStartDate, editEndDate, targetEmployee)
     }
 
     const startScale = (e) => {
-        if (!scaleRef.current) return
-        if (!scaleRef.current.contains(e.target)) return
         disableScrolling()
         setIsScaling(true)
         setScaleStart(e.clientY || e.touches[0].clientY)
@@ -205,7 +238,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
 
     const scaleHandle = (e) => {
         if (!scaleStart || !originalHeight || !isScaling) return
-        let y = e.clientY || e.touches && e.touches[0].clientY
+        let y = e.clientY || e.touches[0].clientY
         let change = y - scaleStart
         newHeight = originalHeight + change
         adjustDateAndHight()
@@ -213,7 +246,6 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     }
 
     const endScale = () => {
-        console.log(isScaling, recentHeight)
         enableScrolling()
         if (isScaling) setIsScaling(false)
         else return
@@ -226,7 +258,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         setRecentHeight(null)
         newHeight = null
 
-        editEmployeeDatesView(employee, appointment.id, editStartDate, editEndDate)
+        editEmployeeDatesView(employee, appointment.id, editStartDate, editEndDate, targetEmployee)
     }
 
     const cancelAppointment = () => {
@@ -235,35 +267,62 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
         deleteAppointment(employee, id)
     }
 
-    useEffect(() => {
-        document.addEventListener('mousedown', startScale)
-        document.addEventListener('touchstart', startScale)
-        document.addEventListener('mousemove', scaleHandle)
-        document.addEventListener('touchmove', scaleHandle)
-        document.addEventListener('mouseup', endScale)
-        document.addEventListener('touchend', endScale)
-        return () => {
-            document.removeEventListener('mousedown', startScale)
-            document.removeEventListener('touchstart', startScale)
-            document.removeEventListener('mousemove', scaleHandle)
-            document.removeEventListener('touchmove', scaleHandle)
-            document.removeEventListener('mouseup', endScale)
-            document.removeEventListener('touchend', endScale)
+    const mouseDownHandle = (e) => {
+        if (!positionRef.current) return
+        if (positionRef.current.contains(e.target)) {
+            holdToEditHandle(e)
         }
-    }, [scaleStart, originalHeight, isEditable, editing, isDragging, isScaling, appointmentRef, positionRef, recentHeight])
+
+        if (!scaleRef.current) return
+        if (scaleRef.current.contains(e.target)) {
+            startScale(e)
+        }
+    }
+
+    const mouseMoveHandle = (e) => {
+        if (isDragging) {
+            dragAppointment(e)
+        }
+
+        if (isScaling) {
+            scaleHandle(e)
+        }
+    }
+
+    const mouseUpHandle = () => {
+        if (isDragging) {
+            holdEndHandle()
+        }
+
+        if (isScaling) {
+            endScale()
+        }
+    }
+
+    useEffect(() => {
+        document.addEventListener('mousedown', mouseDownHandle)
+        document.addEventListener('touchstart', mouseDownHandle)
+        document.addEventListener('mousemove', mouseMoveHandle)
+        document.addEventListener('touchmove', mouseMoveHandle)
+        document.addEventListener('mouseup', mouseUpHandle)
+        document.addEventListener('touchend', mouseUpHandle)
+        return () => {
+            document.removeEventListener('mousedown', mouseDownHandle)
+            document.removeEventListener('touchstart', mouseDownHandle)
+            document.removeEventListener('mousemove', mouseMoveHandle)
+            document.removeEventListener('touchmove', mouseMoveHandle)
+            document.removeEventListener('mouseup', mouseUpHandle)
+            document.removeEventListener('touchend', mouseUpHandle)
+        }
+    }, [scaleStart, originalHeight, isEditable, editing, isDragging, isScaling, appointmentRef, positionRef, scaleRef, recentHeight, targetEmployee])
 
     return (
         <>
             {isEditable && <ConfirmEditMemo confirm={confirm} cancel={reset} deleteAppointment={cancelAppointment} />}
-            <div /*draggable onDrag={dragAppointment} onDragEnd={holdEndHandle}*/ onTouchStart={holdToEditHandle} onTouchEnd={holdEndHandle} ref={positionRef} style={{position:'absolute', width: '100%', top: appointmentStart }}>
+            <div ref={positionRef} style={{ position: 'absolute', width: '100%', top: appointmentStart, transition: 'all 0.1s ease 0s' }}>
                 <div
                     id={id}
                     ref={appointmentRef}
-                    onMouseDown={holdToEditHandle}
-                    onMouseUp={holdEndHandle}
-                    onMouseLeave={holdEndHandle}
-                    onTouchMove={dragAppointment}
-                    onMouseMove={dragAppointment}
                     style={{ height: appointmentEnd }}
                     className={`${id === editing && isEditable ? 'editable-appointment' : 'appointment'} ${colorClasses[employeeOrder]}`}
                 >

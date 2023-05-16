@@ -29,7 +29,7 @@ const WeeklyDisplay = () => {
         setEditing(null)
     }
 
-    const editEmployeeDatesView = (appointmentEmployee, appointmentId, newStartDate, newEndDate) => {
+    const editEmployeeDatesView = (appointmentEmployee, appointmentId, newStartDate, newEndDate, targetEmployee) => {
         console.log(newStartDate, ' ', newEndDate, ' ', appointmentId)
         let newState = _.cloneDeep(employee)
         let appointments = newState.appointments.slice()

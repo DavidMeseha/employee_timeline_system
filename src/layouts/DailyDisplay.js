@@ -25,17 +25,30 @@ const DailyDisplay = () => {
         setEditing(null)
     }
 
-    const editEmployeeDatesView = (employee, appointmentId, newStartDate, newEndDate) => {
+    const editEmployeeDatesView = (employee, appointmentId, newStartDate, newEndDate, targetEmployee) => {
+        console.log(targetEmployee, employee)
         let newState = JSON.parse(JSON.stringify(employeesDisplay))
+        let appointment
         for (let index = 0; index < newState.length; index++) {
             if (newState[index].name === employee) {
                 let appointments = newState[index].appointments.slice()
                 for (let appointmentIndex = 0; appointmentIndex < appointments.length; appointmentIndex++) {
-                    if (newState[index].appointments[appointmentIndex].id === appointmentId) {
-                        newState[index].appointments[appointmentIndex].end = newEndDate.toString()
-                        newState[index].appointments[appointmentIndex].start = newStartDate.toString()
+                    if (appointments[appointmentIndex].id === appointmentId) {
+                        appointments[appointmentIndex].end = newEndDate.toString()
+                        appointments[appointmentIndex].start = newStartDate.toString()
+
+                        appointment = appointments[appointmentIndex]
+                        if (employee !== targetEmployee) appointments.splice(appointmentIndex, 1)
+
+                        newState[index].appointments = appointments
                     }
                 }
+            }
+        }
+
+        if (employee !== targetEmployee) {
+            for (let index = 0; index < newState.length; index++) {
+                if (newState[index].name === targetEmployee) newState[index].appointments.push(appointment)
             }
         }
 

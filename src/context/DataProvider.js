@@ -3,7 +3,7 @@ import _ from 'lodash'
 
 const DataContext = createContext({})
 
-const UPDATE_DATE = 'UPDATE_END_DATE'
+const UPDATE_APPOINTMENT = 'UPDATE_APPOINTMENT'
 const ADD_BLOCKED_DATE_TIME = 'ADD_BLOCKED_DATE_TIME'
 const ADD_APPOINTMENT = 'ADD_APPOINTMENT'
 const SET_EMPLOYEES = 'SET_EMPLOYEES'
@@ -306,23 +306,38 @@ let NEXT_BLOCKED_ID = 13;
 
 function employeesReducer(employees, action) {
     switch (action.type) {
-        case UPDATE_DATE: {
+        case UPDATE_APPOINTMENT: {
             let newState = _.cloneDeep(employees)
             let employee = action.payload.employee
             let appointmentId = action.payload.id
             let newEndDate = action.payload.endDate
             let newStartDate = action.payload.startDate
+            let appointment
 
             for (let index = 0; index < newState.length; index++) {
-                if (newState[index].name === employee) {
-                    for (let appointmentIndex = 0; appointmentIndex < newState[index].appointments.length; appointmentIndex++) {
-                        if (newState[index].appointments[appointmentIndex].id === appointmentId) {
-                            newState[index].appointments[appointmentIndex].end = newEndDate
-                            newState[index].appointments[appointmentIndex].start = newStartDate
-                            break
+                let appointments = newState[index].appointments.slice()
+                console.log(appointments)
+                for (let appointmentIndex = 0; appointmentIndex < appointments.length; appointmentIndex++) {
+                    if (appointments[appointmentIndex].id === appointmentId) {
+                        appointments[appointmentIndex].end = newEndDate
+                        appointments[appointmentIndex].start = newStartDate
+
+                        if (employee !== newState[index].name) {
+                            appointment = appointments[appointmentIndex]
+                            appointments.splice(appointmentIndex, 1)
+                            console.log(appointments)
+                            newState[index].appointments = appointments
+
+
+                            for (let index = 0; index < newState.length; index++) {
+                                if (newState[index].name === employee) newState[index].appointments.push(appointment)
+                            }
                         }
+
+                        break
                     }
                 }
+
             }
 
             return newState
@@ -457,12 +472,11 @@ export const DataProvider = ({ children }) => {
         setServices(servicesData)
     }, [])
 
-    const updateAppointmentDates = (employee, appointmentId, newStartDate, newEndDate) => {
-        console.log(newStartDate)
+    const updateAppointment = (appointmentId, newStartDate, newEndDate, targetEmployee) => {
         employeesDispatch({
-            type: UPDATE_DATE,
+            type: UPDATE_APPOINTMENT,
             payload: {
-                employee,
+                employee: targetEmployee,
                 id: appointmentId,
                 startDate: newStartDate,
                 endDate: newEndDate
@@ -506,7 +520,7 @@ export const DataProvider = ({ children }) => {
     return (
         <DataContext.Provider value={{
             employees, customers, services,
-            updateAppointmentDates,
+            updateAppointment,
             addNewBlockedTimeForEmployee,
             addNewAppointment, deleteAppointment,
             deleteBlocked
