@@ -88,9 +88,10 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
             newHeight = 2975 - position
             newEndTotalMinutes = calculateMinutesFromHeight(newHeight, startTotalMinutes)
         }
-        if (newHeight <= 60) {
-            newHeight = 60
+        if (newHeight <= 20) {
+            newHeight = 20
             newEndTotalMinutes = calculateMinutesFromHeight(newHeight, startTotalMinutes)
+            if ((newEndTotalMinutes / 5) % 1 !== 0) newEndTotalMinutes = ((~~(newEndTotalMinutes / 5)) + 1) * 5
         }
 
         setRecentHeight(newHeight)

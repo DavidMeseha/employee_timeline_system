@@ -13,14 +13,6 @@ export const DisplayManagerProvider = ({ children }) => {
     const [format, setFormat] = useState('daily')
     const [date, setDate] = useState(new Date())
 
-    const selectAll = () => {
-        let selectedTemp = []
-        employees.forEach(employee => {
-            selectedTemp.push(employee.name)
-        });
-        setSelectedEmployees(selectedTemp)
-    }
-
     const dateDisplayFormat = () => {
         if (format === 'weekly') {
             let endDate = new Date(date)
@@ -52,8 +44,6 @@ export const DisplayManagerProvider = ({ children }) => {
     useEffect(() => {
         const setInitalDisplay = () => {
             setEmployeesDisplay(_.cloneDeep(employees))
-            setWeekSelectedEmployee(employees[0]?.name)
-            selectAll()
         }
         setInitalDisplay()
     }, [])

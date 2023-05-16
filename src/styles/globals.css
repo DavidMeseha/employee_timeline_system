@@ -245,11 +245,13 @@ input[type='time']::-webkit-input-calender {
 }
 
 input[type=date],
+input[type=text],
 input[type=time] {
   border-radius: 0;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+  line-height: 22px;
 }
 
 .message-position {

@@ -3,15 +3,25 @@ import DateSwitch from "@/components/DateSwitch";
 import EmployeesDropdown from "@/components/EmployeesDropdown";
 import useDisplayManger from "@/Hooks/useDisplayManger";
 import useData from "@/Hooks/useData";
+import { useEffect, useState } from "react";
 
 const OptionsBar = () => {
+    const [selected, setSelected] = useState([])
     const { employees } = useData()
     const {
-        date,displayDate, setDate, nextDate, prevDate,
+        date, displayDate, setDate, nextDate, prevDate,
         selectedEmployees, setSelectedEmployees,
         weekSelectedEmployee, setWeekSelectedEmployee,
         format, setFormat
     } = useDisplayManger()
+
+    useEffect(() => {
+        format === 'daily' ? setSelected([...selectedEmployees]) : setSelected(weekSelectedEmployee)
+    }, [format])
+
+    useEffect(() => {
+        format === 'daily' ? setSelectedEmployees([...selected]) : setWeekSelectedEmployee(selected)
+    }, [selected])
 
     return (
         <>
@@ -19,9 +29,9 @@ const OptionsBar = () => {
                 <div className='employees-option'>
                     <EmployeesDropdown
                         employees={employees}
-                        selected={format === 'daily' ? selectedEmployees : weekSelectedEmployee}
+                        selected={selected}
                         format={format}
-                        setSelected={format === 'daily' ? setSelectedEmployees : setWeekSelectedEmployee}
+                        setSelected={setSelected}
                     />
                 </div>
                 <div className='date-option'>

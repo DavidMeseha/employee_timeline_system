@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import CheckBox from "./CheckBox";
 import clickRecognition from "@/Hooks/useClickRecognition";
+import useData from "@/Hooks/useData";
 
 const EmployeesDropdown = ({ employees, selected, setSelected, format }) => {
     const [isOpen, setIsOpen] = useState(false);
-
     const allCheckboxRef = useRef()
     const checkboxesRef = useRef();
     const containerRef = useRef()
@@ -47,18 +47,26 @@ const EmployeesDropdown = ({ employees, selected, setSelected, format }) => {
 
         setSelected([])
     }
-    
+
     useEffect(() => {
-        if (!checkboxesRef.current) return;
-        console.log('selecting')
+        if (!checkboxesRef.current || !allCheckboxRef.current) return;
 
         if (format === 'daily') {
-            selectAll()
+            console.log(selected)
+            if (selected.length === 0) return selectAll()
+            selected.forEach(name => {
+                checkboxesRef.current.forEach(checkBox => {
+                    if (checkBox.value === name) checkBox.checked = true
+                    else checkBox.checked = false
+                })
+            })
+
+            if (selected.length === employees.length) checkboxesRef.current.checked = true
+            else allCheckboxRef.current.checked = false
         }
 
         if (format === 'weekly') {
             selectOne(selected || checkboxesRef.current[0].value)
-            setSelected(selected || checkboxesRef.current[0].value)
         }
     }, [format, allCheckboxRef.current, checkboxesRef])
 
