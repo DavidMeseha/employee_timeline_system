@@ -29,7 +29,6 @@ const WeeklyDisplay = () => {
     }
 
     const editEmployeeDatesView = (appointmentEmployee, appointmentId, newStartDate, newEndDate, targetDate) => {
-        console.log(targetDate)
         let newState = _.cloneDeep(employee)
         let appointments = newState.appointments.slice()
         newStartDate = new Date(newStartDate.setFullYear(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate()))
@@ -66,11 +65,13 @@ const WeeklyDisplay = () => {
 
     const handleScrollFromTable = (e) => {
         if (!tableScroll) return
+        if(e.target.scrollTop === 0) e.target.scrollTop = 1
         timelineRef.current.scrollTop = e.target.scrollTop
     }
 
     const handleScrollFromTimeline = (e) => {
         if (!tableScroll) return
+        if(e.target.scrollTop === 0) e.target.scrollTop = 1
         tableRef.current.scrollTop = e.target.scrollTop
     }
 
