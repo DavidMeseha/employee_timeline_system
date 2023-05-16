@@ -29,7 +29,6 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     const rightMargin = 50
     const leftMargin = ('touchstart' in window) ? 15 : 30
     const minWidth = 400
-    let scrollLeft = 0
     let tableWidth = window.innerWidth - rightMargin - leftMargin
     let sectionsCount = selectedEmployees.length
     let widthPerSection = tableWidth / sectionsCount <= minWidth ? minWidth : tableWidth / sectionsCount
@@ -61,11 +60,6 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     let newHeight, newPosition
 
     useEffect(() => {
-        scrollLeft = containerRef.current.scrollLeft
-        tableWidth = window.innerWidth - rightMargin - leftMargin
-        sectionsCount = selectedEmployees.length
-        widthPerSection = tableWidth / sectionsCount <= minWidth ? minWidth : tableWidth / sectionsCount
-
         document.body.style.overflow = 'hidden'
         if (editing === id) return setIsEditable(true)
         setIsEditable(false)
@@ -160,6 +154,10 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     }
 
     const checkXPosition = (x) => {
+        let scrollLeft = containerRef.current.scrollLeft
+        tableWidth = window.innerWidth - rightMargin - leftMargin
+        sectionsCount = selectedEmployees.length
+        widthPerSection = tableWidth / sectionsCount <= minWidth ? minWidth : tableWidth / sectionsCount
         let index = ~~(((x - 50) + scrollLeft) / widthPerSection)
         let employee = selectedEmployees[index]
 
