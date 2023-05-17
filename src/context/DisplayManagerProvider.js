@@ -11,6 +11,8 @@ export const DisplayManagerProvider = ({ children }) => {
     const [selectedEmployees, setSelectedEmployees] = useState([])
     const [weekSelectedEmployee, setWeekSelectedEmployee] = useState(null)
     const [format, setFormat] = useState('daily')
+    const [dayDate, setDayDate] = useState(new Date())
+    const [weekDate, setWeekDate] = useState(new Date())
     const [date, setDate] = useState(new Date())
     const [dates, setDates] = useState([])
 
@@ -59,7 +61,8 @@ export const DisplayManagerProvider = ({ children }) => {
 
     useEffect(() => {
         if (format === 'weekly') {
-            let startDate = new Date()
+            setDayDate(date)
+            let startDate = weekDate
             let days = 0
             while (days < 7) {
                 if (startDate.toLocaleDateString('en', { weekday: 'long' }) === 'Sunday') {
@@ -70,7 +73,10 @@ export const DisplayManagerProvider = ({ children }) => {
                 days++
             }
         }
-        else setDate(new Date())
+        else {
+            setWeekDate(date)
+            setDate(dayDate)
+        }
 
         dateDisplayFormat()
     }, [format])
