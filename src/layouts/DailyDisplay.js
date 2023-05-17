@@ -65,14 +65,16 @@ const DailyDisplay = () => {
     }, [employees])
 
     const handleScrollFromTable = (e) => {
+        e.preventDefault()
         if (!tableScroll) return
-        if(e.target.scrollTop === 0) e.target.scrollTop = 1
+        if (e.target.scrollTop < 1) e.target.scrollTop = 1
         timelineRef.current.scrollTop = e.target.scrollTop
     }
 
     const handleScrollFromTimeline = (e) => {
+        e.preventDefault()
         if (!tableScroll) return
-        if(e.target.scrollTop === 0) e.target.scrollTop = 1
+        if (e.target.scrollTop < 1) e.target.scrollTop = 1
         tableRef.current.scrollTop = e.target.scrollTop
     }
 

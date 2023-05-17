@@ -504,7 +504,7 @@ export const DataProvider = ({ children }) => {
         })
     }
 
-    const deleteAppointment = (employee, appointmentId) => {
+    const deleteAppointment = (appointmentId) => {
         employeesDispatch({
             type: DELETE_APPOINTMENT,
             payload: { appointmentId }

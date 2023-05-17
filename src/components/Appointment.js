@@ -262,7 +262,7 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     const cancelAppointment = () => {
         setIsEditable(false)
         setEditing(null)
-        deleteAppointment(employee, id)
+        deleteAppointment(id)
     }
 
     const mouseDownHandle = (e) => {
