@@ -18,7 +18,13 @@ let employeesData = [
             {
                 id: '01',
                 client: 'Marcos R.',
-                services: ['Haircut'],
+                services: [
+                    {
+                        service: 'Hair Cut',
+                        price: 500_000_000,
+                        duration: 70
+                    }
+                ],
                 total: 500_000_000,
                 start: 'May 5 2023 10:30:00',
                 end: 'May 5 2023 13:30:00',
@@ -316,7 +322,6 @@ function employeesReducer(employees, action) {
 
             for (let index = 0; index < newState.length; index++) {
                 let appointments = newState[index].appointments.slice()
-                console.log(appointments)
                 for (let appointmentIndex = 0; appointmentIndex < appointments.length; appointmentIndex++) {
                     if (appointments[appointmentIndex].id === appointmentId) {
                         appointments[appointmentIndex].end = newEndDate
@@ -325,7 +330,6 @@ function employeesReducer(employees, action) {
                         if (employee !== newState[index].name) {
                             appointment = appointments[appointmentIndex]
                             appointments.splice(appointmentIndex, 1)
-                            console.log(appointments)
                             newState[index].appointments = appointments
 
 
@@ -434,17 +438,14 @@ function employeesReducer(employees, action) {
             let newState = _.cloneDeep(employees)
             console.log(action.payload)
             let id = action.payload.appointmentId
-            let employee = action.payload.employee
 
             for (let index = 0; index < newState.length; index++) {
-                if (newState[index].name === employee) {
-                    let appointments = [...newState[index].appointments]
-                    for (let appointmentIndex = 0; appointmentIndex < appointments.length; appointmentIndex++) {
-                        if (appointments[appointmentIndex].id === id) {
-                            appointments.splice(appointmentIndex, 1)
-                            newState[index].appointments = appointments
-                            break
-                        }
+                let appointments = [...newState[index].appointments]
+                for (let appointmentIndex = 0; appointmentIndex < appointments.length; appointmentIndex++) {
+                    if (appointments[appointmentIndex].id === id) {
+                        appointments.splice(appointmentIndex, 1)
+                        newState[index].appointments = appointments
+                        break
                     }
                 }
             }
@@ -506,7 +507,7 @@ export const DataProvider = ({ children }) => {
     const deleteAppointment = (employee, appointmentId) => {
         employeesDispatch({
             type: DELETE_APPOINTMENT,
-            payload: { employee, appointmentId }
+            payload: { appointmentId }
         })
     }
 
