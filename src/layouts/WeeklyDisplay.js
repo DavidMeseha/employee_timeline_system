@@ -70,7 +70,7 @@ const WeeklyDisplay = () => {
             e.target.style.PointerEvents = 'none'
             e.target.scrollTop = 1
         }
-        e.target.style.PointerEvents = 'auto'
+        e.target.style.pointerEvents = 'auto'
         timelineRef.current.scrollTop = e.target.scrollTop
     }
 
@@ -78,10 +78,10 @@ const WeeklyDisplay = () => {
         e.preventDefault()
         if (!tableScroll) return
         if (e.target.scrollTop < 1){
-            e.target.style.PointerEvents = 'none'
+            e.target.style.pointerEvents = 'none'
             e.target.scrollTop = 1
         }
-        e.target.style.PointerEvents = 'auto'
+        e.target.style.pointerEvents = 'auto'
         tableRef.current.scrollTop = e.target.scrollTop
     }
 
