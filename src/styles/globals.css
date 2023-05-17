@@ -41,6 +41,7 @@
 }
 
 * {
+  overscroll-behavior: none;
   box-sizing: border-box;
   user-select: none;
   -ms-user-select: none;

@@ -12,9 +12,10 @@ const WeeklyDisplay = () => {
     const [employee, setEmployee] = useState()
     const tableRef = useRef()
     const timelineRef = useRef()
-    const [isToday, setIsToday] = useState(true)
+    const [isToday, setIsToday] = useState(false)
     const [tableScroll, setTableScroll] = useState(true)
     const [editing, setEditing] = useState()
+    const liveTimeRef = useRef()
 
     let touchStart, initialScroll
 
@@ -44,29 +45,46 @@ const WeeklyDisplay = () => {
     }
 
     useEffect(() => {
+        const scrollToLiveTime = () => {
+            if (!isToday) {
+                tableRef.current.scrollTop = 0
+                timelineRef.current.scrollTop = 0
+                return
+            }
+            if (!liveTimeRef.current) return
+
+            let top = parseInt(liveTimeRef.current.style.top.replace('px', '')) - 200
+            tableRef.current.scrollTop = top
+            timelineRef.current.scrollTop = top
+        }
+
+        scrollToLiveTime()
+    }, [liveTimeRef, isToday, date])
+
+    useEffect(() => {
         resetEmployee()
     }, [employees, weekSelectedEmployee])
 
     useEffect(() => {
         const displayDates = () => {
+            setIsToday(false)
             let set = []
             let recentDate = new Date(date)
             set.push(new Date(recentDate.setDate(date.getDate())))
             for (let dayNumber = 1; dayNumber < 7; dayNumber++) {
                 set.push(new Date(recentDate.setDate(set[dayNumber - 1].getDate() - 1)))
+                if (recentDate.getDate() === new Date().getDate()) setIsToday(true)
             }
             setDates(set.reverse())
         }
 
         displayDates()
-        if (date.getDate() === new Date().getDate()) setIsToday(true)
-        else setIsToday(false)
     }, [date, format, weekSelectedEmployee])
 
     const handleScrollFromTable = (e) => {
         e.preventDefault()
         if (!tableScroll) return
-        if (e.target.scrollTop < 1){
+        if (e.target.scrollTop < 1) {
             e.target.style.PointerEvents = 'none'
             e.target.scrollTop = 1
         }
@@ -77,7 +95,7 @@ const WeeklyDisplay = () => {
     const handleScrollFromTimeline = (e) => {
         e.preventDefault()
         if (!tableScroll) return
-        if (e.target.scrollTop < 1){
+        if (e.target.scrollTop < 1) {
             e.target.style.pointerEvents = 'none'
             e.target.scrollTop = 1
         }
@@ -174,7 +192,7 @@ const WeeklyDisplay = () => {
                     </table>
                 </div>
                 <div ref={(e) => timelineRef.current = e} onScroll={handleScrollFromTimeline} onTouchStart={touchStartHandle} onTouchMove={touchScrollXHandle} className="weekly-timeline">
-                    <TimeLines liveIndicator={isToday} selectedEmployees={weekSelectedEmployee} dates={dates} tableRef={tableRef} />
+                    <TimeLines liveIndicator={isToday} selectedEmployees={weekSelectedEmployee} dates={dates} tableRef={tableRef} liveTimeRef={liveTimeRef} />
                 </div>
             </div >}
         </>

@@ -3,12 +3,11 @@ import { calculateTopFromMinutes } from "@/utilities/calculations";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 
-const TimeLines = ({ liveIndicator, selectedEmployees, tableRef, dates }) => { //bool
+const TimeLines = ({ liveIndicator, selectedEmployees, tableRef, dates, liveTimeRef }) => { //bool
     const router = useRouter()
     const { format, date } = useDisplayManger()
-    const sections = 24 * 4
-    const liveTimeRef = useRef()
     const [liveTime, setLiveTime] = useState()
+    const sections = 24 * 4
 
     useEffect(() => {
         if (!liveTimeRef.current) return
@@ -19,15 +18,11 @@ const TimeLines = ({ liveIndicator, selectedEmployees, tableRef, dates }) => { /
             let minutes = date.getMinutes()
             let totalMinutes = minutes + (hours * 60)
 
-            setLiveTime(date.toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: true })) //01:01 || 15:05 || 10:25
-
-            //                                                      for every 15min
-            //                 one pixel per minute-V         V-Line Hight per section V-middle of the indecator
+            setLiveTime(date.toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: true }))
             liveTimeRef.current.style.top = `${calculateTopFromMinutes(totalMinutes) - 6}px`
         }
 
         liveTimeTick()
-        liveTimeRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
 
         let clock = setInterval(() => {
             liveTimeTick()

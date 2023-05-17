@@ -15,6 +15,7 @@ const DailyDisplay = () => {
     const [tableScroll, setTableScroll] = useState(true)
     const [editing, setEditing] = useState()
     const colRef = useRef()
+    const liveTimeRef = useRef()
     colRef.current = []
 
     let touchStart, initialScroll
@@ -55,8 +56,25 @@ const DailyDisplay = () => {
     }
 
     useEffect(() => {
+        const scrollToLiveTime = () => {
+            if (!isToday) {
+                tableRef.current.scrollTop = 0
+                timelineRef.current.scrollTop = 0
+                return
+            }
+            if (!liveTimeRef.current) return
+
+            let top = parseInt(liveTimeRef.current.style.top.replace('px', '')) - 200
+            tableRef.current.scrollTop = top
+            timelineRef.current.scrollTop = top
+        }
+
+        scrollToLiveTime()
+    }, [liveTimeRef, isToday, date])
+
+    useEffect(() => {
         resetEmployees()
-        if (date.getDate() === new Date().getDate()) setIsToday(true)
+        if (date.getDate() === new Date().getDate() && date.getMonth() === new Date().getMonth()) setIsToday(true)
         else setIsToday(false)
     }, [date, format])
 
@@ -67,22 +85,12 @@ const DailyDisplay = () => {
     const handleScrollFromTable = (e) => {
         e.preventDefault()
         if (!tableScroll) return
-        if (e.target.scrollTop < 1) {
-            e.target.style.pointerEvents = 'none'
-            e.target.scrollTop = 1
-        }
-        e.target.style.pointerEvents = 'auto'
         timelineRef.current.scrollTop = e.target.scrollTop
     }
 
     const handleScrollFromTimeline = (e) => {
         e.preventDefault()
         if (!tableScroll) return
-        if (e.target.scrollTop < 1) {
-            e.target.style.pointerEvents = 'none'
-            e.target.scrollTop = 1
-        }
-        e.target.style.pointerEvents = 'auto'
         tableRef.current.scrollTop = e.target.scrollTop
     }
 
@@ -178,7 +186,7 @@ const DailyDisplay = () => {
                     </table>
                 </div>
                 <div ref={(e) => timelineRef.current = e} onScroll={handleScrollFromTimeline} onTouchStart={touchStartHandle} onTouchMove={touchScrollXHandle} className="daily-timeline">
-                    <TimeLines liveIndicator={isToday} selectedEmployees={selectedEmployees} dates={date} tableRef={tableRef} />
+                    <TimeLines liveIndicator={isToday} selectedEmployees={selectedEmployees} dates={date} tableRef={tableRef} liveTimeRef={liveTimeRef} />
                 </div>
             </div>}
         </>
