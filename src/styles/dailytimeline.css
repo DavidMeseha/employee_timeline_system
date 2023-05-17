@@ -7,7 +7,7 @@
 .table-wrap {
     position: relative;
     margin: 0px 10px 0px 50px;
-    padding-bottom: 60px;
+    padding-bottom: 80px;
     overflow-x: auto;
     overflow-y: auto;
     height: var(--view-height);
@@ -22,7 +22,7 @@
 .weekly-timeline,
 .daily-timeline {
     margin: 0 10px;
-    padding-bottom: 60px;
+    padding-bottom: 80px;
     position: absolute;
     left: 0;
     right: 0;
