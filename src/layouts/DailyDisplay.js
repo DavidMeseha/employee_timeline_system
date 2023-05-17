@@ -9,14 +9,12 @@ import useData from "@/Hooks/useData";
 const DailyDisplay = () => {
     const { employees } = useData()
     const { date, format, selectedEmployees, employeesDisplay, setEmployeesDisplay } = useDisplayManger()
-    const tableRef = useRef()
-    const timelineRef = useRef()
     const [isToday, setIsToday] = useState(true)
     const [tableScroll, setTableScroll] = useState(true)
     const [editing, setEditing] = useState()
-    const colRef = useRef()
+    const tableRef = useRef()
+    const timelineRef = useRef()
     const liveTimeRef = useRef()
-    colRef.current = []
 
     let touchStart, initialScroll
 
@@ -144,7 +142,7 @@ const DailyDisplay = () => {
                                             let appointmentGroups = groupingIntersectingAppointments(employee.appointments)
 
                                             return (
-                                                <td dropable ref={(e) => colRef.current.push(e)} key={ei + eni}>
+                                                <td key={ei + eni}>
                                                     {employee.blocks.map((block, bi) => {
                                                         let blockedDate = new Date(block.start)
                                                         if (blockedDate.getDate() !== date.getDate()) return;
