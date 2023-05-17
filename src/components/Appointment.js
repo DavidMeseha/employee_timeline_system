@@ -27,8 +27,8 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     const [recentHeight, setRecentHeight] = useState(null)
     const [activateEditTimeout, setActivateEditTimeout] = useState()
 
-    const rightMargin = 50
-    const leftMargin = ('touchstart' in window) ? 15 : 30
+    const leftMargin = 50
+    const rightMargin = ('touchstart' in window) ? 15 : 30
     const minWidth = format === 'daily' ? 400 : 150
     let tableWidth = window.innerWidth - rightMargin - leftMargin
     let sectionsCount = format === 'daily' ? selectedEmployees.length : 7
@@ -154,6 +154,8 @@ const Appointment = ({ appointment, employee, employeeOrder, startDate, endDate,
     }
 
     const checkXPosition = (x) => {
+        x = x < leftMargin ? 50 : x
+        x = (x > window.innerWidth - rightMargin) ? window.innerWidth - rightMargin : x
         let scrollLeft = containerRef.current.scrollLeft
         tableWidth = window.innerWidth - rightMargin - leftMargin
         sectionsCount = format === 'daily' ? selectedEmployees.length : 7
