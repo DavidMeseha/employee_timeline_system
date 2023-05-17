@@ -66,14 +66,14 @@ const WeeklyDisplay = () => {
     const handleScrollFromTable = (e) => {
         e.preventDefault()
         if (!tableScroll) return
-        if (e.target.scrollTop < 1) e.target.scrollTop = 1
+        if (e.target.scrollTop <= 1) e.target.scrollTop = 1
         timelineRef.current.scrollTop = e.target.scrollTop
     }
 
     const handleScrollFromTimeline = (e) => {
         e.preventDefault()
         if (!tableScroll) return
-        if (e.target.scrollTop < 1) e.target.scrollTop = 1
+        if (e.target.scrollTop <= 1) e.target.scrollTop = 1
         tableRef.current.scrollTop = e.target.scrollTop
     }
 
@@ -83,6 +83,7 @@ const WeeklyDisplay = () => {
     }
 
     const touchStartHandle = (e) => {
+        e.preventDefault()
         if (!tableScroll) return
         touchStart = e.touches[0].clientX
         initialScroll = tableRef.current.scrollLeft

@@ -67,14 +67,22 @@ const DailyDisplay = () => {
     const handleScrollFromTable = (e) => {
         e.preventDefault()
         if (!tableScroll) return
-        if (e.target.scrollTop < 1) e.target.scrollTop = 1
+        if (e.target.scrollTop < 1) {
+            e.target.style.PointerEvents = 'none'
+            e.target.scrollTop = 1
+        }
+        e.target.style.PointerEvents = 'auto'
         timelineRef.current.scrollTop = e.target.scrollTop
     }
 
     const handleScrollFromTimeline = (e) => {
         e.preventDefault()
         if (!tableScroll) return
-        if (e.target.scrollTop < 1) e.target.scrollTop = 1
+        if (e.target.scrollTop < 1) {
+            e.target.style.PointerEvents = 'none'
+            e.target.scrollTop = 1
+        }
+        e.target.style.PointerEvents = 'auto'
         tableRef.current.scrollTop = e.target.scrollTop
     }
 
