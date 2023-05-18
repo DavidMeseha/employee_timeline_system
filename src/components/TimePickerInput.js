@@ -1,5 +1,5 @@
-import clickRecognition from "@/Hooks/useClickRecognition";
-import { convert24to12 } from "@/utilities/convertTime";
+import clickRecognition from "../Hooks/useClickRecognition";
+import { convert24to12 } from "../utilities/convertTime";
 import { useEffect, useRef, useState } from "react";
 
 const TimePickerInput = ({ time, setTime }) => {

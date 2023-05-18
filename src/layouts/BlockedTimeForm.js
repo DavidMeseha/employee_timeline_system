@@ -1,11 +1,11 @@
-import { Close as CloseIcon } from "@/components/Icons";
-import FormDropdown from "@/components/FormDropdown";
+import { Close as CloseIcon } from "../components/Icons";
+import FormDropdown from "../components/FormDropdown";
 import { useEffect, useRef, useState } from "react";
-import DonePopup from "@/components/DonePopup";
-import InputTextBox from "@/components/InputTextBox";
-import useData from "@/Hooks/useData";
-import Message from "@/components/Message";
-import clickRecognition from "@/Hooks/useClickRecognition";
+import DonePopup from "../components/DonePopup";
+import InputTextBox from "../components/InputTextBox";
+import useData from "../Hooks/useData";
+import Message from "../components/Message";
+import clickRecognition from "../Hooks/useClickRecognition";
 
 const BlockedTimeForm = ({ close }) => {
     const { addNewBlockedTimeForEmployee } = useData()

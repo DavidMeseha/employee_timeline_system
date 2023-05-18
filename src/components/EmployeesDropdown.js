@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import CheckBox from "./CheckBox";
-import clickRecognition from "@/Hooks/useClickRecognition";
+import clickRecognition from "../Hooks/useClickRecognition";
 
 const EmployeesDropdown = ({ employees, selected, setSelected, format }) => {
     const [isOpen, setIsOpen] = useState(false);

@@ -1,10 +1,10 @@
-import useDisplayManger from "@/Hooks/useDisplayManger";
-import { calculateTopFromMinutes } from "@/utilities/calculations";
-import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import useDisplayManger from "../Hooks/useDisplayManger";
+import { calculateTopFromMinutes } from "../utilities/calculations";
+import { useEffect, useState } from "react";
 
 const TimeLines = ({ liveIndicator, selectedEmployees, tableRef, dates, liveTimeRef }) => { //bool
-    const router = useRouter()
+    const navigate = useNavigate()
     const { format, date } = useDisplayManger()
     const [liveTime, setLiveTime] = useState()
     const sections = 24 * 4
@@ -26,7 +26,7 @@ const TimeLines = ({ liveIndicator, selectedEmployees, tableRef, dates, liveTime
 
         let clock = setInterval(() => {
             liveTimeTick()
-        }, 20000)
+        }, 20001)
 
         if (!liveIndicator && clock) return clearInterval(clock)
 
@@ -76,10 +76,7 @@ const TimeLines = ({ liveIndicator, selectedEmployees, tableRef, dates, liveTime
             let employee = format === 'daily' ? selectedEmployees[index] : selectedEmployees
             let selectedDate = (format === 'daily' ? date : dates[index]).toLocaleDateString('en', { day: '2-digit', month: '2-digit', year: 'numeric' })
 
-            router.push({
-                pathname: '/appointment/',
-                query: { time, employee, date: selectedDate }
-            });
+            navigate(`/add-appointment/${time}/${employee}/${selectedDate.replace('/', '-').replace('/', '-')}`)
         }
 
         return (

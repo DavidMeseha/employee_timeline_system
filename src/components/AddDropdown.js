@@ -1,6 +1,7 @@
-import clickRecognition from "@/Hooks/useClickRecognition";
-import BlockedTimeForm from "@/layouts/BlockedTimeForm";
-import Link from "next/link";
+import { Link } from "react-router-dom";
+import clickRecognition from "../Hooks/useClickRecognition";
+import BlockedTimeForm from "../layouts/BlockedTimeForm";
+
 import { useRef, useState } from "react";
 
 const AddDropdown = () => {
@@ -21,7 +22,7 @@ const AddDropdown = () => {
 
                 <div className={`dropdown-list ${isOpen ? '' : 'dropdown-closed'}`}>
                     <div className='dropdown-item'>
-                        <Link href={{ pathname: '/appointment' }}>New Appointment</Link>
+                        {<Link to='/add-appointment'>New Appointment</Link>}
                     </div>
                     <div className='dropdown-item' onClick={() => setBlockFormIsOpen(true)}>
                         <div>New Bloked Time</div>

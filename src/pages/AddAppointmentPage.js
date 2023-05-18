@@ -1,20 +1,21 @@
-import useData from "@/Hooks/useData";
-import FormDropdown from "@/components/FormDropdown";
-import InputTextBox from "@/components/InputTextBox";
-import ServiceSelectScreen from "@/layouts/ServiceSelectScreen";
-import SearchBar from "@/components/SearchBar";
-import InputSectionLayout from "@/layouts/InputSectionLayout";
+import useData from "../Hooks/useData";
+import FormDropdown from "../components/FormDropdown";
+import InputTextBox from "../components/InputTextBox";
+import ServiceSelectScreen from "../layouts/ServiceSelectScreen";
+import SearchBar from "../components/SearchBar";
+import InputSectionLayout from "../layouts/InputSectionLayout";
 import { useEffect, useState } from "react";
-import Message from "@/components/Message";
-import DonePopup from "@/components/DonePopup";
-import { useRouter } from "next/router";
-import Card from "@/components/Card";
-import { Close } from "@/components/Icons";
-import { convertDateToYMD } from "@/utilities/convertDateToYMD";
-import { convert12to24, convert24to12 } from "@/utilities/convertTime";
+import Message from "../components/Message";
+import DonePopup from "../components/DonePopup";
+import Card from "../components/Card";
+import { Close } from "../components/Icons";
+import { convertDateToYMD } from "../utilities/convertDateToYMD";
+import { convert12to24, convert24to12 } from "../utilities/convertTime";
+import { useNavigate, useParams } from "react-router-dom";
 
 const AddAppointmentPage = () => {
-    const router = useRouter()
+    const navigate = useNavigate()
+    const params = useParams()
     const { employees, services, customers, addNewAppointment } = useData()
     const [totalDuration, setTotalDuration] = useState(0)
     const [totalPrice, setTotalPrice] = useState(0)
@@ -33,14 +34,14 @@ const AddAppointmentPage = () => {
     const [isDone, setIsDone] = useState(false)
 
     useEffect(() => {
-        if (router.query.time) {
-            let t = router.query.time
-            console.log(convert12to24(t))
+        console.log(params)
+        if (params.time) {
+            let t = params.time
             setTime(convert12to24(t))
         }
-        if (router.query.employee) setMember(router.query.employee)
-        if (router.query.date) {
-            let aDate = new Date(router.query.date)
+        if (params.employee) setMember(params.employee)
+        if (params.date) {
+            let aDate = new Date(params.date)
             let display = aDate.toLocaleDateString('en', { day: 'numeric', month: 'long', year: 'numeric' })
             setDate(convertDateToYMD(aDate))
             setDisplayDate(display)
@@ -104,8 +105,7 @@ const AddAppointmentPage = () => {
         setIsDone(true)
         setTimeout(() => {
             setIsDone(false)
-            close()
-            router.push('/')
+            navigate('/')
         }, 1200)
     }
 

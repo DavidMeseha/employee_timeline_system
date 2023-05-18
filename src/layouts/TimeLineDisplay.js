@@ -1,4 +1,4 @@
-import useDisplayManger from "@/Hooks/useDisplayManger";
+import useDisplayManger from "../Hooks/useDisplayManger";
 import WeeklyTimeLine from "./WeeklyDisplay";
 import DailyDisplay from "./DailyDisplay";
 

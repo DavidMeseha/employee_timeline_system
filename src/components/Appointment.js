@@ -1,8 +1,8 @@
-import { calculateHeightFromMinutes, calculateMinutesFromHeight, calculateMinutesFromTop, calculateTopFromMinutes } from "@/utilities/calculations";
+import { calculateHeightFromMinutes, calculateMinutesFromHeight, calculateMinutesFromTop, calculateTopFromMinutes } from "../utilities/calculations";
 import { memo, useEffect, useRef, useState } from "react";
 import ConfirmEdit from "./ConfirmEdit";
-import useData from "@/Hooks/useData";
-import useDisplayManger from "@/Hooks/useDisplayManger";
+import useData from "../Hooks/useData";
+import useDisplayManger from "../Hooks/useDisplayManger";
 
 const ConfirmEditMemo = memo(({ confirm, cancel, deleteAppointment }) => {
     return (

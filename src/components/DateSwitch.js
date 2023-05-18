@@ -1,4 +1,4 @@
-import { convertDateToYMD } from "@/utilities/convertDateToYMD";
+import { convertDateToYMD } from "../utilities/convertDateToYMD";
 
 const DateSwitch = ({ date, displayDate, next, prev, setDate }) => {
     let today = new Date().toLocaleDateString('en', { day: 'numeric', month: 'long', weekday: 'long', year: 'numeric' })

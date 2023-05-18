@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-export default function clickRecognition(exitProductHandle, pointRef) {
+export default function ClickRecognition(exitProductHandle, pointRef) {
     useEffect(() => {
         function handleClickOutside(event) {
             if (pointRef.current && !pointRef.current.contains(event.target)) {

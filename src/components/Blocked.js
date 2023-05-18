@@ -1,8 +1,8 @@
-import { calculateHeightFromMinutes, calculateTopFromMinutes } from "@/utilities/calculations";
+import { calculateHeightFromMinutes, calculateTopFromMinutes } from "../utilities/calculations";
 import DiagonalStrip from "./DiagonalStrip";
 import { useRef, useState, useEffect } from "react";
 import ConfirmEdit from "./ConfirmEdit";
-import useData from "@/Hooks/useData";
+import useData from "../Hooks/useData";
 
 const Blocked = ({ startDate, endDate, comment, id, employee }) => {
     const [editable, setEditable] = useState(false)

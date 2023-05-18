@@ -1,8 +1,8 @@
-import AddDropdown from "@/components/AddDropdown";
-import DateSwitch from "@/components/DateSwitch";
-import EmployeesDropdown from "@/components/EmployeesDropdown";
-import useDisplayManger from "@/Hooks/useDisplayManger";
-import useData from "@/Hooks/useData";
+import AddDropdown from "../components/AddDropdown";
+import DateSwitch from "../components/DateSwitch";
+import EmployeesDropdown from "../components/EmployeesDropdown";
+import useDisplayManger from "../Hooks/useDisplayManger";
+import useData from "../Hooks/useData";
 
 const OptionsBar = () => {
     const { employees } = useData()

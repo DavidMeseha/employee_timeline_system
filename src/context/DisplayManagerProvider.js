@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import _ from 'lodash'
-import useData from "@/Hooks/useData";
+import useData from "../Hooks/useData";
 
 const DisplayManagerContext = createContext({})
 

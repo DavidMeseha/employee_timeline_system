@@ -1,10 +1,10 @@
-import TimeLines from "@/components/TimeLines";
-import useDisplayManger from "@/Hooks/useDisplayManger";
+import TimeLines from "../components/TimeLines";
+import useDisplayManger from "../Hooks/useDisplayManger";
 import { useEffect, useRef, useState } from "react";
-import Blocked from "@/components/Blocked";
+import Blocked from "../components/Blocked";
 import MultiApointmentLayout from "./MultiAppointmentLayout";
-import { groupingIntersectingAppointments } from "@/utilities/groupingAppointments";
-import useData from "@/Hooks/useData";
+import { groupingIntersectingAppointments } from "../utilities/groupingAppointments";
+import useData from "../Hooks/useData";
 
 const DailyDisplay = () => {
     const { employees } = useData()

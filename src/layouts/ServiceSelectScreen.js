@@ -1,5 +1,5 @@
-import clickRecognition from "@/Hooks/useClickRecognition"
-import { Search } from "@/components/Icons"
+import clickRecognition from "../Hooks/useClickRecognition"
+import { Search } from "../components/Icons"
 import { useRef, useState } from "react"
 
 const ServiceSelectScreen = ({ setSelected, services, selected, close }) => {

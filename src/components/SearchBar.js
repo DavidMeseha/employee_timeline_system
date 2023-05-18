@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Search } from "./Icons";
-import clickRecognition from "@/Hooks/useClickRecognition";
+import clickRecognition from "../Hooks/useClickRecognition";
 import Card from "./Card";
 
 const SearchBar = ({ value, setSelected, customers }) => {

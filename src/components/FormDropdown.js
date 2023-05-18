@@ -1,4 +1,4 @@
-import clickRecognition from "@/Hooks/useClickRecognition";
+import clickRecognition from "../Hooks/useClickRecognition";
 import { useRef, useState } from "react";
 
 const FormDropdown = ({ title, selected, setSelected, placeholder, options }) => {
