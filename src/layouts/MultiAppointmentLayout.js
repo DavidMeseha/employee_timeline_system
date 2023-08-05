@@ -1,5 +1,5 @@
 import Appointment from "../components/Appointment";
-
+const x = 0
 const MultiApointmentLayout = ({ appointments, employeeOrder, employee, containerRef, setTableScroll, timelineRef, editing, setEditing, editEmployeeDatesView, reset }) => {
     let displayed = []
     let stack = []
